@@ -1,0 +1,5 @@
+<!-- Manually created by kentongus -->
+<TextureAtlas imagePath="dead-banana.png" width="69" height="82">
+	<SubTexture name="idle normal1" x="0" y="0" width="69" height="41"/>
+	<SubTexture name="idle dark1" x="0" y="41" width="69" height="41"/>
+</TextureAtlas>

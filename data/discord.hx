@@ -4,18 +4,24 @@ import hxdiscord_rpc.Types as DiscordTypes;
 
 function new() {}
 
+var curActivity:ActivityType = ActivityType.Playing;
+var curLargeImageKey:String = "mainhd";
+var curLargeImageText:String = "VS IMPOSTOR Pixel";
+
 function onDiscordPresenceUpdate(event) {
 	var presence = event.presence;
-
-	presence.partyId = 1392684759658008758;
-	presence.partySize = (PlayState.instance != null && isPlayingVersus) ? 2 : 1;
-	presence.partyMax = 2;
-	presence.partyPrivacy = 1;
 
 	presence.button1Label = "Play the Mod";
 	presence.button1Url = "https://gamebanana.com/mods/506768";
 
-	presence.activityType = ActivityType.Playing;
+	presence.activityType = curActivity;
+
+	presence.largeImageKey = curLargeImageKey;
+	presence.largeImageText = curLargeImageText;
+}
+
+function changePresence(state:String, ?details:String) {
+	DiscordUtil.changePresenceSince(state, details);
 }
 
 function onMenuLoaded(name:String) {
@@ -58,6 +64,30 @@ function onEditorLoaded(name:String, editingThing:String) {
 	}
 }
 
+function setLargeImage(key:String, ?text:String) {
+	curLargeImageKey = key;
+	if (text != null) curLargeImageText = text;
+}
+
+function setActivity(activity:String)
+	curActivity = getActivityFromString(activity.toLowerCase());
+
+function getActivityFromString(activity:String):ActivityType {
+	switch(activity) {
+		case "playing":
+			return ActivityType.Playing;
+		case "competing":
+			return ActivityType.Competing;
+		case "watching":
+			return ActivityType.Watching;
+		case "listening":
+			return ActivityType.Listening;
+		default:
+			return ActivityType.Playing;
+	}
+}
+
+/*
 function destroy() {
 	if (DiscordUtil.ready) {
 		DiscordUtil.user.handle = null;
@@ -71,3 +101,4 @@ function destroy() {
 		DiscordUtil.user.premiumType = null;
 	}
 }
+*/

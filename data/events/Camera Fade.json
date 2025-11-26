@@ -1,0 +1,19 @@
+{
+    "params": [
+        {
+            "name": "Fade Color",
+            "type": "ColorWheel",
+            "defaultValue": "#000000"
+        },
+        {
+            "name": "Duration (Steps)",
+            "type": "Int(0, 9999, 1)",
+            "defaultValue": "32"
+        },
+        {
+            "name": "Should Fade from the Color?",
+            "type": "Bool",
+            "defaultValue": false
+        }
+    ]
+}

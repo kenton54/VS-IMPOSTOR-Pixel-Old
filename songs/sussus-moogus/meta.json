@@ -1,6 +1,9 @@
 {
-	"customValues": {},
-	"color": "#AF2121",
+	"customValues": {
+		"artists": "[{ job => Remix Composer, artist => Silte },{ job => OG Composer, artist => EthanTheDoodler },{ job => Charter, artist => kenton }]",
+		"ratingsChart": "{ easy => 2, hard => 4, normal => 3 }"
+	},
+	"color": "#000000",
 	"opponentModeAllowed": true,
 	"difficulties": [
 		"easy",

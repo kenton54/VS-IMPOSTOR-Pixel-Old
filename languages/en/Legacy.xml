@@ -1,0 +1,7 @@
+<language>
+    <group name="Legacy" prefix="legacy.">
+        <str id="storyMode">Story Mode</str>
+        <str id="gallery">Gallery</str>
+        <str id="highscore">High Score: {0}</str>
+    </group>
+</language>

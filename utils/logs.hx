@@ -1,7 +1,27 @@
 import funkin.backend.system.Logs;
 
 public static function logTraceColored(text:Array<LogText>, ?level:String) {
-    Logs.traceColored(text, getLogLevel(level));
+	var fullLog:Array<LogText> = [Logs.getPrefix("VS IMPOSTOR Pixel")];
+    if (text.length > 0)
+        for (logLine in text)
+			fullLog.push(logLine);
+	Logs.traceColored(fullLog, getLogLevel(level));
+}
+
+public static function logTraceState(state:String, text:Array<LogText>, ?level:String) {
+	var fullLog:Array<LogText> = [Logs.getPrefix(state)];
+	if (text.length > 0)
+		for (logLine in text)
+			fullLog.push(logLine);
+	Logs.traceColored(fullLog, getLogLevel(level));
+}
+
+public static function logTraceError(error:String) {
+	logTraceColored([{text: error, color: getLogColor("red")}], "error");
+}
+
+public static function logTraceErrorState(state:String, error:String) {
+	logTraceState(state, [{text: error, color: getLogColor("red")}], "error");
 }
 
 public static function getLogLevel(string:String):Int {

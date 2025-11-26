@@ -1,8 +1,10 @@
+import flixel.text.FlxText.FlxTextFormat;
 import flixel.util.FlxStringUtil;
-import AmongUsBox;
+import ResizableUIBox;
 
 // the only reason these are here is becuz maps fuck up the order
-var stats:Array<String> = [
+var statsList:Array<String> = [
+	"totalPlaytime",
     "storyProgress",
     "totalNotes",
     "perfectNotes",
@@ -17,60 +19,72 @@ var stats:Array<String> = [
     "taskSpeedrunMira",
     "taskSpeedrunPolus",
     "taskSpeedrunAirship",
+	"taskSpeedrunFungle",
     "totalTasks"
 ];
 
 var statsCam:FlxCamera;
 
-var buttonsBack:AmongUsBox;
+var buttonsBack:ResizableUIBox;
 var closeButton:FlxSprite;
 var statsTitle:FunkinText;
-var statsGroup:FlxGroup;
+var statsNameText:FunkinText;
+var statsValueText:FunkinText;
 
 function create() {
     changeDiscordMenuStatus("Viewing his Stats");
 
     statsCam = new FlxCamera();
-    statsCam.bgColor = 0x80000000;
+    statsCam.bgColor = 0x88000000;
     FlxG.cameras.add(statsCam, false);
 
     var scale:Float = 4;
-    buttonsBack = new AmongUsBox(0, 0, 640, 640, "fancy", scale);
-    buttonsBack.box.screenCenter();
+	buttonsBack = new ResizableUIBox(0, 0, 680, 640, "fancy", scale);
+    buttonsBack.screenCenter();
     buttonsBack.box.camera = statsCam;
     add(buttonsBack.box);
 
-    statsTitle = new FunkinText(buttonsBack.box.x, buttonsBack.box.y, buttonsBack.box.width, translate("mainMenu.stats.title"), 48);
+    statsTitle = new FunkinText(buttonsBack.x, buttonsBack.y, buttonsBack.width, translate("mainMenu.stats.title"), 48, false);
     statsTitle.font = Paths.font("pixeloidsans.ttf");
     statsTitle.alignment = "center";
     statsTitle.camera = statsCam;
     statsTitle.y += 8 * scale;
     add(statsTitle);
 
-    statsGroup = new FlxGroup();
-    add(statsGroup);
+	var borders:Float = 8 * scale;
+	statsNameText = new FunkinText(statsTitle.x + borders, statsTitle.y + statsTitle.height + 3 * scale, statsTitle.fieldWidth - borders * 2, "", 22, false);
+	statsNameText.font = Paths.font("retrogaming.ttf");
+	statsNameText.textField.__textFormat.leading = -6;
+	statsNameText.color = FlxColor.WHITE;
+	statsNameText.camera = statsCam;
+	add(statsNameText);
 
-    for (i => stat in stats) {
-        var yPos:Float = (statsTitle.y + statsTitle.height) + (3 * scale) + (i * 22);
-        var color:FlxColor = (i % 2 == 0) ? FlxColor.WHITE : 0xFF999999;
-        var daStat:FunkinText = new FunkinText(statsTitle.x + 8 * scale, yPos, buttonsBack.width, getStatName(stat), 22, false);
-        daStat.font = Paths.font("retrogaming.ttf");
-        daStat.color = color;
-        daStat.camera = statsCam;
-        statsGroup.add(daStat);
+	statsValueText = new FunkinText(statsNameText.x, statsNameText.y, statsNameText.fieldWidth, "", 22, false);
+	statsValueText.font = statsNameText.font;
+	statsValueText.textField.__textFormat.leading = -6;
+	statsValueText.alignment = "right";
+	statsValueText.color = FlxColor.WHITE;
+	statsValueText.camera = statsCam;
+	add(statsValueText);
+
+    for (i => stat in statsList) {
+		statsNameText.text += (statsNameText.text.length > 0 ? "\n" : "") + getStatName(stat);
 
         var value:Dynamic = getStatValue(stat);
-        if (StringTools.contains(stat, "storyProgress")) value = '"'+value+'"';
-        if (StringTools.contains(stat, "Speedrun")) value = FlxStringUtil.formatTime(value, true);
-        var statValue:FunkinText = new FunkinText(statsTitle.x + 4 * scale, yPos, buttonsBack.width, Std.string(value), 22, false);
-        statValue.alignment = "right";
-        statValue.font = Paths.font("retrogaming.ttf");
-        statValue.color = color;
-        statValue.camera = statsCam;
-        statsGroup.add(statValue);
+        var strValue:String = Std.string(value);
+		if (StringTools.contains(stat.toLowerCase(), "playtime")) strValue = formatTimeAdvanced(value, "%D:%H:%M");
+        if (StringTools.contains(stat.toLowerCase(), "storyprogress")) strValue = '"' + value + '"';
+		if (StringTools.contains(stat.toLowerCase(), "speedrun")) strValue = FlxStringUtil.formatTime(value, true);
+		statsValueText.text += (statsValueText.text.length > 0 ? "\n" : "") + strValue;
+
+		if (i % 2 == 1) {
+			var format:FlxTextFormat = new FlxTextFormat(0xFF999999);
+			statsNameText.addFormat(format, statsNameText.text.lastIndexOf("\n"), statsNameText.text.length);
+			statsValueText.addFormat(format, statsValueText.text.lastIndexOf("\n"), statsValueText.text.length);
+        }
     }
 
-    closeButton = new FlxSprite(buttonsBack.box.x, buttonsBack.box.y).loadGraphic(Paths.image("menus/x"));
+    closeButton = new FlxSprite(buttonsBack.x, buttonsBack.y).loadGraphic(Paths.image("menus/x"));
     closeButton.scale.set(scale, scale);
     closeButton.updateHitbox();
     closeButton.x -= closeButton.width + 2 * scale;
@@ -83,17 +97,16 @@ function postCreate() {
 }
 
 function update(elapsed:Float) {
-    if (controls.BACK || (!isMobile ? (FlxG.mouse.overlaps(closeButton) && FlxG.mouse.justPressed) : (FlxG.touches.getFirst() != null && FlxG.touches.getFirst().overlaps(closeButton) && FlxG.touches.getFirst().justPressed))) {
+    if (controls.BACK || pointerOverlaps(closeButton) && pointerJustPressed()) {
         playMenuSound("cancel");
         close();
     }
 }
 
 function destroy() {
-    FlxG.mouse.visible = false;
-
     statsTitle.destroy();
-    statsGroup.destroy();
+	statsNameText.destroy();
+	statsValueText.destroy();
     buttonsBack.destroy();
     closeButton.destroy();
 

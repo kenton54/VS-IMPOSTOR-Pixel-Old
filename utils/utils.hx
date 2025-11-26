@@ -1,36 +1,24 @@
 import flixel.sound.FlxSound;
 import flixel.util.FlxBaseSignal;
-import funkin.backend.utils.DiscordUtil;
-import funkin.backend.utils.TranslationUtil;
 import funkin.backend.MusicBeatTransition;
 import funkin.options.Options;
+import funkin.savedata.FunkinSave;
 import lime.system.JNI; // JNI stands for JavaNativeInterface
 import openfl.display.BlendMode;
-import Sys;
-
-public static var storyStates:Array<String> = [
-    "start",
-    "postTutorial",
-    "postLobbyShowcase",
-    "postWeek1",
-    "postOminous"
-];
-public static var storySequence:Int = 0;
+import openfl.Lib;
 
 public static var playablesList:Map<String, Bool> = ["bf" => true];
 public static var skinsList:Map<String, Map<String, Bool>> = [/*character => [skin => bought]*/];
-
-public static var seenPlayables:Array<String> = ["bf"];
 
 public static var pixelPlayable:String = "bf";
 
 public static var pixelBeans:Int = 0;
 
-public static var globalUsingKeyboard:Bool = false;
-
 public static var isPlayingVersus:Bool = false;
 
-final defaultTransition:String = "bottom2topSmoothSquare";
+public static var festiveEvent:Null<String> = null;
+
+final defaultTransition:String = "fadeUp";
 public static function setTransition(transitionID:String) {
     //trace("Setting transition to: " + (transitionID == "" ? "Default" : transitionID));
 
@@ -38,19 +26,6 @@ public static function setTransition(transitionID:String) {
         MusicBeatTransition.script = "data/transitions/" + defaultTransition;
     else
         MusicBeatTransition.script = "data/transitions/" + transitionID;
-}
-
-public static function translate(id:String, ?customValues:Array<Dynamic>):String {
-    customValues ??= [];
-    return TranslationUtil.translate(id, customValues);
-}
-
-public static function changeDiscordMenuStatus(menu:String) {
-    DiscordUtil.call("onMenuLoaded", [menu]);
-}
-
-public static function changeDiscordEditorStatus(menu:String) {
-    DiscordUtil.call("onEditorTreeLoaded", [menu]);
 }
 
 public static function getBlendMode(blend:String):BlendMode {
@@ -84,7 +59,7 @@ public static function playSound(sound:String, ?volume:Float) {
  * 
  * If you don't understand, the sound won't stop playing when switching states.
  * 
- * @param sound The sound ID, it's actually just the file inside the "sounds/menu" folder.
+ * @param sound The sound ID, it's actually just the file inside the "sounds/menu" folder (without the extension obviously).
  * @param volume The volume the sound should play at.
  */
 public static function playMenuSound(sound:String, ?volume:Float) {
@@ -110,6 +85,74 @@ public static function createMultiLineText(textLines:Array<String>):String {
     }
 
     return wholeText;
+}
+
+// TODO: code this better lol
+public static function formatTimeAdvanced(time:Float, format:String):String {
+	var days:Int = Std.int(time / 86400); // 24 * 3600
+	var hours:Int = Std.int(time / 3600);
+	var minutes:Int = Std.int((time % 3600) / 60);
+	var seconds:Int = Std.int(time % 60);
+	var milliseconds:Float = time % 1;
+
+	var result:String = format;
+	if (StringTools.contains(format, "%D")) result = StringTools.replace(result, "%D", CoolUtil.addZeros(Std.string(days), 2));
+	if (StringTools.contains(format, "%H")) result = StringTools.replace(result, "%H", CoolUtil.addZeros(Std.string(hours), 2));
+	if (StringTools.contains(format, "%M")) result = StringTools.replace(result, "%M", CoolUtil.addZeros(Std.string(minutes), 2));
+	if (StringTools.contains(format, "%S")) result = StringTools.replace(result, "%S", CoolUtil.addZeros(Std.string(seconds), 2));
+    if (StringTools.contains(format, "%s")) result = StringTools.replace(result, "%s", Std.string(milliseconds).substring(2));
+
+	return result;
+}
+
+public static function formatAmongUsDownloadTime(time:Float):String {
+    var days:Int = Std.int(time / 86400); // 24 * 3600
+	var hours:Int = Std.int(time / 3600);
+	var minutes:Int = Std.int((time % 3600) / 60);
+	var seconds:Int = Std.int(time % 60);
+
+	var resultString:String = "";
+    if (days > 0) resultString += translate("game.tasks.download.daySuffix", [days]) + " ";
+    if (hours > 0) resultString += translate("game.tasks.download.hourSuffix", [hours]) + " ";
+	if (minutes > 0) resultString += translate("game.tasks.download.minuteSuffix", [minutes]) + " ";
+	resultString += translate("game.tasks.download.secondSuffix", [seconds]);
+	return resultString;
+}
+
+public static function getMonthName(monthId:Int) {
+    var monthName:String = switch(monthId) {
+        case 0: "january";
+		case 1: "february";
+		case 2: "march";
+		case 3: "april";
+		case 4: "may";
+		case 5: "june";
+		case 6: "july";
+		case 7: "august";
+		case 8: "september";
+		case 9: "october";
+		case 10: "november";
+		case 11: "december";
+    }
+	return translate("months." + monthName);
+}
+
+public static function getMonthNameShort(monthId:Int) {
+	var monthName:String = switch (monthId) {
+		case 0: "jans";
+		case 1: "febs";
+		case 2: "mars";
+		case 3: "aprs";
+		case 4: "mays";
+		case 5: "juns";
+		case 6: "juls";
+		case 7: "augs";
+		case 8: "seps";
+		case 9: "octs";
+		case 10: "novs";
+		case 11: "decs";
+	}
+	return translate("months." + monthName);
 }
 
 // TODO: figure out a cleaner way to execute this.
@@ -145,7 +188,7 @@ public static function getTarget():String {
     #elseif html5
     return "html5";
     #elseif flash
-    return "flash"; // there's no chance you'll get this returned
+    return "flash"; // you'll never get this returned
     #elseif switch
     return "switch"; // very unlike you'll get this returned
     #else
@@ -163,38 +206,24 @@ public static function createJNIStaticMethod(className:String, methodName:String
     return null;
 }
 
-public static function resizeGame(width:Int, height:Int) {
-    FlxG.initialWidth = width;
-    FlxG.initialHeight = height;
-    FlxG.width = width;
-    FlxG.height = height;
-
-    resizeWindow(width, height);
-}
-
-public static function resizeWindow(width:Int, height:Int) {
-    window.resize(width, height);
-}
-
 public static function saveImpostor() {
-    FlxG.save.data.impPixelStorySequence = storySequence;
+	FlxG.save.data.impPixelStorySequence = getStoryProgress();
     FlxG.save.data.impPixelBeans = pixelBeans;
     FlxG.save.data.impPixelStats = getStats();
     FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
     FlxG.save.data.impPixelSkinsUnlocked = skinsList;
     FlxG.save.data.impPixelFlags = getFlags();
 
-    logTraceColored([
-        {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
-        {text: "Data saved!", color: getLogColor("green")}
-    ], "verbose");
+	Options.save();
+	FlxG.save.flush();
+	FunkinSave.flush();
 
-    FlxG.save.flush();
+    logTraceColored([{text: "Data saved!", color: getLogColor("green")}], "verbose");
 }
 
 public static function eraseImpostorSaveData() {
-    storySequence = 0;
-    impostorStats.clear();
+	resetStoryProgression();
+	clearStats();
     playablesList.clear();
     playablesList.set("bf", true);
     skinsList.clear();

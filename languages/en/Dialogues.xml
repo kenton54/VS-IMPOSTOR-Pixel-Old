@@ -1,0 +1,38 @@
+<language>
+    <group name="Dialogues" prefix="dialogues.">
+        <group name="Sussus Moogus" prefix="sussus-moogus.">
+            <str id="line1">We caught you in the act impostor, now surrender!</str>
+            <str id="line2">Who-{0}Oh...!</str>
+            <str id="line3">(Uhhhhhhhhhh...)</str>
+            <str id="line4">W-what are you talking about? there are no impostors here...</str>
+            <str id="line5">Go look somewhere else.</str>
+            <str id="line6">Then what's that corpse doing there besides you?</str>
+            <str id="line7">I was just about to report it!</str>
+            <str id="line8">You see, it's my first time playing this game, so I don't know how to do most of the stuff that's common knowledge to most players.</str>
+            <str id="line9">(Is he just making fun of us, or is this guy really this dumb?)</str>
+            <str id="line10">(Both)</str>
+            <str id="line11">If you really are new (which I know you aren't), then press the big button saying "Report" at the bottom right corner of the screen...</str>
+            <str id="line12">Yeah... the thing is... I'm trying but it doesn't do anything...</str>
+            <str id="line13">Are you kidding me-</str>
+            <str id="line14">Hey hold on, I have an idea, lemme try something...</str>
+            <str id="line15">...Go on, I'm watching.</str>
+            <str id="line16">*ahem*</str>
+            <str id="line17">OGMMGGG!!11!!1!1! IS THAT RED IMPOSTOR FROM THE VERY POPULAR 2020 HIT GAME AMONG US????!!11!!1!!</str>
+            <str id="line18">(What the fuck??? Dude this clearly isn't gonna work-)</str>
+            <str id="line18-censored">(Huh??? Dude this clearly isn't gonna work-)</str>
+            <str id="line19">YES THAT'S ME, I am the impostor Red from the very popular 2020 hit game Among Us :)</str>
+            <str id="line20">.....</str>
+            <str id="line21">(Well... that was oddly easy?)</str>
+            <str id="line22">Hey you, thank you for confesing that you're an impostor</str>
+            <str id="line23">Now if you'll excuse us... We're gonna report that body now.</str>
+            <str id="line24">W-W-WAIT HOLD ON, LET'S TALK ABOUT THIS!!!</str>
+            <str id="line25">...You know what? Sure, talk.</str>
+            <str id="line26">(What are you doing?)</str>
+            <str id="line27">(It's obvious that this guy is the impostor, but I just wanna listen to whatever shit he has to say.)</str>
+            <str id="line27-censored">(It's obvious that this guy is the impostor, but I just wanna listen to whatever he has to say.)</str>
+            <str id="line28">(Mmmm... Sure why not?)</str>
+            <str id="line29">(Hehehe... These guys are a bunch of IDIOTS....)</str>
+            <str id="line29-censored">(Hehehe... These guys are a so dumb....)</str>
+        </group>
+    </group>
+</language>

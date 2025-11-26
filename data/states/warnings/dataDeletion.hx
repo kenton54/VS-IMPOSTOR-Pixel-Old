@@ -133,14 +133,14 @@ function update(elapsed:Float) {
 
         isHoveringSmth = false;
 
-        if (touchOverlaps(no) && isSelectingYes) {
+		if (pointerOverlaps(no) && isSelectingYes) {
             if (!isHoveringSmth) {
                 isHoveringSmth = true;
                 isSelectingYes = false;
                 updateSelection();
             }
         }
-        if (touchOverlaps(yes) && !isSelectingYes) {
+		if (pointerOverlaps(yes) && !isSelectingYes) {
             if (!isHoveringSmth) {
                 isHoveringSmth = true;
                 isSelectingYes = true;
@@ -148,7 +148,7 @@ function update(elapsed:Float) {
             }
         }
 
-        if (touchJustReleased())
+		if (pointerJustReleased())
             checkSelection();
     }
 }

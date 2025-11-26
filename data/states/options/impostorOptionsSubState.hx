@@ -13,7 +13,6 @@ var optionsCam:FlxCamera;
 
 var startTxt:FunkinText;
 
-var theEntireThing:FlxSpriteGroup; // this thing exists only for the tween intro LOL
 var phoneSpr:FlxSprite;
 var phoneScreen:FlxSpriteGroup;
 var categoriesGroup:FlxSpriteGroup;
@@ -35,6 +34,7 @@ var closeButton:BackButton;
 
 var scale:Float = 5;
 var generalWidth:Int = 312;
+var titleVerBounds:Float = 0;
 
 var lastLang:String = TranslationUtil.curLanguage;
 var lastDev:Bool = Options.devMode;
@@ -50,9 +50,6 @@ function create() {
     optionsCam.bgColor = 0x00000000;
     FlxG.cameras.add(optionsCam, false);
 
-    theEntireThing = new FlxSpriteGroup(0, FlxG.height);
-    add(theEntireThing);
-
     phoneSpr = new FlxSprite(FlxG.width / 2, FlxG.height / 2).loadGraphic(Paths.image("menus/options/phone"));
     phoneSpr.scale.set(scale, scale);
     phoneSpr.updateHitbox();
@@ -63,21 +60,21 @@ function create() {
     phoneScreen = new FlxSpriteGroup(phoneSpr.x + 10 * scale, phoneSpr.y + 9 * scale);
     phoneScreen.camera = optionsCam;
 
-    theEntireThing.add(phoneScreen);
-    theEntireThing.add(phoneSpr);
+    add(phoneScreen);
+    add(phoneSpr);
 
     var heightCorrect:Float = phoneSpr.height - 9 * scale * 2;
     var boxWidth:Int = phoneSpr.width - 25 * scale;
     var phoneBack:FlxSprite = new FlxSprite().makeGraphic(boxWidth, heightCorrect, 0xFFAEC3C3);
 
-    var titleVerBounds:Float = phoneBack.y + 24 * scale;
+    titleVerBounds = phoneBack.y + 24 * scale;
     var optionsBox:FlxSprite = new FlxSprite(phoneBack.x + generalWidth, phoneBack.y + phoneBack.height).makeGraphic(phoneBack.width - generalWidth, (phoneBack.height - titleVerBounds) + 4, FlxColor.WHITE);
     var optionsBoxHeight:Float = optionsBox.height - 4; // to prevent misplacements
     optionsBox.y -= optionsBoxHeight;
     optionsBox.alpha = 0.2;
     optionsBox.blend = 0;
 
-    var phoneTitle:FunkinText = new FunkinText(phoneBack.x - 8 * scale, (phoneBack.y + titleVerBounds) / 2, phoneBack.width, translate("mainMenu.options"), 65, false);
+    var phoneTitle:FunkinText = new FunkinText(phoneBack.x - 8 * scale, (phoneBack.y + titleVerBounds) / 2, phoneBack.width, translate("generic.options"), 65, false);
     phoneTitle.font = Paths.font("pixeloidsans.ttf");
     phoneTitle.color = FlxColor.BLACK;
     phoneTitle.alignment = "right";
@@ -102,8 +99,6 @@ function create() {
     phoneScreen.add(startTxt);
 
     categoryBounds = [0, titleVerBounds, optionsBox.width, optionsBoxHeight];
-    curCategoryGrp = new FlxSpriteGroup(generalWidth, titleVerBounds);
-    phoneScreen.add(curCategoryGrp);
 
     descriptionGroup = new FlxSpriteGroup(generalWidth, titleVerBounds);
     phoneScreen.add(descriptionGroup);
@@ -124,16 +119,11 @@ function create() {
 
     //descriptionGroup.y -= descriptionGroup.height;
 
-    closeButton = new BackButton(phoneSpr.x - 4 * scale, 0, closeOptions, scale, false, "menus/x", true);
+    closeButton = new BackButton(phoneSpr.x - 4 * scale, 0, closeOptions, scale, "menus/x", false, true);
     closeButton.camera = optionsCam;
-    theEntireThing.add(closeButton);
+    add(closeButton);
 
     if (closeButton.x < 0) closeButton.x = 0;
-
-    var duration:Float = FlxG.save.data.impPixelFastMenus ? 0.2 : 0.4;
-    FlxTween.tween(theEntireThing, {y: 0}, duration, {ease: FlxEase.quartOut, onComplete: _ -> {
-        canInteract = true;
-    }});
 
     if (lastCategory != null && lastCategory != "") {
         curCategoryIndex = categories.indexOf(lastCategory);
@@ -149,10 +139,9 @@ function create() {
 }
 
 function createCategories() {
-    for (category in Paths.getFolderContent("data/states/options", false, 1, true)) {
+    for (category in Paths.getFolderContent("data/states/options/categories", false, 1, true)) {
         categories.push(category);
     }
-    categories.remove(categories[categories.indexOf("impostorOptionsSubState")]);
     if (!Options.devMode || FlxG.onMobile) categories.remove(categories[categories.indexOf("Debug")]);
 }
 
@@ -186,6 +175,12 @@ function removeExtension(s:String):String {
 
 function postCreate() {
     if (!isMobile && !globalUsingKeyboard) FlxG.mouse.visible = true;
+
+    optionsCam.scroll.y = -FlxG.height;
+    var duration:Float = FlxG.save.data.impPixelFastMenus ? 0.2 : 0.4;
+	FlxTween.tween(optionsCam, {"scroll.y": 0}, duration, {ease: FlxEase.quartOut, onComplete: _ -> {
+        canInteract = true;
+    }});
 }
 
 // prevents from opening a category IMMEDIATLY after opening this substate
@@ -234,7 +229,7 @@ function useKeyboard() {
 
 var hoveringOverCategory:Bool = false;
 function handlePointer() {
-    if (touchJustMoved()) {
+	if (pointerJustMoved()) {
         usingKeyboard = false;
         FlxG.mouse.visible = true;
         if (canInteract) closeButton.visible = true;
@@ -245,17 +240,19 @@ function handlePointer() {
     hoveringOverCategory = false;
 
     for (i => category in categoriesGroup.members) {
-        if (touchOverlaps(category.members[0])) {
+		if (pointerOverlaps(category.members[0])) {
             hoveringOverCategory = true;
-            if (touchJustReleased()) {
+			if (pointerJustReleased()) {
                 curCategoryIndex = i;
                 updateCategory();
             }
         }
     }
 
+	if (curCategoryGrp == null) return;
+
     for (i => group in curCategoryGrp.members) {
-        if (touchOverlaps(group.members[0])) {
+		if (pointerOverlaps(group.members[0])) {
             curOption = i;
             playSound();
         }
@@ -274,6 +271,8 @@ function changeOptionSelec(change:Int) {
 }
 
 function handleOptions() {
+    if (curCategoryGrp == null) return;
+
     if (categories[curCategoryIndex] == "Controls") {}
     else if (categories[curCategoryIndex] == "Languages") {
         for (i => group in curCategoryGrp.members) {
@@ -411,7 +410,7 @@ function handleBoolean(position:Int, checkbox:FlxSprite) {
 
     if (hoveringOverCategory) return;
 
-    if (touchOverlaps(curCategoryGrp.members[position].members[0]) && touchJustPressed()) {
+	if (pointerOverlaps(curCategoryGrp.members[position].members[0]) && pointerJustPressed()) {
         playMenuSound("select");
 
         var value:Bool;
@@ -510,8 +509,8 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
         return;
     }
 
-    if (touchOverlaps(subtractBtn)) {
-        if (touchIsHolding()) {
+	if (pointerOverlaps(subtractBtn)) {
+		if (pointerIsHolding()) {
             subtractBtn.animation.play("press");
             if (optHoldTimer >= optMaxHeldTime) {
                 if (optFrameDelayer >= optMaxDelay) {
@@ -534,7 +533,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
             }
             optHoldTimer += FlxG.elapsed;
         }
-        else if (touchJustReleased()) {
+		else if (pointerJustReleased()) {
             subtractBtn.animation.play("idle");
             playMenuSound("select");
 
@@ -554,8 +553,8 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
     else
         subtractBtn.animation.play("idle");
 
-    if (touchOverlaps(addBtn)) {
-        if (touchIsHolding()) {
+	if (pointerOverlaps(addBtn)) {
+		if (pointerIsHolding()) {
             addBtn.animation.play("press");
             if (optHoldTimer >= optMaxHeldTime) {
                 if (optFrameDelayer >= optMaxDelay) {
@@ -578,7 +577,7 @@ function handleAdditions(position:Int, subtractBtn:FlxSprite, addBtn:FlxSprite, 
             }
             optHoldTimer += FlxG.elapsed;
         }
-        else if (touchJustReleased()) {
+		else if (pointerJustReleased()) {
             addBtn.animation.play("idle");
             playMenuSound("select");
 
@@ -667,7 +666,7 @@ function handlePercentage(position:Int, bar:FlxSprite, theThing:FunkinSprite, pe
         return;
     }
 
-    if (touchOverlaps(theThing) && touchIsHolding()) {
+	if (pointerOverlaps(theThing) && pointerIsHolding()) {
         if (StringTools.contains(curCategoryOptions[position].name, "volume")) {
             volumeBeep.play();
 
@@ -751,7 +750,7 @@ function handleFunction(position:Int) {
         curCategory.call("onCallFunction", [position]);
     }
 
-    if (touchOverlaps(curCategoryGrp.members[position].members[0]) && touchJustPressed()) {
+	if (pointerOverlaps(curCategoryGrp.members[position].members[0]) && pointerJustPressed()) {
         playMenuSound("select");
         curCategory.call("onCallFunction", [position]);
     }
@@ -827,11 +826,16 @@ function updateCategory() {
         lastOption = 0;
         descriptionGroup.visible = true;
 
-        deleteCategory();
-
         if (curCategory != null) {
+			curCategory.call("destroy");
             curCategory.destroy();
+			curCategory = null;
         }
+
+		deleteCategory();
+		curCategoryGrp = new FlxSpriteGroup(generalWidth, titleVerBounds);
+		phoneScreen.insert(phoneScreen.members.length - 2, curCategoryGrp);
+
         curCategory = Script.create(Paths.script("data/states/options/" + categories[curCategoryIndex]));
         curCategory.setParent(this);
         curCategory.load();
@@ -1194,10 +1198,7 @@ function checkCurrentCategory(elapsed:Float) {
 
                             FlxG.resetGame();
 
-                            logTraceColored([
-                                {text: "[VS IMPOSTOR Pixel] ", color: getLogColor("red")},
-                                {text: "DATA HAS BEEN ERASED", color: getLogColor("red")}
-                            ]);
+                            logTraceColored([{text: "DATA HAS BEEN ERASED", color: getLogColor("red")}], "warning");
                         });
                     }
                     else {
@@ -1207,9 +1208,7 @@ function checkCurrentCategory(elapsed:Float) {
                         dataDeleteSubmenuInit = false;
                         canInteract = true;
 
-                        remove(dataDeleteGroup);
-                        dataDeletionScript.destroy();
-                        dataDeleteGroup.destroy();
+						destroyDataDeletionSubMenu();
                     }
                 }
             }
@@ -1227,54 +1226,59 @@ function setMosaicTimer(frame:Int, forceX:Float, forceY:Float) {
 }
 
 function deleteCategory() {
-    curCategoryGrp.clear();
+	if (curCategoryGrp != null) {
+		phoneScreen.remove(curCategoryGrp);
+        curCategoryGrp.destroy();
+		curCategoryGrp = null;
+    }
+}
+
+function destroyDataDeletionSubMenu() {
+	if (dataDeleteGroup != null) {
+		remove(dataDeleteGroup);
+		dataDeleteGroup.destroy();
+		dataDeletionScript.destroy();
+    }
 }
 
 function closeOptions() {
     playMenuSound("cancel");
     canInteract = false;
 
+	Options.save();
+	FlxG.save.flush();
+	FunkinSave.flush();
+
     var duration:Float = FlxG.save.data.impPixelFastMenus ? 0.2 : 0.4;
-    FlxTween.tween(theEntireThing, {y: FlxG.height}, duration, {ease: FlxEase.quartIn, onComplete: _ -> {
-        close();
-    }});
+	FlxTween.tween(optionsCam, {"scroll.y": -FlxG.height}, duration, {ease: FlxEase.quartIn, onComplete: close});
 }
 
 var openWarningDelay:Float = 0.01;
 function destroy() {
-    Options.save();
-    FunkinSave.flush();
-    FlxG.save.flush();
-
     volumeBeep.destroy();
 
-    if (curCategory != null)
-        curCategory.destroy();
-    curCategoryGrp.destroy();
+	destroyDataDeletionSubMenu();
+
+    if (curCategory != null) curCategory.destroy();
+	if (curCategoryGrp != null) curCategoryGrp.destroy();
 
     descriptionGroup.destroy();
     categoriesGroup.destroy();
     phoneScreen.destroy();
     phoneSpr.destroy();
-    theEntireThing.destroy();
+	closeButton.destroy();
 
     FlxG.cameras.remove(optionsCam);
     optionsCam.destroy();
 
     if (TranslationUtil.curLanguage != lastLang) {
-        logTraceColored([
-            {text: "[Language] ", color: getLogColor("blue")},
-            {text: "New language detected! Changes can't take immediate effect!"}
-        ], "warning");
+		logTraceState("Language", [{text: "New language detected! Changes can't take immediate effect!"}], "warning");
         new FlxTimer().start(openWarningDelay, _ -> {
             FlxG.state.openSubState(new ModSubState("warnings/newLanguageWarning"));
         });
     }
     if (lastDev != Options.devMode) {
-        logTraceColored([
-            {text: "[Others] ", color: getLogColor("green")},
-            {text: "Developer Mode has been set!"}
-        ], "warning");
+		logTraceState("Others", [{text: "Developer Mode has been set!"}], "warning");
         new FlxTimer().start(openWarningDelay, _ -> {
             FlxG.state.openSubState(new ModSubState("warnings/devToolsWarning"));
         });

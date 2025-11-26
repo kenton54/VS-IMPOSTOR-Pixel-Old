@@ -1,4 +1,5 @@
-public static final defaultStats:Map<String, Dynamic> = [
+final defaultStats:Map<String, Dynamic> = [
+    "totalPlaytime" => 0,
     "storyProgress" => "start",
     "totalNotes" => 0,
     "perfectNotes" => 0,
@@ -13,9 +14,19 @@ public static final defaultStats:Map<String, Dynamic> = [
     "taskSpeedrunMira" => 0.0,
     "taskSpeedrunPolus" => 0.0,
     "taskSpeedrunAirship" => 0.0,
+	"taskSpeedrunFungle" => 0.0,
     "totalTasks" => 0
 ];
-public static var impostorStats:Map<String, Dynamic> = [];
+var impostorStats:Map<String, Dynamic> = [];
+
+public static function setStat(id:String, value:Dynamic)
+	impostorStats.set(id, value);
+
+public static function addStatPoints(id:String, points:Int)
+    setStat(id, getStatValue(id) + points);
+
+public static function addStatFloat(id:String, value:Float)
+	setStat(id, getStatValue(id) + value);
 
 public static function getStats(?def:Bool):Map<String, Dynamic> {
     var map:Map<String, Dynamic> = [];
@@ -24,8 +35,7 @@ public static function getStats(?def:Bool):Map<String, Dynamic> {
         for (stat in defaultStats.keyValueIterator()) {
             map.set(stat.key, stat.value);
         }
-    }
-    else {
+    } else {
         for (stat in impostorStats.keyValueIterator()) {
             map.set(stat.key, stat.value);
         }
@@ -37,35 +47,47 @@ public static function getStats(?def:Bool):Map<String, Dynamic> {
 public static function getStatName(id:String):Null<String> {
     var success:Bool = false;
 
+    function fail() {
+		logTraceError('Statistic ID "' + id + '" doesn\'t exists!');
+        return null;
+    }
+
+	if (!statExists(id))
+		return fail();
+
     for (stat in impostorStats.keys()) {
         if (stat == id) {
-            success = true;
             return translate("mainMenu.stats." + stat);
         }
     }
 
-    trace(id, "doesnt exist, using default...");
+	logTraceColored([{
+        text: 'Statistic ID "' + id + '" doesn\'t exists in the save data!', color: getLogColor("yellow")
+    }], "warning");
 
-    if (!success) {
-        for (stat in defaultStats.keys()) {
-            if (stat == id) {
-                success = true;
-                return translate("mainMenu.stats." + stat);
-            }
+    for (stat in defaultStats.keys()) {
+        if (stat == id) {
+            return translate("mainMenu.stats." + stat);
         }
     }
 
-    if (!success)
-        throw 'Stat ID "'+id+'" doesn\'t exist!';
-
-    return null;
+	return fail();
 }
 
 public static function getStatValue(id:String):Dynamic {
-    if (!defaultStats.exists(id)) throw 'Stat ID "'+id+'" doesn\'t exist!';
+	if (!statExists(id)) {
+		logTraceError('Stat ID "' + id + '" doesn\'t exist!');
+        return null;
+    }
 
     if (impostorStats.exists(id))
         return impostorStats.get(id);
     else
         return defaultStats.get(id);
 }
+
+function statExists(id:String):Bool
+	return defaultStats.exists(id) || impostorStats.exists(id);
+
+public static function clearStats()
+	impostorStats.clear();

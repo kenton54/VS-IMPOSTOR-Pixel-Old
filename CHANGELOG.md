@@ -1,5 +1,30 @@
 This changelog keeps track of everything that has been added, changed, fixed or deleted in every VS IMPOSTOR Pixel version.
 
+# Developer Build 3
+The mod is finally close to being done HOLY SHIT THIS TOOK MORE THAN A FUCKING YEAR QWFNWERJIFHQERIHNWQGFIOWEJGH
+
+## Additions
+- Updated the mod to Codename 1.0.2, [Commit `e6bcb14`](https://github.com/CodenameCrew/CodenameEngine/commit/e6bcb144d9e9e9b09d651ed883b0baf3a1db3711)
+- Finale (very incomplete tho)
+- Sussus Moogus (Hard chart incomplete, Easy chart missing)
+- Achievement System
+- New legacy menus! Story reasons (YES the mod has a plot now muahaha im finally original)
+- An Update Checker... WITHIN CODENAME'S SCRIPTING??? WHAAATTTNGIWEHRUGH????????????
+- AFK Screen (although it's disable due to being very unstable)
+- 2 more stats
+- Made the mod's source even more powerful... MUAHAHAHAHA
+
+## Changes
+- Title Screen almost 100% complete.
+- Main Menu almost 100% complete.
+- Overhaul of the entire mod's source. :melting_face:
+- Improved some events (just visually) inside the Chart Editor.
+- Broke the Options submenu bruh.
+- Updated the README, will probably be updated later on.
+
+## Removals
+- `Zoom Camera` Event, cuz codename already added it in 1.0 lol
+
 # Cancelled Build
 The cancelled build of the mod...... before it was uncancelled lol.
 

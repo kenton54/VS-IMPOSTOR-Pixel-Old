@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Tex-Packer-EX v0.6.8 https://strawberrysage.github.io/tex-packer-ex
+-->
+<TextureAtlas imagePath="crewmate-download.png" width="424" height="409">
+  <SubTexture name="walk-aseprite1.png" x="0" y="331"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite10.png" x="297" y="296"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite11.png" x="189" y="0" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite12.png" x="189" y="0" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite13.png" x="189" y="44" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite14.png" x="189" y="44" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite15.png" x="0" y="0"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite16.png" x="0" y="0"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite2.png" x="0" y="331"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite3.png" x="189" y="88" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite4.png" x="189" y="88" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite5.png" x="189" y="132" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite6.png" x="189" y="132" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite7.png" x="0" y="36"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite8.png" x="0" y="36"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-aseprite9.png" x="297" y="296"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio1.png" x="43" y="331"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio10.png" x="253" y="298"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio11.png" x="189" y="176" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio12.png" x="189" y="176" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio13.png" x="0" y="216"  width="44" height="39" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio14.png" x="0" y="216"  width="44" height="39" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio15.png" x="45" y="0" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio16.png" x="45" y="0" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio2.png" x="43" y="331"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio3.png" x="44" y="216"  width="44" height="38" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio4.png" x="44" y="216"  width="44" height="38" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio5.png" x="88" y="180" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio6.png" x="88" y="180" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio7.png" x="45" y="45" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio8.png" x="45" y="45" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-audio9.png" x="253" y="298"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data1.png" x="341" y="220"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data10.png" x="344" y="88" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data11.png" x="126" y="180"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data12.png" x="126" y="180"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data13.png" x="228" y="0" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data14.png" x="228" y="0" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data15.png" x="0" y="72"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data16.png" x="0" y="72"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data2.png" x="341" y="220"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data3.png" x="228" y="44" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data4.png" x="228" y="44" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data5.png" x="228" y="88" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data6.png" x="228" y="88" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data7.png" x="81" y="0" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data8.png" x="81" y="0" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-data9.png" x="344" y="88" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe1.png" x="341" y="259"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe10.png" x="344" y="131" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe11.png" x="227" y="132" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe12.png" x="227" y="132" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe13.png" x="228" y="176" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe14.png" x="228" y="176" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe15.png" x="81" y="45" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe16.png" x="81" y="45" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe2.png" x="341" y="259"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe3.png" x="0" y="255"  width="44" height="38" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe4.png" x="0" y="255"  width="44" height="38" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe5.png" x="44" y="254"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe6.png" x="44" y="254"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe7.png" x="0" y="108"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe8.png" x="0" y="108"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-haxe9.png" x="344" y="131" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image1.png" x="345" y="0" width="39" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image10.png" x="344" y="174" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image11.png" x="126" y="219"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image12.png" x="126" y="219"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image13.png" x="170" y="220" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image14.png" x="170" y="220" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image15.png" x="45" y="90" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image16.png" x="45" y="90" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image2.png" x="345" y="0" width="39" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image3.png" x="88" y="224" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image4.png" x="88" y="224" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image5.png" x="209" y="220"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image6.png" x="209" y="220"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image7.png" x="81" y="90" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image8.png" x="81" y="90" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-image9.png" x="344" y="174" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json1.png" x="345" y="43" width="39" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json10.png" x="340" y="298"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json11.png" x="267" y="0" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json12.png" x="267" y="0" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json13.png" x="267" y="44" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json14.png" x="267" y="44" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json15.png" x="117" y="0" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json16.png" x="117" y="0" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json2.png" x="345" y="43" width="39" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json3.png" x="267" y="88" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json4.png" x="267" y="88" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json5.png" x="266" y="132" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json6.png" x="266" y="132" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json7.png" x="117" y="45" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json8.png" x="117" y="45" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-json9.png" x="340" y="298"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language1.png" x="0" y="370"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language10.png" x="126" y="335"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language11.png" x="267" y="176" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language12.png" x="267" y="176" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language13.png" x="253" y="220"  width="44" height="39" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language14.png" x="253" y="220"  width="44" height="39" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language15.png" x="117" y="90" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language16.png" x="117" y="90" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language2.png" x="0" y="370"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language3.png" x="126" y="258"  width="44" height="38" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language4.png" x="126" y="258"  width="44" height="38" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language5.png" x="209" y="258"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language6.png" x="209" y="258"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language7.png" x="45" y="135" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language8.png" x="45" y="135" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-language9.png" x="126" y="335"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music1.png" x="43" y="370"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music10.png" x="86" y="356" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music11.png" x="44" y="292"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music12.png" x="44" y="292"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music13.png" x="170" y="264" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music14.png" x="170" y="264" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music15.png" x="81" y="135" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music16.png" x="81" y="135" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music2.png" x="43" y="370"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music3.png" x="88" y="268" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music4.png" x="88" y="268" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music5.png" x="0" y="293"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music6.png" x="0" y="293"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music7.png" x="0" y="144"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music8.png" x="0" y="144"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-music9.png" x="86" y="356" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video1.png" x="296" y="336"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video10.png" x="208" y="335"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video11.png" x="253" y="259"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video12.png" x="253" y="259"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video13.png" x="304" y="132" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video14.png" x="304" y="132" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video15.png" x="117" y="135" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video16.png" x="117" y="135" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video2.png" x="296" y="336"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video3.png" x="305" y="88" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video4.png" x="305" y="88" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video5.png" x="306" y="176" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video6.png" x="306" y="176" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video7.png" x="153" y="0" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video8.png" x="153" y="0" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-video9.png" x="208" y="335"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml1.png" x="169" y="352" width="39" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml10.png" x="339" y="338"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml11.png" x="306" y="0" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml12.png" x="306" y="0" width="39" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml13.png" x="306" y="44" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml14.png" x="306" y="44" width="39" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml15.png" x="153" y="45" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml16.png" x="153" y="45" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml2.png" x="169" y="352" width="39" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml3.png" x="297" y="220"  width="44" height="38" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml4.png" x="297" y="220"  width="44" height="38" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml5.png" x="297" y="258"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml6.png" x="297" y="258"  width="44" height="38" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml7.png" x="153" y="90" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml8.png" x="153" y="90" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-xml9.png" x="339" y="338"  width="43" height="40" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip1.png" x="251" y="338"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip10.png" x="384" y="0" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip11.png" x="126" y="296"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip12.png" x="126" y="296"  width="44" height="39" frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip13.png" x="209" y="296"  width="44" height="39" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip14.png" x="209" y="296"  width="44" height="39" frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip15.png" x="153" y="135" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip16.png" x="153" y="135" width="36" height="45" rotated="true"  frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip2.png" x="251" y="338"  width="43" height="39" frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip3.png" x="88" y="312" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip4.png" x="88" y="312" width="38" height="44" rotated="true"  frameX="-5" frameY="-4" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip5.png" x="170" y="308" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip6.png" x="170" y="308" width="38" height="44" rotated="true"  frameX="-5" frameY="-6" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip7.png" x="0" y="180"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip8.png" x="0" y="180"  width="45" height="36" frameX="-4" frameY="-10" frameWidth="52" frameHeight="48"/>
+  <SubTexture name="walk-zip9.png" x="384" y="0" width="40" height="43" rotated="true"  frameX="-6" frameY="-4" frameWidth="52" frameHeight="48"/>
+</TextureAtlas>

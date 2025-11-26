@@ -32,7 +32,7 @@ class BackButton extends FunkinSprite {
     var _isBeingHeld:Bool = false;
     var _confirmed:Bool = false;
 
-    public function new(x:Float, y:Float, confirmCallback:Void->Void, size:Float, ?fade:Bool, ?sprite:String, ?instant:Bool = false, ?color:FlxColor = FlxColor.WHITE) {
+	public function new(x:Float, y:Float, confirmCallback:Void->Void, size:Float, ?sprite:String, ?fade:Bool, ?instant:Bool = false, ?color:FlxColor = FlxColor.WHITE) {
         super(x, y);
 
         size ??= 2;
@@ -54,7 +54,15 @@ class BackButton extends FunkinSprite {
         this.scale.set(size, size);
         updateHitbox();
 
-        onConfirmEnd.add(confirmCallback);
+		if (confirmCallback != null)
+            onConfirmEnd.add(confirmCallback);
+    }
+
+    public function reset() {
+		_isHovering = false;
+		_isBeingHeld = false;
+		_confirmed = false;
+		enabled = true;
     }
 
     override public function update(elapsed:Float) {
@@ -68,11 +76,11 @@ class BackButton extends FunkinSprite {
                     hoverButton();
                 else {
                     if (_isBeingHeld) {
-                        if (touchJustReleased())
+						if (pointerJustReleased())
                             confirmButton();
                     }
 
-                    if (touchIsHolding()) {
+					if (pointerIsHolding()) {
                         if (!_isBeingHeld)
                             holdButton();
                     }
@@ -91,7 +99,7 @@ class BackButton extends FunkinSprite {
 
     function checkHover():Bool {
         for (camera in cameras) {
-            final worldPoint:FlxPoint = getTouch().getWorldPosition(camera);
+			final worldPoint:FlxPoint = getPointer().getWorldPosition(camera);
 
             if (overlapsPoint(worldPoint)) {
                 return true;

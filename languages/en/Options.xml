@@ -2,7 +2,7 @@
     <group name="Options" prefix="options.">
         <str id="selectCategory">Select a category</str>
 
-        <group name="Sections" prefix="section.">
+        <group name="Sections" prefix="sections.">
             <str id="controls">Controls</str>
             <str id="gameplay">Gameplay</str>
             <str id="graphicsandvisuals">Graphics and Visuals</str>
@@ -45,9 +45,6 @@
             <str id="songOffset-name">Song Offset</str>
             <str id="songOffset-desc">Changes the offset that songs should start with.</str>
 
-            <str id="naughtyness-name">Sentitive Content</str>
-            <str id="naughtyness-desc">If unchecked, blood, gore and strong language will be toned down.</str>
-
             <str id="camZoomOnBeat-name">Zoom Camera on Beat</str>
             <str id="camZoomOnBeat-desc">If checked, the camera will zoom on each beat.</str>
         </group>
@@ -61,6 +58,9 @@
 
             <str id="gameplayShaders-name">Intensive Shaders</str>
             <str id="gameplayShaders-desc">If checked, songs that use shaders that have more impact on the framerate will be loaded. Leave unchecked for a smoother experience.</str>
+
+            <str id="naughtyness-name">Sentitive Content</str>
+            <str id="naughtyness-desc">If unchecked, blood, gore and strong language will be toned down.</str>
 
             <str id="flashingMenu-name">Flashing Lights</str>
             <str id="flashingMenu-desc">If unchecked, will make flashes less "flashy". Leave unchecked if you're sentitive to these.</str>
@@ -130,10 +130,10 @@
             <str id="charterAutoSaves-desc">If checked, this will autosave your files in the editor, with the settings listed below.</str>
 
             <str id="charterAutoSaveTime-name">Autosaving Time</str>
-            <str id="charterAutoSaveTime-desc">This controls how often the editor will autosave your file (in seconds...)</str>
+            <str id="charterAutoSaveTime-desc">This controls how often the editor will autosave your file (in seconds)</str>
 
             <str id="charterAutoSaveWarningTime-name">Save Warning Time</str>
-            <str id="charterAutoSaveWarningTime-desc">This controls how long the editor will warn you before it autosaves (in seconds..., 0 to disable)</str>
+            <str id="charterAutoSaveWarningTime-desc">This controls how long the editor will warn you before it autosaves (in seconds, 0 to disable)</str>
 
             <str id="charterAutoSavesSeparateFolder-name">Autosaves Folder</str>
             <str id="charterAutoSavesSeparateFolder-desc">If checked, this will autosave your file in a separate folder with a time stamp instead of overriding your current file. (song/autosaves/)</str>
@@ -142,7 +142,17 @@
             <str id="songOffsetAffectEditors-desc">If checked, this will enable the Song Offset option in the Chart Editor too.</str>
         </group>
 
-        <group name="Warnings" prefix="warning.">
+        <group name="Warnings" prefix="warnings.">
+            <str id="warning">Warning</str>
+
+            <str id="bloodAndGore-name">Blood and Gore</str>
+            <str id="bloodAndGore-text1">This mod shows a large amount of blood and gore and may not be suitable for some people</str>
+            <str id="bloodAndGore-text2">Tone it down?</str>
+
+            <str id="flashingLights-name">Flashing Lights</str>
+            <str id="flashingLights-text1">This mod has a lot of bright flashes and some people may be sentitive to that</str>
+            <str id="flashingLights-text2">Tone them down?</str>
+
             <str id="menuReload">The menu must be reloaded for the changes to apply!</str>
             <str id="pressSuffix">{0} to reload the menu.</str>
 

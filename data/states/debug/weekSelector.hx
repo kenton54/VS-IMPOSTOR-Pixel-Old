@@ -5,7 +5,7 @@ import funkin.options.type.NewOption;
 import funkin.options.type.TextOption;
 
 function create() {
-    changeDiscordEditorStatus("Week Selector");
+	changeDiscordEditorTreeStatus("Week Selector");
 
     var weeks:Array<String> = [];
     for (week in Paths.getFolderContent("data/weeks/weeks/", false, 1, true))

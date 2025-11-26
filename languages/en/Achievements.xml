@@ -1,0 +1,35 @@
+<language>
+    <group name="Achievements" prefix="achievements.">
+        <str id="achievementGet">You earned an achievement!</str>
+
+        <str id="youThought-name">You Thought</str>
+        <str id="youThought-desc">Click on any blocked menu option in the Impostor V4 fake menus</str>
+
+        <str id="curiosityBenefitedTheInspector-name">Curiosity Benefited the Inspector</str>
+        <str id="curiosityBenefitedTheInspector-desc">Click on any blocked menu option in the Impostor V4 fake menus.</str>
+
+        <str id="alteredReality-name">Altered Reality</str>
+        <str id="alteredReality-desc">Beat Black in Impostor V4's Finale, then have him reset the game and alter reality.</str>
+
+        <str id="newStoryUnfolds-name">New Story Unfolds</str>
+        <str id="newStoryUnfolds-desc">Enter the lobby for the first time.</str>
+
+        <str id="iNeverWin-name">"I NEVER WIN :("</str>
+        <str id="iNeverWin-desc">Beat Polus Problems without missing a single note on Hard difficulty.</str>
+
+        <str id="noFunAllowed-name">No Fun Allowed</str>
+        <str id="noFunAllowed-desc">Abruptly interrumpt any Polus Problems song or dialogue by reporting the dead bodies.</str>
+
+        <str id="fashionStealer-name">Fashion Stealer</str>
+        <str id="fashionStealer-desc">Play any Polus Problems song as the Boyfriend skin "Mini Red".</str>
+
+        <str id="noBeans-name">No Beans?</str>
+        <str id="noBeans-desc">Try to purchase a shop item without having the enough beans for it.</str>
+
+        <str id="relivingNostalgia-name">Reliving Nostalgia</str>
+        <str id="relivingNostalgia-desc">Input a secret code in the Title Screen to access the fake Impostor V4 menus.</str>
+
+        <str id="debugger-name">Debugger</str>
+        <str id="debugger-desc">Enable Developer Mode.</str>
+    </group>
+</language>

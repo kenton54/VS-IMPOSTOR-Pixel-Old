@@ -1,32 +1,33 @@
-// ———————————————————————————————————————— Story Mode ——————————————————————————————————————— //
-public static var weeksCompleted:Map<Int, String> = [/*week ID => character*/];
+public static var foundCrew:Array<String> = [/*character name*/];
 
-// ————————————————————————————————————————— Freeplay ———————————————————————————————————————— //
-public static var seenCharacters:Array<String> = [/*character*/];
+public static var weeksCompleted:Map<String, String> = [/*week ID => character*/];
 
-// ————————————————————————————————————— Cutscene Player ————————————————————————————————————— //
-public static var unlockedVideos:Array<String> = [/*video path*/];
+public static var seenPlayables:Array<String> = [/*playable*/];
 
-// ————————————————————————————————————— Static Functions ———————————————————————————————————— //
+public static var watchedVideos:Array<String> = [/*video path*/];
+
 public static function getFlags(?useDefault:Bool):Map<String, Dynamic> {
     var map:Map<String, Dynamic> = [];
 
     if (useDefault) {
+        map.set("foundCrew", []);
         map.set("weeksCompleted", []);
-        map.set("seenCharacters", []);
-        map.set("unlockedVideos", []);
+        map.set("seenPlayables", []);
+        map.set("watchedVideos", []);
     }
     else {
+        map.set("foundCrew", foundCrew);
         map.set("weeksCompleted", weeksCompleted);
-        map.set("seenCharacters", seenCharacters);
-        map.set("unlockedVideos", unlockedVideos);
+        map.set("seenPlayables", seenPlayables);
+        map.set("watchedVideos", watchedVideos);
     }
 
     return map;
 }
 
 public static function resetFlags() {
+	  foundCrew = [];
     weeksCompleted.clear();
-    seenCharacters = [];
-    unlockedVideos = [];
+	  seenPlayables = [];
+	  watchedVideos = [];
 }

@@ -1,30 +1,22 @@
-var stepTime:Float = 0;
-
 function create() {
     songUsesLightsSabotage = true;
+	customSnowEmitterInit = true;
+	hasBlue = true;
 }
 
-function postCreate() {
+function postUIOverhaul() {
     camZooming = false;
 
-    //camGame.fade(FlxColor.BLACK, 0);
     camGame.zoom = 0.4;
     camHUD.alpha = 0;
 
     camFollow.setPosition(132, -2400);
     camGame.snapToTarget();
-
-    stepTime = (Conductor.stepCrochet / 1000);
-}
-
-function onStartSong() {
-    camGame.fade(FlxColor.TRANSPARENT, 1, true);
 }
 
 function moogusIntroTween() {
-    if (curStage == "Polus Lab (Outside)")
-        snowParticles.start(false, 0.1);
-    FlxTween.tween(camHUD, {alpha: 1}, stepTime * 16);
+    if (curStage == "Polus Lab (Outside)") emitSnowParticles();
+	FlxTween.tween(camHUD, {alpha: 1}, (Conductor.stepCrochet / 1000) * 16);
 }
 
 function killCrewmateBesideBF() {

@@ -5,7 +5,3 @@ function create(event) {
 
     transOut = event.transOut;
 }
-
-function onPostFinish() {
-    if (!transOut) setTransition("");
-}

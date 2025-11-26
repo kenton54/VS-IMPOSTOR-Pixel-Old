@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Tex-Packer-EX v0.6.8 https://strawberrysage.github.io/tex-packer-ex
+-->
+<TextureAtlas imagePath="blue.png" width="200" height="75">
+  <SubTexture name="idle dark1" x="0" y="38"  width="51" height="37" frameX="-0" frameY="-1" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark10" x="0" y="0"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark11" x="0" y="0"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark12" x="0" y="0"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark13" x="0" y="0"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark14" x="0" y="0"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark2" x="0" y="38"  width="51" height="37" frameX="-0" frameY="-1" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark3" x="100" y="0"  width="50" height="37" frameX="-1" frameY="-1" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark4" x="100" y="0"  width="50" height="37" frameX="-1" frameY="-1" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark5" x="51" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark6" x="51" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark7" x="0" y="0"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark8" x="0" y="0"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle dark9" x="0" y="0"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal1" x="49" y="0"  width="51" height="37" frameX="-0" frameY="-1" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal10" x="100" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal11" x="100" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal12" x="100" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal13" x="100" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal14" x="100" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal2" x="49" y="0"  width="51" height="37" frameX="-0" frameY="-1" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal3" x="150" y="0"  width="50" height="37" frameX="-1" frameY="-1" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal4" x="150" y="0"  width="50" height="37" frameX="-1" frameY="-1" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal5" x="149" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal6" x="149" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal7" x="100" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal8" x="100" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+  <SubTexture name="idle normal9" x="100" y="37"  width="49" height="38" frameX="-1" frameY="-0" frameWidth="51" frameHeight="38"/>
+</TextureAtlas>

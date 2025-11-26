@@ -14,7 +14,9 @@ class VSliceCharacter extends Character {
 
     public var onPlayAnim:FlxBaseSignal<(animName:String, forced:Bool, context:Dynamic, reversed:Bool, frame:Int)->Void> = new FlxBaseSignal();
 
-    public function new(x:Float, y:Float, ?character:String, isPlayer:Bool = false, switchAnims:Bool = true) {
+    public function new(x:Float, y:Float, ?character:String, ?isPlayer:Bool, ?switchAnims:Bool) {
+		isPlayer ??= false;
+		switchAnims ??= true;
         super(x, y, character, isPlayer, switchAnims, false);
 
         this.comboNoteCounts = getCountAnims("combo");
@@ -41,8 +43,8 @@ class VSliceCharacter extends Character {
 
     private function playComboAnim(comboCount:Int) {
         var animName:String = "combo" + Std.string(comboCount);
-        if (hasAnimation(animName)) {
-            this.playAnim(animName, true);
+        if (hasAnim(animName)) {
+            playAnim(animName, true);
         }
     }
 
@@ -56,14 +58,15 @@ class VSliceCharacter extends Character {
                 animName = "drop" + Std.string(dropCount);
             }
         }
-        if (animName != null) {
-            this.playAnim(animName, true);
+
+        if (animName != null && hasAnim(animName)) {
+            playAnim(animName, true);
         }
     }
 
-    override public function playAnim(AnimName:String, ?Force:Bool, ?Context:PlayAnimContext, ?Reversed:Bool = false, ?Frame:Int) {
+    override public function playAnim(AnimName:String, ?Force:Bool, ?Context:PlayAnimContext, ?Reversed:Bool, ?Frame:Int) {
         Force ??= false;
-        Context ??= null;
+		Context ??= "NONE";
         Reversed ??= false;
         Frame ??= 0;
         super.playAnim(AnimName, Force, Context, Reversed, Frame);

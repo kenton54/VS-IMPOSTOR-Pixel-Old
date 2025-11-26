@@ -1,0 +1,490 @@
+{
+	"events": [
+		{
+			"params": [
+				2,
+				0.5,
+				"BEAT",
+				0
+			],
+			"time": 0,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				2,
+				1,
+				"BEAT",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 9525
+		},
+		{
+			"params": [
+				1,
+				1.3,
+				"BEAT",
+				0
+			],
+			"time": 20325,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				7,
+				2,
+				"STEP",
+				0
+			],
+			"time": 24000,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				1.3,
+				"BEAT",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 25125
+		},
+		{
+			"params": [
+				7,
+				2,
+				"STEP",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 28800
+		},
+		{
+			"params": [
+				1,
+				1.3,
+				"BEAT",
+				0
+			],
+			"time": 29925,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				7,
+				2,
+				"STEP",
+				0
+			],
+			"time": 33600,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				1.3,
+				"BEAT",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 34725
+		},
+		{
+			"params": [
+				7,
+				2,
+				"STEP",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 43200
+		},
+		{
+			"params": [
+				1,
+				1.3,
+				"BEAT",
+				0
+			],
+			"time": 44325,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				2,
+				"MEASURE",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 49125
+		},
+		{
+			"params": [
+				true,
+				2.6,
+				16,
+				"linear",
+				"In",
+				false
+			],
+			"time": 49200,
+			"name": "Scroll Speed Change"
+		},
+		{
+			"params": [
+				2,
+				1.6,
+				"BEAT",
+				0
+			],
+			"time": 68325,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				true,
+				2.9,
+				32,
+				"linear",
+				"In",
+				false
+			],
+			"time": 68400,
+			"name": "Scroll Speed Change"
+		},
+		{
+			"params": [
+				true,
+				3.8,
+				96,
+				"linear",
+				"In",
+				false
+			],
+			"time": 78000,
+			"name": "Scroll Speed Change"
+		},
+		{
+			"params": [
+				1,
+				2,
+				"BEAT",
+				0
+			],
+			"time": 82725,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				2,
+				2,
+				"STEP",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 85200
+		},
+		{
+			"params": [
+				2,
+				2.5,
+				"STEP",
+				0
+			],
+			"time": 86400,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				3,
+				"STEP",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 87000
+		},
+		{
+			"params": [
+				4,
+				0.1,
+				"MEASURE",
+				0
+			],
+			"time": 87525,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				true,
+				2.4,
+				16,
+				"quad",
+				"Out",
+				false
+			],
+			"time": 87600,
+			"name": "Scroll Speed Change"
+		},
+		{
+			"params": [
+				true,
+				3.2,
+				16,
+				"linear",
+				"In",
+				false
+			],
+			"time": 90000,
+			"name": "Scroll Speed Change"
+		},
+		{
+			"params": [
+				7,
+				2,
+				"STEP",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 91200
+		},
+		{
+			"params": [
+				1,
+				1.3,
+				"BEAT",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 92325
+		},
+		{
+			"params": [
+				7,
+				2,
+				"STEP",
+				0
+			],
+			"time": 100800,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				1.3,
+				"BEAT",
+				0
+			],
+			"time": 101925,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				4,
+				1,
+				"BEAT",
+				0
+			],
+			"time": 105525,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				true,
+				3.5,
+				16,
+				"linear",
+				"In",
+				false
+			],
+			"time": 106800,
+			"name": "Scroll Speed Change"
+		},
+		{
+			"params": [
+				1,
+				1.75,
+				"BEAT",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 107925
+		},
+		{
+			"params": [
+				7,
+				2.5,
+				"STEP",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 111600
+		},
+		{
+			"params": [
+				1,
+				1.75,
+				"BEAT",
+				0
+			],
+			"time": 112725,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				7,
+				2.5,
+				"STEP",
+				0
+			],
+			"time": 121200,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				1.75,
+				"BEAT",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 122325
+		},
+		{
+			"params": [
+				true,
+				2.7,
+				16,
+				"linear",
+				"In",
+				false
+			],
+			"name": "Scroll Speed Change",
+			"time": 126000
+		},
+		{
+			"params": [
+				2,
+				1.2,
+				"BEAT",
+				0
+			],
+			"time": 127125,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				true,
+				3.8,
+				64,
+				"linear",
+				"In",
+				false
+			],
+			"time": 132000,
+			"name": "Scroll Speed Change"
+		},
+		{
+			"params": [
+				1,
+				1.5,
+				"BEAT",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 135525
+		},
+		{
+			"params": [
+				1,
+				1.8,
+				"BEAT",
+				0
+			],
+			"time": 136725,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				2.2,
+				"BEAT",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 146325
+		},
+		{
+			"params": [
+				2,
+				2.5,
+				"STEP",
+				0
+			],
+			"time": 147600,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				3,
+				"STEP",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 148200
+		},
+		{
+			"params": [
+				1,
+				4,
+				"MEASURE",
+				0
+			],
+			"time": 148800,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				3,
+				"MEASURE",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 150000
+		},
+		{
+			"params": [
+				1,
+				2,
+				"MEASURE",
+				0
+			],
+			"time": 151200,
+			"name": "Camera Modulo Change"
+		},
+		{
+			"params": [
+				1,
+				1,
+				"MEASURE",
+				0
+			],
+			"name": "Camera Modulo Change",
+			"time": 152400
+		},
+		{
+			"params": [
+				1,
+				0.5,
+				"MEASURE",
+				0
+			],
+			"time": 153600,
+			"name": "Camera Modulo Change"
+		}
+	]
+}

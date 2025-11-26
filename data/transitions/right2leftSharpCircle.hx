@@ -30,7 +30,3 @@ function create(event) {
         }
     });
 }
-
-function onPostFinish() {
-    if (!transOut) setTransition("");
-}

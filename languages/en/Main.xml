@@ -1,11 +1,74 @@
 <language>
-    <group name="Generic">
-        <str id="version">Version</str>
+    <group name="Common">
+        <str id="version">Version {0}</str>
         <str id="press">Press {0}</str>
-        <str id="click">Click the Mouse</str>
-        <str id="touch">Touch the Screen</str>
+        <str id="click">Click the {0}</str>
+        <str id="touch">Touch the {0}</str>
+        <str id="mouse">Mouse</str>
+        <str id="screen">Screen</str>
         <str id="no">No</str>
         <str id="yes">Yes</str>
+        <str id="or">or</str>
+        <str id="retry">Retry</str>
+        <str id="questionMarks">???</str> <!-- just in case these are written differently in another language -->
+    </group>
+
+    <str id="afk-text">You went idle for too long.</str>
+    <str id="afk-desc">The mod does this to lower CPU and GPU background usage and battery consumption.</str>
+
+    <group name="Months" prefix="months.">
+        <str id="january">January</str>
+        <str id="february">February</str>
+        <str id="march">March</str>
+        <str id="april">April</str>
+        <str id="may">May</str>
+        <str id="june">June</str>
+        <str id="july">July</str>
+        <str id="august">August</str>
+        <str id="september">September</str>
+        <str id="october">October</str>
+        <str id="november">November</str>
+        <str id="december">December</str>
+
+        <str id="jans">Jan</str>
+        <str id="febs">Feb</str>
+        <str id="mars">Mar</str>
+        <str id="aprs">Apr</str>
+        <str id="mays">May</str>
+        <str id="juns">Jun</str>
+        <str id="juls">Jul</str>
+        <str id="augs">Aug</str>
+        <str id="seps">Sep</str>
+        <str id="octs">Oct</str>
+        <str id="novs">Nov</str>
+        <str id="decs">Dec</str>
+    </group>
+
+    <group name="Generic" prefix="generic.">
+        <str id="play">Play</str>
+        <str id="start">Start</str>
+        <str id="freeplay">Freeplay</str>
+        <str id="achievements">Achievements</str>
+        <str id="shop">Shop</str>
+        <str id="options">Options</str>
+        <str id="extras">Extras</str>
+        <str id="credits">Credits</str>
+        <str id="mods">Mods</str>
+        <str id="exit">Exit</str>
+    </group>
+
+    <group name="UpdateChecker" prefix="update.">
+        <str id="checking">Checking for updates...</str>
+        <str id="fail">Couldn't find any new updates</str>
+        <str id="errorLog">Error Log: {0}</str>
+        <str id="continue">Continue to Mod</str>
+        <str id="found">Found Update: {0}</str>
+        <str id="releaseDate">Released in: {0}</str>
+        <str id="skip">Skip Update</str>
+        <str id="download">Download Update</str>
+        <str id="noUpdates">No new updates found!</str>
+        <str id="up2date">You're up-to-date!</str>
+        <str id="continuePlaying">{0} to continue playing.</str>
     </group>
 
     <group name="TitleScreen" prefix="title.">
@@ -13,25 +76,19 @@
 	</group>
 
     <group name="MainMenu" prefix="mainMenu.">
-        <group name="Main">
-            <str id="play">Play</str>
-            <str id="achievements">Achievements</str>
-            <str id="shop">Shop</str>
-            <str id="options">Options</str>
-            <str id="extras">Extras</str>
-            <str id="mods">Mods</str>
-        </group>
+        <str id="exitPrompt">Are you sure you want to exit?</str>
 
-        <group name="Sections">
+        <group name="Sections" prefix="sections.">
             <str id="worldmap">World Map</str>
-            <str id="freeplay">Freeplay</str>
             <str id="tutorial">How to Play</str>
-            <str id="credits">Credits</str>
+            <str id="musicPlayer">Music Player</str>
+            <str id="charactersBio">Characters's Bio</str>
             <str id="movieTheater">Movie Theater</str>
         </group>
 
         <group name="Statistics" prefix="stats.">
             <str id="title">Statistics</str>
+            <str id="totalPlaytime">Total Playtime</str>
             <str id="storyProgress">Current Story Progression</str>
             <str id="totalNotes">Total Note Hits</str>
             <str id="perfectNotes">Perfect Note Hits</str>
@@ -46,6 +103,7 @@
             <str id="taskSpeedrunMira">Tasks Speedrun PB (Mira HQ)</str>
             <str id="taskSpeedrunPolus">Tasks Speedrun PB (Polus)</str>
             <str id="taskSpeedrunAirship">Tasks Speedrun PB (Airship)</str>
+            <str id="taskSpeedrunFungle">Tasks Speedrun PB (Fungle)</str>
             <str id="totalTasks">Total Tasks Completed</str>
         </group>
     </group>
@@ -55,15 +113,7 @@
 	</group>
 
     <group name="Freeplay" prefix="freeplay.">
-		<str id="score">HIGHSCORE</str>
-        <str id="player2">PLAYER 2</str>
-	</group>
-
-    <group name="Difficulties" prefix="diff.">
-		<str id="easy">Easy</str>
-		<str id="normal">Normal</str>
-		<str id="hard">Hard</str>
-		<str id="erect">Erect</str>
-		<str id="nightmare">Nightmare</str>
+		<str id="highscore">Highscore</str>
+        <str id="player2">Player 2</str>
 	</group>
 </language>

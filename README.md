@@ -1,12 +1,16 @@
 <div align="center">
     <a href="https://github.com/kenton54/VS-IMPOSTOR-Pixel">
-        <img src="images/github/logo-hd.png" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 80%;">
+        <img src="images/github/logo-big.gif" alt="VS IMPOSTOR Pixel Logo" title="VS IMPOSTOR Pixel" style="width: 90%;">
     </a>
-    <h3>VS IMPOSTOR Pixel</h3> <!-- this is just here so the table of contents thing shows stuff properly (???) -->
+    <h1>VS IMPOSTOR Pixel</h1> <!-- this is just here so the table of contents thing shows stuff properly (???) -->
     <p align="center"><b>Created by <a href="https://github.com/kenton54">kenton</a></b></p>
     <br/>
     <p align="center">
-        <b>VS IMPOSTOR Pixel</b> is a <b><a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a></b> Modification based on the popular mod <b><a href="https://vsimpostor.com">VS IMPOSTOR</a></b> created by the team IMPOSTORM, which itself is based of the very popular game and cultural meme <b><a href="https://www.innersloth.com/games/among-us">Among Us</a></b> made by <b><a href="https://www.innersloth.com">Innersloth</a>.
+        <b>VS IMPOSTOR Pixel</b> is a <a href="https://ninja-muffin24.itch.io/funkin">Friday Night Funkin'</a> Modification based on the mod <a href="https://vsimpostor.com">VS IMPOSTOR</a> created by the team IMPOSTORM, which itself is based of the very popular game and cultural meme <a href="https://www.innersloth.com/games/among-us">Among Us</a> made by <a href="https://www.innersloth.com">Innersloth</a>.
+    </p>
+    <br/>
+    <p align="center">
+        This is an unnoficial sequel, meant to not only improve what's already been introduced to the table, but to expand on it as well. Expect this mod to be nearly double (or above, idk yet im writing this before 1.0 LOL) the size of the original <a href="https://vsimpostor.com">VS IMPOSTOR</a>.
     </p>
     <br/>
     <p align="center">
@@ -27,15 +31,14 @@
 <h1 align="center">THE STORY</h1>
 After beating Black (in the song Finale of VS IMPOSTOR v4), he doesn't want to admit defeat, so he pulls up one last trick and reset the timeline, erasing all memories and pixelating everything in the process, now Boyfriend, back where his journey in the Among Us universe started, has to reencounter all the impostors and crewmates once again, plus some new faces that won't make his time around much easier!
 
-<!-- TODO: rewrite this
-<h1 align="center">Thank you :)</h1>
-I know this is an underwhelming way to say goodbye to my biggest project ever, and specially for you who have been waiting for more than a year for... pretty much anything from this mod, sorry for you getting an incomplete build of something huge and a glimpse of what I promised myself to deliver, but I'm tired, not only of working for this mod (I got 3 burnouts during development), but a lot of stuff as well, including life... yeah if you're reading this, it's very likely that I'm no longer standing on this world anymore, a lot of stuff happened that made me finally decide if I should end my life, and to do it... I'm sorry for everyone that are getting this sudden news, I'm sorry for being so obnoxious and annoying to the people that spoke to me and to my friends, mostly for the owners of the mods that I've worked on, thanks to all my friends, who were there always supporting me, even on my hardest moments in life, thanks to the Impostor community for accepting me there, and for being the only community who welcomed me with open arms, even though I didn't speak at all, thank you for being patient and sorry for dissapointing you lol, thanks to everyone who gave me a chance, who listened to me, who supported me, who cheered me, who were there for me. Without all of you, all of this was very likely to never happen, for the people that have no fucking clue what I'm talking about, ignore this and have fun playing the mod lol. <p align="center">Thank you :)</p>
--->
-
 <h1 align="center">ASSETS USAGE</h1>
-You're allowed to use all assets <b>THAT ARE MADE BY ME</b>, specifically; you're not allowed to use the music of the mod WITHOUT permission of the original authours and remixers, stuff that is made by me (all sprites, animations and the code) are completely free to use, no crediting needed.
+You're allowed to use all assets <b>THAT ARE MADE BY ME</b>, more specificly; art, animations and the code, just make sure to credit me. However with the music, you'll have to reach out to the original authors and ask them for permission (don't ask me to do that for you). If you fail to follow these simple steps then prepare to meet me and my lawyers in the courtroom :)
 
-If you want to make fanmade extensions or continuations of the mod, you're allowed to! (but keep in mind they will never match or surpass the original ideas of the mod lmfao).
+###### I'm just kidding, I'm not Nintendo LOL. But please make sure to credit the original authors, they put a lot of work in what they do.
+
+<!-- I feel like the nintendo ninjas will come right at me at any moment...... COME FIGHT MEE IM NOT SCARED >:)))))))) *gets annihilated by a fine of 100000000000000000 dollars* -->
+
+This doesn't apply if you just want to showcase the mod, just stuff (that isn't in the mod) that uses the mod's assets.
 
 <h1 align="center">THE TEAM BEHIND THE MOD</h1>
 
@@ -44,7 +47,7 @@ If you want to make fanmade extensions or continuations of the mod, you're allow
 
 ## Artists, Pixel-Artists and Animators
 - [kenton](https://github.com/kenton54)
-- [GTM]()
+- GTM
 
 ## Musicians
 <table>

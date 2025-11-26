@@ -1,0 +1,15 @@
+{
+	"customValues": {},
+	"color": "#272727",
+	"opponentModeAllowed": false,
+	"difficulties": [
+		"hard"
+	],
+	"icon": "black-impostor-hd",
+	"coopAllowed": false,
+	"stepsPerBeat": 4,
+	"displayName": "Finale",
+	"needsVoices": true,
+	"beatsPerMeasure": 4,
+	"bpm": 200
+}

@@ -41,8 +41,8 @@ function onStartSong() {
 }
 
 function postUpdate(elapsed:Float) {
-    if (taskPanel != null && touchOverlapsComplex(taskPanel.interactiveBox.members[0], taskPanel.interactiveBox.members[0].camera)) {
-        if (touchJustReleased()) {
+	if (taskPanel != null && pointerOverlapsComplex(taskPanel.interactiveBox.members[0], taskPanel.interactiveBox.members[0].camera)) {
+		if (pointerJustReleased()) {
             taskPanel.tweenVisibility();
 
             if (panelTimer != null && panelTimer.active) {

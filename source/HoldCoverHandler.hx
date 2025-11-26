@@ -104,11 +104,12 @@ class HoldCoverHandler {
 
         choosenCover.setCoverPosition(strum);
         choosenCover.cameras = strum.lastDrawCameras;
-        choosenCover.active = choosenCover.beingHeld = choosenCover.visible = true;
+        choosenCover.active = choosenCover.beingHeld = true;
+		choosenCover.visible = strum.visible;
 
         choosenCover.playStart(getCoverAnim(choosenCover.strumID));
 
-        FlxG.state.add(choosenCover);
+        FlxG.state.insert(FlxG.state.members.indexOf(strum), choosenCover);
     }
 
     public function destroy() {

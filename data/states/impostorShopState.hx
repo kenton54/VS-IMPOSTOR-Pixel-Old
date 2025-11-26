@@ -1,26 +1,28 @@
 import flixel.addons.display.FlxBackdrop;
 import BackButton;
-import PixelStars;
+import StarsBackdrop;
 
-var stars:PixelStars;
+var stars:StarsBackdrop;
 
 var baseScale:Float = 5;
 
 var backButton:BackButton;
 
 function create() {
-    stars = new PixelStars(-40, 4, 3);
-    stars.addStars();
+	stars = new StarsBackdrop(-20, 4);
+    add(stars);
 
     var topBorder:FlxBackdrop = new FlxBackdrop(Paths.image("menus/general/topBorder"), FlxAxes.X);
     topBorder.scale.set(baseScale, baseScale);
     topBorder.updateHitbox();
+	topBorder.scrollFactor.set(0, 0);
     add(topBorder);
 
     backButton = new BackButton(baseScale, baseScale, () -> {
         setTransition("fade");
         FlxG.switchState(new ModState("impostorMenuState"));
-    }, baseScale, false, "menus/x", true);
+    }, baseScale, "menus/x", false, true);
+	backButton.scrollFactor.set(0, 0);
     add(backButton);
 
     FlxG.mouse.visible = true;

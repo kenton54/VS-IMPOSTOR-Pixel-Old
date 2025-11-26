@@ -1,6 +1,4 @@
 <stage zoom="0.7" name="Polus Lab (Outside)" folder="stages/polus1" startCamPosX="0" startCamPosY="0">
-    <extension script="impostorPixel"/>
-
     <!-- moon -->
     <sprite name="moon" sprite="moon" x="320" y="0" zoomfactor="0.2" antialiasing="false" scale="1.5" scroll="0.01"/>
 
@@ -15,45 +13,62 @@
         <property name="blend" type="integer" value="0"/>
     </sprite>
 
-    <!-- medbay and the passage to the specimen room -->
+    <!-- medbay and the hallway to the specimen room -->
     <sprite name="medbay_normal" sprite="medbay" x="860" y="10" antialiasing="false" scale="10" scroll="0.75" >
-        <anim name="idle" anim="idle normal" loop="true" fps="1"/>
+        <anim name="idle" anim="idle normal" loop="true" fps="0"/>
     </sprite>
     <sprite name="medbay_dark" sprite="medbay" x="860" y="10" antialiasing="false" scale="10" scroll="0.75" >
-        <anim name="idle" anim="idle dark" loop="true" fps="1"/>
+        <anim name="idle" anim="idle dark" loop="true" fps="0"/>
         <property name="visible" type="bool" value="false"/>
     </sprite>
 
     <!-- the laboratory wall -->
     <sprite name="labWall_normal" sprite="lab-wall" x="680" y="-10" antialiasing="false" scale="10" scroll="0.9" >
-        <anim name="idle" anim="idle normal" loop="true" fps="1"/>
+        <anim name="idle" anim="idle normal" loop="true" fps="0"/>
     </sprite>
     <sprite name="labWall_dark" sprite="lab-wall" x="680" y="-10" antialiasing="false" scale="10" scroll="0.9" >
-        <anim name="idle" anim="idle dark" loop="true" fps="1"/>
+        <anim name="idle" anim="idle dark" loop="true" fps="0"/>
         <property name="visible" type="bool" value="false"/>
     </sprite>
 
     <!-- ground -->
     <sprite name="ground_normal" sprite="ground" x="16" y="483" antialiasing="false" scale="10" >
-        <anim name="idle" anim="idle normal" loop="true" fps="1"/>
+        <anim name="idle" anim="idle normal" loop="true" fps="0"/>
     </sprite>
     <sprite name="ground_dark" sprite="ground" x="16" y="483" antialiasing="false" scale="10">
-        <anim name="idle" anim="idle dark" loop="true" fps="1"/>
+        <anim name="idle" anim="idle dark" loop="true" fps="0"/>
         <property name="visible" type="bool" value="false"/>
     </sprite>
 
     <!-- lab entrance + fence -->
-    <sprite name="labEntrance_normal" sprite="lab-entrance" x="159" y="-124" antialiasing="false" scale="10" type="loop" >
+    <sprite name="labEntrance_normal" sprite="lab-entrance" x="157" y="-124" antialiasing="false" scale="10" type="loop" >
         <anim name="watch" anim="watch normal" loop="true" fps="4"/>
-        <anim name="idle" anim="idle normal" loop="true" fps="1"/>
+        <anim name="idle" anim="idle normal" loop="true" fps="0"/>
     </sprite>
-    <sprite name="labEntrance_dark" sprite="lab-entrance" x="159" y="-124" antialiasing="false" scale="10" type="loop" >
+    <sprite name="labEntrance_dark" sprite="lab-entrance" x="157" y="-124" antialiasing="false" scale="10" type="loop" >
         <anim name="watch" anim="watch dark" loop="true" fps="4"/>
-        <anim name="idle" anim="idle dark" loop="true" fps="1"/>
+        <anim name="idle" anim="idle dark" loop="true" fps="0"/>
         <property name="visible" type="bool" value="false"/>
     </sprite>
 
     <girlfriend x="137" y="24" scroll="1"/>
+
+    <sprite name="deadBanana" sprite="dead-banana" x="-943" y="482" antialiasing="false" scale="10">
+        <anim name="idle" anim="idle normal" loop="true" fps="0"/>
+    </sprite>
+    <sprite name="deadBanana_dark" sprite="dead-banana" x="-943" y="482" antialiasing="false" scale="10">
+        <anim name="idle" anim="idle dark" loop="true" fps="0"/>
+        <property name="visible" type="bool" value="false"/>
+    </sprite>
+
     <dad x="-452" y="69" camxoffset="0" camyoffset="80"/>
     <boyfriend x="670" y="240" camxoffset="-100" camyoffset="-38"/>
+
+    <sprite name="blue" sprite="blue" x="1042" y="309" antialiasing="false" scale="10">
+        <anim name="idle" anim="idle normal" type="beat" fps="24"/>
+    </sprite>
+    <sprite name="blue_dark" sprite="blue" x="1042" y="309" antialiasing="false" scale="10">
+        <anim name="idle" anim="idle dark" type="beat" fps="24"/>
+        <property name="visible" type="bool" value="false"/>
+    </sprite>
 </stage>

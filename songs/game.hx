@@ -4,7 +4,6 @@ import flixel.util.FlxStringUtil;
 import funkin.backend.chart.EventsData;
 import funkin.backend.scripting.DummyScript;
 import funkin.backend.scripting.Script;
-import funkin.backend.system.Flags;
 import funkin.backend.system.Logs;
 import funkin.backend.utils.WindowUtils;
 import funkin.backend.system.Conductor.BeatType;
@@ -93,13 +92,6 @@ static var campaignCombosBroken:Int = 0;
  */
 var healthLerp:Float = 0;
 
-/**
- * The max health value of the player's health.
- * 
- * Can be modified BEFORE `postCreate` gets called.
- */
-public var maxHealth:Float = 2;
-
 var fixScore:Bool = false;
 
 /**
@@ -148,10 +140,7 @@ function create() {
         noteStyle = songExtraMetadata.noteStyle;
     else {
         noteStyle = "default";
-        logTraceColored([
-            {text: "[PlayState] ", color: getLogColor("cyan")},
-            {text: "No style for the strumlines, notes, splashes and hold covers found in the song's metadata, using default..."}
-        ]);
+		logTraceState("PlayState", [{text: "No style for the strumlines, notes, splashes and hold covers found in the song's metadata, using default..."}]);
     }
 }
 
@@ -223,6 +212,8 @@ function postCreate() {
     improveStrums();
 
     WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "] (SOLO)" : " (VERSUS)");
+
+	startNewEvents();
 
     scripts.call("postUIOverhaul");
 }
@@ -326,10 +317,8 @@ function improveStrums() {
         var chartStrumline:Array<Dynamic> = strumline.data;
         strumline.extra.set("separate", 8);
 
-        if (strumline.visible) {
-            var coverHandler:HoldCoverHandler = new HoldCoverHandler(noteStyle, strumline);
-            holdCoverHandlers.push(coverHandler);
-        }
+        var coverHandler:HoldCoverHandler = new HoldCoverHandler(noteStyle, strumline);
+        holdCoverHandlers.push(coverHandler);
 
         if (FlxG.save.data.middlescroll) {
             if (strumline.data.type == 1) {
@@ -408,6 +397,16 @@ function improveStrums() {
     }
 }
 
+function startNewEvents() {
+	for (event in PlayState.SONG.events) {
+        switch(event.name) {
+			case "Camera Fade":
+				if (event.time < 10)
+					executeEvent(event);
+        }
+    }
+}
+
 function update(elapsed:Float) {
     if (generatedMusic && updateSongPercent)
         songPercent = (Conductor.songPosition / percentDeadline);
@@ -461,13 +460,13 @@ function onCountdown(event) {
     var animCounter:Int = correctCounter - 1;
     if (animCounter != 0) {
         if (gf.hasAnim("countdown" + animCounter))
-            gf.playAnim("countdown" + animCounter);
+            gf.playAnim("countdown" + animCounter, true);
     }
     else {
         if (gf.hasAnim("countdownGo"))
-            gf.playAnim("countdownGo");
-        else if (gf.hasAnim("cheer"))
-            gf.playAnim("cheer");
+            gf.playAnim("countdownGo", true);
+        else
+            gf.playAnim("cheer", true);
     }
 }
 
@@ -568,7 +567,7 @@ function onPlayerHit(event) {
     if (!event.note.isSustainNote) {
         songScore += score2add;
         health += health2gain;
-        impostorStats.set("totalNotes", impostorStats.get("totalNotes") + 1);
+		addStatPoints("totalNotes", 1);
         updateScore();
         recalculateAccuracy();
 
@@ -598,6 +597,8 @@ function onPlayerHit(event) {
 
     if (event.deleteNote)
         strumline.deleteNote(event.note);
+
+	event.score = score2add;
 
     scripts.call("onNewPlayerHit", [event]);
     scripts.call("onNewNoteHit", [event]);
@@ -687,13 +688,13 @@ function ratingJudge(timing:Float):String {
     if (timing < perfectThreshold)
         rating = "perfect";
     else if (timing < sickThreshold)
-        rating = "sick";
+        rating = "great";
     else if (timing < goodThreshold)
         rating = "good";
     else if (timing < badThreshold)
         rating = "bad";
     else if (timing < shitThreshold)
-        rating = "shit";
+        rating = "awful";
     else
         rating = "miss";
 
@@ -746,10 +747,7 @@ function onPlayerMiss(event) {
                 trace(scor, healthChange);
             }
             else {
-                logTraceColored([
-                    {text: "[PlayState] ", color: getLogColor("cyan")},
-                    {text: "Hold Note was too short, miss will not be penalized."}
-                ]);
+				logTraceState("PlayState", [{text: "Hold Note was too short, miss will not be penalized."}]);
                 return;
             }
         }*/
@@ -776,7 +774,7 @@ function onPlayerMiss(event) {
             char.playSingAnim(event.direction, event.animSuffix, "MISS", event.forceAnim);
     }
 
-    displayRating(0, scor);
+    displayRating("miss", scor);
 
     scripts.call("onNewPlayerMiss", [event]);
 }
@@ -790,7 +788,7 @@ function recalculateAccuracy() {
 }
 
 var ratingTimer:FlxTimer = new FlxTimer();
-function displayRating(rating:String, score:Int) {
+public function displayRating(rating:String, score:Int) {
     FlxTween.cancelTweensOf(ratingHitTxt, ["scale.x", "scale.y", "alpha"]);
     ratingHitTxt.alpha = 1;
     ratingHitTxt.scale.set(1.2, 1.2);
@@ -800,7 +798,7 @@ function displayRating(rating:String, score:Int) {
     var combTxtShow:String = (combo >= minDigitDisplay) ? comboTxt : "";
     var plus:String = (score >= 0) ? "+" : "";
     ratingHitTxt.text = createMultiLineText([
-        getRatingDisplay(rating) + combTxtShow,
+        translate("game.ratings." + rating) + combTxtShow,
         plus + Std.string(score)
     ]);
     ratingHitTxt.color = getRatingColor(rating);
@@ -838,7 +836,7 @@ public function breakCombo(ignoreCurCombo:Bool = false) {
         });
 
         combosBroken++;
-        impostorStats.set("combosBroken", impostorStats.get("combosBroken") + 1);
+		addStatPoints("combosBroken", 1);
     }
     scripts.call("preComboBroken", [combo]);
 
@@ -848,35 +846,17 @@ public function breakCombo(ignoreCurCombo:Bool = false) {
     scripts.call("onComboBroken", [combo]);
 }
 
-function getRatingDisplay(rating:String):String {
-    var ratin:String = "";
-    if (rating == "perfect")
-        ratin = "Perfect!!!";
-    else if (rating == "sick")
-        ratin = "Sick!!";
-    else if (rating == "good")
-        ratin = "Good!";
-    else if (rating == "bad")
-        ratin = "Bad";
-    else if (rating == "shit")
-        ratin = "Shit";
-    else
-        ratin = "Miss...";
-
-    return ratin;
-}
-
 function getRatingColor(rating:String):FlxColor {
     var color:FlxColor = FlxColor.BLACK;
     if (rating == "perfect")
         color = 0xFFFFDF00;
-    else if (rating == "sick")
+    else if (rating == "great")
         color = FlxColor.CYAN;
     else if (rating == "good")
         color = FlxColor.LIME;
     else if (rating == "bad")
         color = 0xFFFF4500;
-    else if (rating == "shit")
+    else if (rating == "awful")
         color = 0xFFAA0000;
     else
         color = FlxColor.GRAY;
@@ -924,23 +904,21 @@ function grantNoteStat(rating:String) {
     switch (rating) {
         case "perfect":
             perfectHits++;
-            impostorStats.set("perfectNotes", impostorStats.get("perfectNotes") + 1);
-        case "sick":
+			addStatPoints("perfectNotes", 1);
+        case "great":
             sickHits++;
-            impostorStats.set("sickNotes", impostorStats.get("sickNotes") + 1);
+			addStatPoints("sickNotes", 1);
         case "good":
             goodHits++;
-            impostorStats.set("goodNotes", impostorStats.get("goodNotes") + 1);
+			addStatPoints("goodNotes", 1);
         case "bad":
             badHits++;
-            impostorStats.set("badNotes", impostorStats.get("badNotes") + 1);
-        case "shit":
+			addStatPoints("badNotes", 1);
+        case "awful":
             shitHits++;
-            impostorStats.set("shitNotes", impostorStats.get("shitNotes") + 1);
+			addStatPoints("shitNotes", 1);
         case "miss":
-            impostorStats.set("missedNotes", impostorStats.get("missedNotes") + 1);
-        default:
-            // do nothing
+			addStatPoints("missedNotes", 1);
     }
 }
 
@@ -958,7 +936,7 @@ function onNewNoteHit(event) {
                 nextSustain = nextSustain.nextSustain;
             }
 
-            holdCoverHandlers[strumLines.members.indexOf(noteStrumLine)].showHoldCover(noteStrum, !noteStrumLine.cpu, note.strumTime + sustainLength);
+            holdCoverHandlers[strumLines.members.indexOf(noteStrumLine)].showHoldCover(noteStrum, noteStrumLine.cpu == false, note.strumTime + sustainLength);
         }
     }
     else {
@@ -1006,6 +984,7 @@ function checkNextSong() {
         campaignShitHits += shitHits;
 
         PlayState.storyPlaylist.shift();
+		PlayState.storyVariations.shift();
 
         if (PlayState.storyPlaylist.length < 1) {
             if (validScore) {
@@ -1052,7 +1031,7 @@ function getSongHits(campaign:Bool):Map<String, Int> {
 function prepareNextSong() {
     if (!endingSong) return;
 
-    PlayState.__loadSong(PlayState.storyPlaylist[0], PlayState.difficulty, PlayState.variation);
+	PlayState.__loadSong(PlayState.storyPlaylist[0], PlayState.difficulty, PlayState.storyVariations[0]);
 
     // if the stage is not the same, just reload PlayState
     if (PlayState.smoothTransitionData.stage != curStage) {
@@ -1071,6 +1050,7 @@ function prepareNextSong() {
         startedCountdown = false;
 
         canDie = false;
+        canDadDie = false;
 
         camZoomLerp = Flags.DEFAULT_ZOOM_LERP;
         camZooming = false;
@@ -1126,6 +1106,7 @@ function prepareNextSong() {
         camZooming = true;
         canPause = true;
         canDie = true;
+		canDadDie = true;
         validScore = true;
 
         paused = false;
@@ -1230,6 +1211,8 @@ function generateNewSong(?songData:Dynamic) {
         }
     ];
 
+	startNewEvents();
+
     if (!foundSigs) {
         camZoomingInterval = 4;
         camZoomingEvery = BeatType.BEAT;
@@ -1285,4 +1268,8 @@ function resetTallies() {
     shitHits = 0;
     notesMissed = 0;
     combosBroken = 0;
+}
+
+function destroy() {
+	ratingTimer.destroy();
 }

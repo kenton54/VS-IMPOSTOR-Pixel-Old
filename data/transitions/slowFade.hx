@@ -11,7 +11,3 @@ function create(event) {
         finish();
     });
 }
-
-function onPostFinish() {
-    if (!transOut) setTransition("");
-}
