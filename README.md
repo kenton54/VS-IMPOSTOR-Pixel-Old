@@ -14,7 +14,7 @@
     </p>
     <br/>
     <p align="center">
-        The mod is meant to be played with <a href="https://codename-engine.com">Codename Engine</a> (Version 1.0.1). The mod is fully compatible with Desktop and Mobile devices!
+        The mod is meant to be played with <a href="https://codename-engine.com">Codename Engine</a> (Version 1.0.2). The mod is fully compatible with Desktop and Mobile devices!
     </p>
     <br/>
     <p align="center">
