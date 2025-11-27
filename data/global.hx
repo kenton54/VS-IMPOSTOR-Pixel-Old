@@ -54,8 +54,9 @@ function new() {
 
     Options.antialiasing = false;
     // I have to do this, cuz otherwise it causes crashes (im not kidding)
+    /*
     Options.streamedMusic = false;
-    Options.streamedVocals = false;
+    Options.streamedVocals = false;*/
     Options.save();
 
     if (getPlatform() == "mobile")
