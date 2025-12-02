@@ -31,7 +31,7 @@
 <h1 align="center">THE STORY</h1>
 After beating Black (in the song Finale of VS IMPOSTOR v4), he doesn't want to admit defeat, so he pulls up one last trick and reset the timeline, erasing all memories and pixelating everything in the process, now Boyfriend, back where his journey in the Among Us universe started, has to reencounter all the impostors and crewmates once again, plus some new faces that won't make his time around much easier!
 
-<h1 align="center">ASSETS USAGE</h1>
+<h1 align="center">TERMS OF USAGE</h1>
 You're allowed to use all assets <b>THAT ARE MADE BY ME</b>, more specificly; art, animations and the code, just make sure to credit me. However with the music, you'll have to reach out to the original authors and ask them for permission (don't ask me to do that for you). If you fail to follow these simple steps then prepare to meet me and my lawyers in the courtroom :)
 
 ###### I'm just kidding, I'm not Nintendo LOL. But please make sure to credit the original authors, they put a lot of work in what they do.
