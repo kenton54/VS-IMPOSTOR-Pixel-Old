@@ -5,7 +5,7 @@ import ResizableUIBox;
 // the only reason these are here is becuz maps fuck up the order
 var statsList:Array<String> = [
 	"totalPlaytime",
-    "storyProgress",
+    //"storyProgress",
     "totalNotes",
     "perfectNotes",
     "sickNotes",
@@ -13,14 +13,14 @@ var statsList:Array<String> = [
     "badNotes",
     "shitNotes",
     "missedNotes",
-    "combosBroken",
+    "combosBroken"/*,
     "attacksDodged",
     "taskSpeedrunSkeld",
     "taskSpeedrunMira",
     "taskSpeedrunPolus",
     "taskSpeedrunAirship",
 	"taskSpeedrunFungle",
-    "totalTasks"
+    "totalTasks"*/
 ];
 
 var statsCam:FlxCamera;
@@ -72,7 +72,7 @@ function create() {
 
         var value:Dynamic = getStatValue(stat);
         var strValue:String = Std.string(value);
-		if (StringTools.contains(stat.toLowerCase(), "playtime")) strValue = formatTimeAdvanced(value, "%D:%H:%M");
+		if (StringTools.contains(stat.toLowerCase(), "playtime")) strValue = formatTimeAdvanced(value, "%H:%M");
         if (StringTools.contains(stat.toLowerCase(), "storyprogress")) strValue = '"' + value + '"';
 		if (StringTools.contains(stat.toLowerCase(), "speedrun")) strValue = FlxStringUtil.formatTime(value, true);
 		statsValueText.text += (statsValueText.text.length > 0 ? "\n" : "") + strValue;

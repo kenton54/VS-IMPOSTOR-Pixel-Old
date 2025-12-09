@@ -73,8 +73,8 @@ class PlayableData {
     }
 
     public function getSongName(songName:String):String {
-        if (suffix != "" && suffix.length > 0) {
-            return songName + "-" + suffix;
+        if (this.suffix != null && this.suffix != "" && this.suffix.length > 0) {
+            return songName + "-" + this.suffix;
         }
         return songName;
     }

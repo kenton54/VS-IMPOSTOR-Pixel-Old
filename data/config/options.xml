@@ -1,4 +1,6 @@
 <menu name="IMP Pixel Options" desc="Change IMPOSTOR Pixel's options here...">
     <checkbox id="impPixelTimeBar" name="Time Bar" desc="If enabled, it'll show a bar that tracks the current song position, as well as its percentage from completion."/>
-    <number id="impPixelStrumBG" name="StrumLine BG Opacity" min="0" max="100" change="5" desc="Give the strumlines a semi-transparent (or fully transparent) background."/>
+    <number id="impPixelStrumBG" name="StrumLine BG Opacity" min="0" max="1" change="0.05" desc="Give the strumlines a semi-transparent (or fully transparent) background."/>
+    <checkbox id="middlescroll" name="Middlescroll" desc="If checked, your notes will be centered, making the notes easier to read (for mobile users at least)."/>
+    <checkbox id="impPixelFastMenus" name="Quick Transitions" desc="If checked, transitions between menus will be faster."/>
 </menu>

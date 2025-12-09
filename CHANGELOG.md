@@ -1,18 +1,41 @@
 This changelog keeps track of everything that has been added, changed, fixed or deleted in every VS IMPOSTOR Pixel version.
 
-# Developer Build 3
-The mod is finally close to being done HOLY SHIT THIS TOOK MORE THAN A FUCKING YEAR QWFNWERJIFHQERIHNWQGFIOWEJGH
+# Version 1.0
+THE FIRST ACTUAL RELEASE AND ITS NOT A FREAKING BETA NOR DEMO ANYMORE WOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!
+actually this version looks more like a demo ngl, BUT WHO CARESSSSSSSSSS i make the rules.
 
 ## Additions
-- Updated the mod to Codename 1.0.2, [Commit `e6bcb14`](https://github.com/CodenameCrew/CodenameEngine/commit/e6bcb144d9e9e9b09d651ed883b0baf3a1db3711)
-- Finale (very incomplete tho)
-- Sussus Moogus (Hard chart incomplete, Easy chart missing)
-- Achievement System
-- New legacy menus! Story reasons (YES the mod has a plot now muahaha im finally original)
+- Credits Menu.
+
+## Changes
+- Hid everything that may spoil the rest of the mod (you can still look in the game files lol).
+- Finalized the Achievement system.
+- Stopped the startup screens from showing.
+- Changed the Playtime display in the stats submenu (it no longer shows the days).
+- Disabled languages.
+
+## Fixes
+- Sussus Moogus was displaying the wrong color.
+- Splashes being rendered wrong.
+- Fixed a lot of translation IDs.
+- The old freeplay menu, idk why lol.
+
+## Removals
+- Old Freeplay.
+
+# Developer Build 3
+The mod is finally close to being done HOLY SHIT THIS TOOK MORE THAN A FUCKING YEAR QWFNWERJIFHQERIHNWQGFIOWEJGH.
+
+## Additions
+- Updated the mod to Codename 1.0.2, [Commit e6bcb14](https://github.com/CodenameCrew/CodenameEngine/commit/e6bcb144d9e9e9b09d651ed883b0baf3a1db3711).
+- Finale (very incomplete tho).
+- Sussus Moogus (Hard chart incomplete, Easy chart missing).
+- Achievement System.
+- New legacy menus! Story reasons (YES the mod has a plot now muahaha im finally original).
 - An Update Checker... WITHIN CODENAME'S SCRIPTING??? WHAAATTTNGIWEHRUGH????????????
-- AFK Screen (although it's disable due to being very unstable)
-- 2 more stats
-- Made the mod's source even more powerful... MUAHAHAHAHA
+- AFK Screen (although it's disable due to being very unstable).
+- 2 more stats.
+- Made the mod's source even more powerful... MUAHAHAHAHA.
 
 ## Changes
 - Title Screen almost 100% complete.
@@ -210,11 +233,11 @@ Mod's second release, it added a few songs as well as remade art for Polus Probl
 Mod's first ever release.
 
 ## Additions
-- Added Sussus Moogus Song.
-- Added Sabotage Song.
-- Added Meltdown Song.
-- Added Sussus Toogus Song (charted by femboy_rain).
-- Added Ominous Song.
+- Added Sussus Moogus.
+- Added Sabotage.
+- Added Meltdown.
+- Added Sussus Toogus (charted by femboy_rain).
+- Added Ominous.
 - added the most boring-looking black impostor's sprites in existance LOL (for ominous).
 - Added [Alkal1n3](https://x.com/alkal1n3real) (currently known as VoltR) to the credits, made Defeat's remix.
 

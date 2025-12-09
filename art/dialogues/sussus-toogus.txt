@@ -1,4 +1,4 @@
-[boyfriend]     [pointing]          Hey, what's that scarf on your visor?
+[boyfriend]     [pointing]          Hey, what's that scratch around your visor?
 [green]	        [happy]		        OH! Yeah that! An impostor attacked me, but I managed to escape.
 [girlfriend]    [curious]           Did you try to report it?
 [green]         [shrug]             He fleed before I could report him.

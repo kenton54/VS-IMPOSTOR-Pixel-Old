@@ -8,6 +8,8 @@ function create() {
 	MusicBeatState.skipTransIn = true;
     setTransition("fadeLegacy");
 
+	FlxG.mouse.visible = true;
+
     window.title = "VS IMPOSTOR: V4";
     setWindowIcon("app/legacy64");
 

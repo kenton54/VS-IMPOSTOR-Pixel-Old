@@ -210,6 +210,7 @@ public static function saveImpostor() {
 	FlxG.save.data.impPixelStorySequence = getStoryProgress();
     FlxG.save.data.impPixelBeans = pixelBeans;
     FlxG.save.data.impPixelStats = getStats();
+	FlxG.save.data.impPixelAchievements = achievementsUnlocked;
     FlxG.save.data.impPixelPlayablesUnlocked = playablesList;
     FlxG.save.data.impPixelSkinsUnlocked = skinsList;
     FlxG.save.data.impPixelFlags = getFlags();
@@ -233,6 +234,7 @@ public static function eraseImpostorSaveData() {
     FlxG.save.data.impPixelStorySequence = null;
     FlxG.save.data.impPixelBeans = null;
     FlxG.save.data.impPixelStats = null;
+	FlxG.save.data.impPixelAchievements = null;
     FlxG.save.data.impPixelPlayablesUnlocked = null;
     FlxG.save.data.impPixelSkinsUnlocked = null;
     FlxG.save.data.impPixelFlags = null;

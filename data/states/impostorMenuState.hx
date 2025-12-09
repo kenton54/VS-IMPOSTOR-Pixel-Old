@@ -12,9 +12,9 @@ import funkin.editors.stage.StageSelection;
 import funkin.editors.EditorTreeMenu;
 import funkin.menus.credits.CreditsMain;
 import funkin.options.Options;
+import funkin.options.OptionsMenu;
 import openfl.system.System;
 import BackButton;
-import BindHint;
 import FunkinGroup;
 import StarsBackdrop;
 import ResizableUIBox;
@@ -49,7 +49,6 @@ var backButton:BackButton;
 
 var topButtonsGroup:FlxSpriteGroup;
 var statsButton:TopButton;
-//var statsHint:BindHint;
 
 var discordAvatar:FlxSprite;
 var discordUsername:FunkinText;
@@ -72,8 +71,8 @@ var mainSectionButtons:Array<Dynamic> = [
         scale: baseScale,
         type: ButtonType.MAIN,
         onSelect: function() {
-            var worldmapImage:String = deadVersion ? getImage("bigButtons/worldmap-dead") : getImage("bigButtons/worldmap");
-			var worldmapText:String = deadVersion ? (isBelowStoryPoint("postLobby") ? translate("questionMarks") : translate("mainMenu.sections.worldmap")) : translate("mainMenu.sections.worldmap");
+			var worldmapImage:String = getImage("bigButtons/worldmap-dead"); //deadVersion ? getImage("bigButtons/worldmap-dead") : getImage("bigButtons/worldmap");
+			var worldmapText:String = translate("questionMarks"); //deadVersion ? (isBelowStoryPoint("postLobby") ? translate("questionMarks") : translate("mainMenu.sections.worldmap")) : translate("mainMenu.sections.worldmap");
 			var freeplayImage:String = deadVersion ? getImage("bigButtons/freeplay-dead") : getImage("bigButtons/freeplay");
 			var freeplayText:String = deadVersion ? translate("questionMarks") : translate("generic.freeplay");
 			var tutorialImage:String = deadVersion ? getImage("bigButtons/tutorial-dead") : getImage("bigButtons/tutorial");
@@ -89,7 +88,7 @@ var mainSectionButtons:Array<Dynamic> = [
             worldmapButton.index.set(0, 0);
 			worldmapButton.idleColor = deadVersion ? 0xFF313131 : 0xFF0A3C33;
 			worldmapButton.hoverColor = deadVersion ? 0xFF484848 : 0xFF10584B;
-			worldmapButton.available = !isBelowStoryPoint("postTutorial");
+			worldmapButton.available = false;//!isBelowStoryPoint("postTutorial");
 			worldmapButton.addLabel(worldmapText, FlxPoint.get(0, 43.5));
 			objectCenter(worldmapButton.label, worldmapButton.button, FlxAxes.X);
 			window.add(worldmapButton);
@@ -103,8 +102,11 @@ var mainSectionButtons:Array<Dynamic> = [
 			freeplayButton.index.set(1, 0);
 			freeplayButton.idleColor = deadVersion ? 0xFF313131 : 0xFF0A3C33;
 			freeplayButton.hoverColor = deadVersion ? 0xFF484848 : 0xFF10584B;
-			freeplayButton.available = !deadVersion;
+			freeplayButton.available = true; //!deadVersion;
 			freeplayButton.addLabel(freeplayText, FlxPoint.get(0, 43.5));
+            freeplayButton.onSelect = function() {
+                new FlxTimer().start(1, _ -> FlxG.switchState(new FreeplayState()));
+            };
 			objectCenter(freeplayButton.label, freeplayButton.button, FlxAxes.X);
 			window.add(freeplayButton);
 
@@ -117,7 +119,8 @@ var mainSectionButtons:Array<Dynamic> = [
 			tutorialButton.index.set(0, 1);
 			tutorialButton.idleColor = deadVersion ? 0xFFD6D6D6 : 0xFFAAE2DC;
 			tutorialButton.hoverColor = 0xFFFFFFFF;
-			tutorialButton.addLabel(translate("mainMenu.sections.tutorial"), FlxPoint.get(0, 1.5));
+			tutorialButton.available = false;
+			tutorialButton.addLabel(translate("questionMarks"), FlxPoint.get(0, 1.5));
 			objectCenter(tutorialButton.label, tutorialButton.button, FlxAxes.X);
 			window.add(tutorialButton);
 
@@ -159,7 +162,11 @@ var mainSectionButtons:Array<Dynamic> = [
 		scale: baseScale,
 		type: ButtonType.EXTRAS,
         onSelect: function() {
-			openSubState(new ModSubState("options/impostorOptionsSubState"));
+			new FlxTimer().start(0.5, _ -> {
+				setTransition("fade");
+				FlxG.switchState(new OptionsMenu());
+			});
+			//openSubState(new ModSubState("options/impostorOptionsSubState"));
         }
 	},
 	{
@@ -193,7 +200,7 @@ var mainSectionButtons:Array<Dynamic> = [
 			musicButton.x -= musicButton.width + 10 * baseScale;
 			musicButton.index.set(0, 1);
 			musicButton.idleColor = 0xFFAAE2DC;
-			musicButton.available = !deadVersion;
+			musicButton.available = false;//!deadVersion;
 			window.add(musicButton);
 
 			var charsButton:WindowButton = new WindowButton(windowArea, windowArea.width / 2, 46 * baseScale, {
@@ -216,7 +223,7 @@ var mainSectionButtons:Array<Dynamic> = [
 			moviesButton.x += moviesButton.width + 10 * baseScale;
 			moviesButton.index.set(2, 1);
 			moviesButton.idleColor = 0xFFAAE2DC;
-			moviesButton.available = !deadVersion;
+			moviesButton.available = false;//!deadVersion;
 			window.add(moviesButton);
 
 			openWindowSubMenu(window);
@@ -481,10 +488,6 @@ function create() {
     statsButton.y -= statsButton.height + 2 * baseScale;
 	statsButton.onPress = statsMenu;
     topButtonsGroup.add(statsButton);
-
-    /*
-	statsHint = new BindHint(Reflect.field(Options, "P1_ACCEPT")[0], statsButton);
-	add(statsHint);*/
 
     if (!isMobile) {
 		var discordButton:TopButton;

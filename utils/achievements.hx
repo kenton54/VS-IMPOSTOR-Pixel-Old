@@ -1,3 +1,4 @@
+import flixel.tweens.misc.VarTween;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
@@ -40,32 +41,57 @@ function createAchievement(id:String, level:AchievementLevel, ?points:Int):Achie
 	return new Achievement(id, translate("achievements." + id + "-name"), translate("achievements." + id + "-desc"), level, points);
 }
 
+function hasAchievement(name:String):Bool {
+	for (achievement in achievements) {
+		if (achievement.ID == name)
+			return true;
+	}
+	return false;
+}
+
+function getAchievement(name:String):Achievement {
+	for (achievement in achievements) {
+		if (achievement.ID == name)
+			return achievement;
+	}
+	return null;
+}
+
 public static function isAchievementUnlocked(name:String):Bool {
     return achievementsUnlocked.contains(name);
 }
 
-function getRandomLevelBecuzWhyNotLol():AchievementLevel {
+function getRandomAchievementCuzWhyNotLol():Achievement {
 	return achievements[FlxG.random.int(0, achievements.length - 1)];
 }
 
 public static function grantAchievement(name:String) {
-	if (!achievements.exists(name) || isAchievementUnlocked(name)) return;
-	popupAchievement(achievements.get(name));
+	if (!hasAchievement(name) || isAchievementUnlocked(name)) return;
+	popupAchievement(getAchievement(name));
 }
 
-public static function testAchievement() {
-	popupAchievement(getRandomLevelBecuzWhyNotLol());
+public static function testGrantAchievement() {
+	var a = getRandomAchievementCuzWhyNotLol();
+	grantAchievement(a.ID);
+}
+
+public static function testPopupAchievement() {
+	popupAchievement(getRandomAchievementCuzWhyNotLol());
 }
 
 var achievementScale:Float = 4.5;
 var popUpScale:Float = 1.2;
 var activeAchievements:Array<Dynamic> = [];
+var activeTweens:Array<Array<FlxTween>> = [];
 function popupAchievement(data:Achievement) {
 	playMenuSound("hardConfirm");
 
+	if (!achievementsUnlocked.contains(data.ID))
+		achievementsUnlocked.push(data.ID);
+
 	var achievementToast:Sprite = new Sprite();
-	achievementToast.scaleX = achievementScale * popUpScale;
-	achievementToast.scaleY = achievementScale * popUpScale;
+	achievementToast.scaleX = popUpScale;
+	achievementToast.scaleY = popUpScale;
 
 	var achWidth:Float = 72 * achievementScale;
 	var achHeight:Float = 28 * achievementScale;
@@ -73,6 +99,8 @@ function popupAchievement(data:Achievement) {
 	var achLevel:String = getAchievementLevelString(data.level);
 
 	var achievementPanel:Bitmap = new Bitmap(Assets.getBitmapData(Paths.image("achievements/levels/" + achLevel + "Panel")));
+	achievementPanel.scaleX = achievementScale;
+	achievementPanel.scaleY = achievementScale;
 	achievementPanel.alpha = 0;
 	achievementToast.addChild(achievementPanel);
 
@@ -87,8 +115,7 @@ function popupAchievement(data:Achievement) {
 	if (deltaFloat > 0.5)
 		textColor = FlxColor.BLACK;
 
-	var font = Assets.getFont(Paths.font("pixeloidsans.ttf"));
-	var textFormat = new TextFormat(font.fontName, 6, textColor);
+	var textFormat = new TextFormat(Paths.getFontName(Paths.font("pixeloidsans.ttf")), 26, textColor);
 	textFormat.align = 0;
 
 	var achievementText:TextField = new TextField();
@@ -106,28 +133,32 @@ function popupAchievement(data:Achievement) {
 	objectCenter(achievementText, achievementPanel);
 
 	var achievementLevel:Bitmap = new Bitmap(Assets.getBitmapData(Paths.image("achievements/levels/" + achLevel)));
+	achievementLevel.scaleX = achievementScale;
+	achievementLevel.scaleY = achievementScale;
 	achievementLevel.x = achievementPanel.width;
 	achievementToast.addChild(achievementLevel);
 
 	var achievementSprite:Bitmap = new Bitmap(Assets.getBitmapData(Paths.image("achievements/" + data.ID)));
+	achievementSprite.scaleX = achievementScale;
+	achievementSprite.scaleY = achievementScale;
 	achievementSprite.x = achievementLevel.x;
 	achievementToast.addChild(achievementSprite);
 
     var nullSpot:Int = -1;
-    var foundNull:Bool = false;
+    var foundAchNull:Bool = false;
 	for (i in 0...activeAchievements.length) {
 		if (activeAchievements[i] == null) {
-			foundNull = true;
+			foundAchNull = true;
 			nullSpot = i;
             break;
         }
     }
 
-	var magicValueUwU:Int = foundNull ? nullSpot : activeAchievements.length;
+	var magicValueUwU:Int = foundAchNull ? nullSpot : activeAchievements.length;
 
 	achievementToast.x = FlxG.stage.stageWidth - achievementToast.width;
 	achievementToast.y = (10 / popUpScale) + ((fullRatio + 1.01 * achievementScale) * magicValueUwU);
-	var toastX:Float = FlxG.stage.stageWidth - achievementPanel.width * achievementScale - fullRatio - 20;
+	var toastX:Float = FlxG.stage.stageWidth - achievementPanel.width - fullRatio - 20;
 	var toastY:Float = 20 + ((fullRatio + 1.01 * achievementScale) * magicValueUwU);
 
 	var colorShit:ColorTransform = new ColorTransform();
@@ -138,59 +169,99 @@ function popupAchievement(data:Achievement) {
 	achievementPanel.x += 32;
 	achievementText.x += 32;
 
-	FlxTween.tween(achievementToast, {
-        x: toastX,
-        y: toastY,
-        scaleX: achievementScale,
-        scaleY: achievementScale,
-	}, 1, {ease: FlxEase.quartOut});
-	FlxTween.tween(colorShit, {redMultiplier: 1, greenMultiplier: 1, blueMultiplier: 1, redOffset: 0, greenOffset: 0, blueOffset: 0}, 1, {ease: FlxEase.quartOut, onUpdate: _ -> {
+	var tween1:VarTween = new VarTween({ease: FlxEase.quartOut});
+	var tween2:VarTween = new VarTween({ease: FlxEase.quartOut, onUpdate: _ -> {
         achievementToast.transform.colorTransform = colorShit;
     }});
+	var tween3:VarTween = new VarTween({startDelay: 0.5, ease: FlxEase.quartOut});
+	var tween4:VarTween = new VarTween({startDelay: 0.5, ease: FlxEase.quartOut});
+	var tween5:VarTween = new VarTween({startDelay: 2, ease: FlxEase.quartOut});
 
-    FlxTween.tween(achievementPanel, {alpha: 1, x: 0}, 0.5, {startDelay: 0.5, ease: FlxEase.quartOut});
-	FlxTween.tween(achievementText, {alpha: 1, x: 0}, 0.5, {startDelay: 0.5, ease: FlxEase.quartOut});
+	tween1.tween(achievementToast, {x: toastX, y: toastY, scaleX: 1, scaleY: 1}, 1);
+	tween2.tween(colorShit, {redMultiplier: 1, greenMultiplier: 1, blueMultiplier: 1, redOffset: 0, greenOffset: 0, blueOffset: 0}, 1);
+	tween3.tween(achievementPanel, {alpha: 1, x: 0}, 0.5);
+	tween4.tween(achievementText, {alpha: 1, x: 0}, 0.5);
+	tween5.tween(achievementText, {alpha: 0, x: 0}, 0.5);
 
-	FlxTween.tween(achievementText, {alpha: 0, x: 0}, 0.5, {startDelay: 2, ease: FlxEase.quartOut, onComplete: _ -> {
-			achievementText.text = data.name;
-			achievementText.height = achievementText.textHeight + 6;
-			objectCenter(achievementText, achievementPanel);
-			FlxTween.tween(achievementText, {alpha: 1, x: 0}, 0.5, {ease: FlxEase.quartOut});
-    }});
+	var tweenArray:Array<VarTween> = [tween1, tween2, tween3, tween4, tween5];
 
 	FlxG.game.addChild(achievementToast);
 
-	if (foundNull) {
+	if (foundAchNull) {
 		activeAchievements[magicValueUwU] = {
+			data: data,
 			sprite: achievementToast,
+			panel: achievementPanel,
+			text: achievementText,
+			shownName: false,
 			timer: 0
 		};
+		activeTweens[magicValueUwU] = tweenArray;
     } else {
 		activeAchievements.push({
+			data: data,
 			sprite: achievementToast,
+			panel: achievementPanel,
+			text: achievementText,
+			shownName: false,
+			onFinish: false,
 			timer: 0
 		});
+		activeTweens.push(tweenArray);
     }
 }
 
-function updateAchievement(achievement:Sprite, event:Event) {
-    trace("piss");
-}
-
+var showAchTimer:Float = 2.5;
 var maxTimer:Float = 6;
 function update(elapsed:Float) {
-	for (achievement in activeAchievements) {
+	for (i => achievement in activeAchievements) {
 		if (achievement == null) continue;
 
 		achievement.timer += elapsed;
+
+		for (tween in activeTweens[i])
+			tween.update(elapsed);
+
+		if (achievement.timer >= showAchTimer && !achievement.shownName) {
+			if (achievement.text.alpha > 0) continue;
+
+			achievement.shownName = true;
+
+			var tween:VarTween = new VarTween({ease: FlxEase.quartOut});
+			tween.tween(achievement.text, {alpha: 1}, 0.5);
+			activeTweens[i].push(tween);
+
+			achievement.text.text = achievement.data.name;
+			achievement.text.height = achievement.text.textHeight + 6;
+			objectCenter(achievement.text, achievement.panel);
+		}
+
 		if (achievement.timer >= maxTimer) {
-			FlxTween.tween(achievement.sprite, {alpha: 0}, 0.2, {onComplete: _ -> dispose(achievement)});
+			if (achievement.onFinish && achievement.sprite.alpha <= 0) {
+				for (tween in activeTweens[i])
+					tween.destroy();
+
+				activeTweens[i] = null;
+				dispose(achievement);
+			}
+
+			if (!achievement.onFinish) {
+				achievement.onFinish = true;
+				var lastTween:VarTween = new VarTween();
+				lastTween.tween(achievement.sprite, {alpha: 0}, 0.2);
+				activeTweens[i].push(lastTween);
+			}
         }
     }
 }
 
 function dispose(achievement:Array<Dynamic>) {
 	FlxG.game.removeChild(achievement.sprite);
+
+	achievement.data = null;
+	achievement.text = null;
+	achievement.panel = null;
+	achievement.sprite = null;
 
 	var index:Int = activeAchievements.indexOf(achievement);
 	activeAchievements[index] = null;
@@ -199,7 +270,13 @@ function dispose(achievement:Array<Dynamic>) {
 
 function disposeAll() {
 	for (achievement in activeAchievements) {
+		if (achievement == null) continue;
 		FlxG.game.removeChild(achievement.sprite);
+
+		achievement.text = null;
+		achievement.panel = null;
+		achievement.sprite = null;
+
 		achievement = null;
     }
 
@@ -242,6 +319,7 @@ public static function saveAchievements() {
 
 function destroy() {
 	disposeAll();
+	activeAchievements = null;
 }
 
 class Achievement {

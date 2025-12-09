@@ -93,10 +93,11 @@ function startMod() {
 function create() {
 	MusicBeatState.skipTransIn = true;
 
+	/*
 	if (!modInitialized) {
 		startMod();
         return;
-    }
+    }*/
 
     changeDiscordMenuStatus("Title Screen");
 

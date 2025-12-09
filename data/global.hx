@@ -24,7 +24,7 @@ importScript("utils/stats");
 importScript("utils/achievements");
 importScript("utils/flags");
 
-public static final MOD_VERSION:String = "dev3";
+public static final MOD_VERSION:String = "1.0.0";
 
 public static final PIXEL_SAVE_PATH:String = "kenton";
 public static final PIXEL_SAVE_NAME:String = "impostorPixel";
@@ -97,6 +97,7 @@ function initSaveData() {
     FlxG.save.data.impPixelStorySequence ??= 0;
     FlxG.save.data.impPixelBeans ??= 0;
     FlxG.save.data.impPixelStats ??= getStats(true);
+	FlxG.save.data.impPixelAchievements ??= [];
     FlxG.save.data.impPixelPlayablesUnlocked ??= ["bf" => true];
     FlxG.save.data.impPixelSkinsUnlocked ??= [];
     FlxG.save.data.impPixelFlags ??= getFlags(true);
@@ -110,6 +111,7 @@ function initSaveData() {
 function initVars() {
 	setStoryProgression(FlxG.save.data.impPixelStorySequence);
     initStats(FlxG.save.data.impPixelStats);
+	achievementsUnlocked = FlxG.save.data.impPixelAchievements;
     playablesList = FlxG.save.data.impPixelPlayablesUnlocked;
     skinsList = FlxG.save.data.impPixelSkinsUnlocked;
     pixelBeans = FlxG.save.data.impPixelBeans;
@@ -202,15 +204,13 @@ function prepareAFKScreen() {
 	afkText.wordWrap = true;
 	afkText.antiAliasType = 1;
 
-	var font = Assets.getFont(Paths.font("pixeloidsans.ttf"));
-
-	var mainFormat = new TextFormat(font.fontName, 48, 0xFFFFFFFF);
+	var mainFormat = new TextFormat(Paths.getFontName(Paths.font("pixeloidsans.ttf")), 48, 0xFFFFFFFF);
 	mainFormat.align = 0;
 	afkText.defaultTextFormat = mainFormat;
 	afkText.text = translate("afk-text");
 
 	var firstLength:Int = afkText.text.length;
-	var descFormat = new TextFormat(font.fontName, 24, 0xFF7F7F7F);
+	var descFormat = new TextFormat(Paths.getFontName(Paths.font("pixeloidsans.ttf")), 24, 0xFF7F7F7F);
 	descFormat.align = 0;
 	afkText.text += '\n' + translate("afk-desc");
 	afkText.setTextFormat(descFormat, firstLength, afkText.text.length);
@@ -271,7 +271,9 @@ function update(elapsed:Float) {
         toggleFullscreen();
 
     if (FlxG.keys.justPressed.F8)
-		testAchievement();
+		testPopupAchievement();
+	if (FlxG.keys.justPressed.F9)
+		testGrantAchievement();
 
     if (fakeMobile) {
         if (FlxG.keys.justPressed.F8) {

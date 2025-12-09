@@ -21,7 +21,7 @@ import VSliceCharacter;
 /**
  * A camera that can hold extra information that wouldn't fit in the HUD camera (mostly because of the zoom events).
  * 
- * For example the task panel, the achievements popus, you name it.
+ * For example the task panel.
  */
 public var camExtra:FlxCamera;
 
@@ -367,13 +367,13 @@ function improveStrums() {
 
     // fix strumlines draw order
     for (strumline in strumLines.members) {
+		remove(strumline);
         insert(members.length, strumline);
     }
 
     // draw splashes on top
-    for (group in splashHandler.grpMap.keyValueIterator()) {
-        insert(members.length, group.value);
-    }
+	remove(splashHandler);
+	insert(members.length, splashHandler);
 
     // add backgrounds to the strumlines
     if (FlxG.save.data.impPixelStrumBG > 0) {
@@ -1255,7 +1255,7 @@ function transition2results() {
 
     FlxTween.tween(camHUD, {alpha: 0}, 1);
     camGame.fade(FlxColor.BLACK, 1, false);
-    new FlxTimer().start(1, _ -> FlxG.switchState(new ModState("resultsScreen")));
+    new FlxTimer().start(1, _ -> FlxG.switchState(new FreeplayState()));
 }
 
 function resetTallies() {

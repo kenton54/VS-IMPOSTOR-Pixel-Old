@@ -72,11 +72,11 @@ function getRandomLoadingAnimation():String {
 var githubRequest:Future<Array<Dynamic>> = null;
 
 function create() {
-	//if (!FlxG.save.data.impPixelCheckUpdates) {
+	if (!FlxG.save.data.impPixelCheckUpdates) {
 		MusicBeatState.skipTransOut = true;
 		startMod();
 		return;
-	//}
+	}
 
 	changeDiscordStatus("Checking for Updates");
 
@@ -161,8 +161,7 @@ function tryGetReleases() {
 		FlxG.resetState();
 	} else {
 		githubRequest.onComplete(function(data:Array<Dynamic>) {
-			if (data != null && data.length > 0)
-				foundUpdate(data);
+			foundUpdate(data);
 		});
 		githubRequest.onError(retrieveReleasesCheckError);
 	}

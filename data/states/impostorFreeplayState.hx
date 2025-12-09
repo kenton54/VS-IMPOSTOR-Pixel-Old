@@ -9,8 +9,7 @@ import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.FlxInterpolateColor;
 import funkin.savedata.FunkinSave;
 import PlayableData;
-import PixelStars;
-importScript("data/variables");
+import StarsBackdrop;
 
 var loadedPlayable:PlayableData;
 
@@ -127,9 +126,9 @@ function create() {
     bordersCam.bgColor = FlxColor.TRANSPARENT;
     FlxG.cameras.add(bordersCam, false);
 
-    var stars:PixelStars = new PixelStars(-30, 4, 2);
-    stars.setCamera(spaceCam);
-    stars.addStars();
+	var stars:StarsBackdrop = new StarsBackdrop(-30, 4, 2);
+    stars.camera = spaceCam;
+    add(stars);
 
     glow = new FlxSprite().loadGraphic(Paths.image("menus/freeplay/glow"));
     glow.scale.set(3, 3);
@@ -165,7 +164,7 @@ function create() {
     charP2Side.add(player2BG);
     charP2SideMoveDistance = player2BG.width;
 
-    var linething1:FlxSprite = new FlxSprite((charBG.x + charBG.width) - 32 * windowSizeMult, -10).makeGraphic(12, FlxG.height * 1.5, FlxColor.WHITE);
+    var linething1:FlxSprite = new FlxSprite((charBG.x + charBG.width) - 32, -10).makeGraphic(12, FlxG.height * 1.5, FlxColor.WHITE);
     linething1.angle = -9.45;
     charP1Side.add(linething1);
 
