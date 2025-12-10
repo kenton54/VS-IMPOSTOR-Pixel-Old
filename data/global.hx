@@ -270,10 +270,12 @@ function update(elapsed:Float) {
 	if (FlxG.keys.justPressed.F11 && canFullscreen)
         toggleFullscreen();
 
+    /*
     if (FlxG.keys.justPressed.F8)
 		testPopupAchievement();
 	if (FlxG.keys.justPressed.F9)
 		testGrantAchievement();
+    */
 
     if (fakeMobile) {
         if (FlxG.keys.justPressed.F8) {
