@@ -3,6 +3,7 @@ import flixel.effects.FlxFlicker;
 import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxText.FlxTextFormat;
 import flixel.util.FlxGradient;
+import funkin.backend.system.Flags;
 import funkin.backend.MusicBeatState;
 import funkin.options.Options;
 import hxvlc.flixel.FlxVideoSprite;

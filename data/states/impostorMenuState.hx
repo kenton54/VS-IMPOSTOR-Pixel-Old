@@ -4,6 +4,7 @@ import flixel.math.FlxRect;
 import flixel.FlxBasic;
 import funkin.backend.assets.ModsFolder;
 import funkin.backend.system.framerate.Framerate;
+import funkin.backend.system.Flags;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.MusicBeatGroup;
 import funkin.editors.character.CharacterSelection;
@@ -11,6 +12,7 @@ import funkin.editors.charter.CharterSelection;
 import funkin.editors.stage.StageSelection;
 import funkin.editors.EditorTreeMenu;
 import funkin.menus.credits.CreditsMain;
+import funkin.menus.ModSwitchMenu;
 import funkin.options.Options;
 import funkin.options.OptionsMenu;
 import openfl.system.System;
@@ -241,6 +243,11 @@ var mainSectionButtons:Array<Dynamic> = [
 		scale: baseScale,
 		type: ButtonType.OTHERS,
         onSelect: function() {
+            if (Flags.VERSION == "1.0.1" || Flags.VERSION == "1.0.0") {
+				modSubState();
+                return;
+            }
+
             var modsList:Array<String> = ModsFolder.getModsList();
             var window:WindowSubMenu = new WindowSubMenu(translate("generic.mods"), 0, modsList.length);
 
@@ -690,6 +697,11 @@ function postCreate() {
 function statsMenu() {
 	playMenuSound("select", 1);
 	openSubState(new ModSubState("impostorStatsMenuSubState"));
+}
+
+function modSubState() {
+	playMenuSound("select", 1);
+	openSubState(new ModSwitchMenu());
 }
 
 var debugOptions:Array<Array<Dynamic>> = [
