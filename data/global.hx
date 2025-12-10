@@ -24,10 +24,10 @@ importScript("utils/stats");
 importScript("utils/achievements");
 importScript("utils/flags");
 
-public static final MOD_VERSION:String = "1.0.0";
+public static final MOD_VERSION(default, never):String = "1.0";
 
-public static final PIXEL_SAVE_PATH:String = "kenton";
-public static final PIXEL_SAVE_NAME:String = "impostorPixel";
+public static final PIXEL_SAVE_PATH(default, never):String = "kenton";
+public static final PIXEL_SAVE_NAME(default, never):String = "impostorPixel";
 
 public static var modInitialized:Bool = false;
 
