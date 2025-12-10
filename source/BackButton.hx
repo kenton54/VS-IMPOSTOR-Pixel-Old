@@ -26,6 +26,11 @@ class BackButton extends FunkinSprite {
      */
     public var instant:Bool = false;
 
+    /**
+     * Whether the button can be pressed multiple times.
+     */
+    public var multiPress:Bool = false;
+
     public var restOpacity:Float = 0.3;
 
     var _isHovering:Bool = false;
@@ -56,6 +61,15 @@ class BackButton extends FunkinSprite {
 
 		if (confirmCallback != null)
             onConfirmEnd.add(confirmCallback);
+
+		animation.onFinish.add(function(name:String) {
+			if (name != "press") return;
+
+			if (multiPress)
+				enabled = true;
+
+			dispatchSignal(onConfirmEnd);
+		});
     }
 
     public function reset() {
@@ -101,7 +115,7 @@ class BackButton extends FunkinSprite {
         for (camera in cameras) {
 			final worldPoint:FlxPoint = getPointer().getWorldPosition(camera);
 
-            if (overlapsPoint(worldPoint)) {
+            if (overlapsPoint(worldPoint, true, camera)) {
                 return true;
             }
         }
@@ -159,7 +173,9 @@ class BackButton extends FunkinSprite {
 
         if (instant) {
             _confirmed = true;
-            enabled = false;
+
+			if (!multiPress)
+                enabled = false;
 
             dispatchSignal(onConfirmEnd);
             return;
@@ -178,11 +194,6 @@ class BackButton extends FunkinSprite {
         dispatchSignal(onConfirm);
 
         //vibrateDevice(0.1, 0.5);
-
-        animation.onFinish.add(function(name:String) {
-            if (name != "press") return;
-            dispatchSignal(onConfirmEnd);
-        });
     }
 
     override public function destroy() {

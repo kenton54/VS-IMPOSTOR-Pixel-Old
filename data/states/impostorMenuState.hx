@@ -105,6 +105,7 @@ var mainSectionButtons:Array<Dynamic> = [
 			freeplayButton.available = true; //!deadVersion;
 			freeplayButton.addLabel(freeplayText, FlxPoint.get(0, 43.5));
             freeplayButton.onSelect = function() {
+                disableInput();
                 new FlxTimer().start(1, _ -> FlxG.switchState(new FreeplayState()));
             };
 			objectCenter(freeplayButton.label, freeplayButton.button, FlxAxes.X);
@@ -188,7 +189,12 @@ var mainSectionButtons:Array<Dynamic> = [
 			creditsButton.idleColor = 0xFF0A3C33;
 			creditsButton.hoverColor = 0xFF10584B;
 			creditsButton.addLabel(translate("generic.credits"), FlxPoint.get(4, 11), 48, 52);
-			creditsButton.available = !deadVersion;
+			creditsButton.available = true;//!deadVersion;
+			creditsButton.onSelect = function() {
+				disableInput();
+				setTransition("fade");
+				new FlxTimer().start(0.5, _ -> FlxG.switchState(new ModState("impostorCreditsState")));
+			};
 			window.add(creditsButton);
 
 			var musicButton:WindowButton = new WindowButton(windowArea, windowArea.width / 2, 46 * baseScale, {
@@ -318,7 +324,7 @@ function create() {
 
     subStateClosed.add(onCloseSubstate);
 
-	setTransition("fadeUp");
+	//setTransition("fadeUp");
 
     if (FlxG.sound.music == null && !deadVersion) {
         CoolUtil.playMenuSong();
