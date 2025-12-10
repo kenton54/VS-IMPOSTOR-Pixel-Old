@@ -164,7 +164,7 @@ function initWindow() {
 
     FlxG.mouse.visible = true;
 
-    //resizeGame(1280, 720);
+    resizeGame(1280, 720, false);
 }
 
 function initMobile() {

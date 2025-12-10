@@ -106,6 +106,7 @@ function create() {
 	add(stars);
 
 	titleGrp = new FlxGroup();
+	//titleGrp.visible = !deadVersion;
 	add(titleGrp);
 
 	var rgb:RGBPalette = new RGBPalette(titleColors[0][0], titleColors[0][1]);
@@ -116,7 +117,6 @@ function create() {
     titleColor.screenCenter(FlxAxes.X);
     titleColor.y = FlxG.height * 0.2;
     titleColor.shader = rgb.shader;
-	titleColor.visible = !deadVersion;
 	titleGrp.add(titleColor);
 
 	var titleAnimIndices:Array<Int> = [0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0];
@@ -127,7 +127,6 @@ function create() {
     titleMain.centerOffsets();
     titleMain.screenCenter(FlxAxes.X);
     titleMain.y = FlxG.height * 0.2;
-	titleMain.visible = !deadVersion;
 	titleGrp.add(titleMain);
 
 	fakeBlackTransition = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height * 4, [0x00000000, 0xFF000000, 0xFF000000]);
