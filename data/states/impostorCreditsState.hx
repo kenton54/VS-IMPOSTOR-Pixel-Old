@@ -37,7 +37,7 @@ var creditsData:Array<Array<Dynamic>> = [
         category: "IMPOSTORM",
 		link: "https://vsimpostor.com",
         contributors: [
-            {name: "Clowfoe", youtube: "https://www.twitter.com/Clowfoe", twitter: "https://twitter.com/Clowfoe", discord: "https://www.discord.gg/clowfoe"},
+            {name: "Clowfoe", youtube: "https://www.youtube.com/@Clowfoe", twitter: "https://twitter.com/Clowfoe", discord: "https://www.discord.gg/clowfoe"},
 			{name: "emi3_"},
 			{name: "Rareblin", youtube: "https://www.youtube.com/@Rareblin", spotify: "https://open.spotify.com/artist/5b4tXJ3zWEjSZCSJDs20bC", soundcloud: "https://soundcloud.com/rareblin", appleMusic: "https://music.apple.com/us/artist/rareblin/1596839841"},
 			{name: "loggo", twitter: "https://twitter.com/loggoman512"},
