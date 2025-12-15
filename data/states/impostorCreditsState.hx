@@ -8,17 +8,27 @@ var stars:StarsBackdrop;
 var topBorder:FlxBackdrop;
 var backButton:BackButton;
 
+var arrow:FunkinSprite;
+
+var categoriesGroup:FlxSpriteGroup;
 var impostorPixel:BackButton;
 var impostorm:BackButton;
 var innersloth:BackButton;
+var codename:BackButton;
+var fridayNightFunkin:BackButton;
 
-var minCategoryX:Float = 20;
-var minContributorX:Float = 50;
+var positionOffset:Float = 12;
+
+var minCategoryX:Float = 40;
+var minContributorX:Float = minCategoryX + 30;
 var creditsGroup:Array<FlxSpriteGroup> = [];
 var creditsPanel:CreditsPanel;
 var creditsData:Array<Array<Dynamic>> = [
     {
         category: "VS IMPOSTOR Pixel",
+		portrait: "pixel-big",
+		scale: 2.4,
+		about: "It's the mod you're playing right now!\nMade with love and passion by one single developer.",
         contributors: [
             {
                 name: "kenton",
@@ -28,14 +38,26 @@ var creditsData:Array<Array<Dynamic>> = [
 				youtube: "https://www.youtube.com/@kenton.54",
 				github: "https://github.com/kenton54",
 				kofi: "https://ko-fi.com/kenton54"
+            },
+			{
+                name: "Silte",
+                portrait: "",
+                jobs: ["musician"],
+				quote: "uh hi ehh, how did i get here",
+				youtube: "https://www.youtube.com/@SilteTheMusician"
             }
         ]
     },
     {
-		// If anyone asks, this list is from https://vsimpostor.com/#credits
-        // If i got someone wrong, its clowfoe's fault :v
         category: "IMPOSTORM",
-		link: "https://vsimpostor.com",
+		portrait: "impostorm-big",
+		scale: 0.8,
+		offset: 8,
+		about: "These are the people that made the original VS IMPOSTOR.\nGo check them out!",
+		website: "https://vsimpostor.com",
+
+		// If anyone asks, this list is from https://vsimpostor.com/#credits
+		// If i got someone wrong, its clowfoe's fault :v
         contributors: [
             {name: "Clowfoe", youtube: "https://www.youtube.com/@Clowfoe", twitter: "https://twitter.com/Clowfoe", discord: "https://www.discord.gg/clowfoe"},
 			{name: "emi3_"},
@@ -82,7 +104,6 @@ var creditsData:Array<Array<Dynamic>> = [
 			{name: "MashProTato", twitter: "https://twitter.com/MashProTato"},
 			{name: "Kai"},
 			{name: "Renyar"},
-			{name: "Saruky", youtube: "https://www.youtube.com/@Saruky", twitter: "https://x.com/Saruky__", spotify: "https://open.spotify.com/artist/3MqkT4MbvBItBby3mUmvIS", soundcloud: "https://soundcloud.com/saruky", appleMusic: "https://music.apple.com/us/artist/saruky/1586337554"},
 			{name: "Moonmistt"},
 			{name: "Philiplol"},
 			{name: "Doguy"},
@@ -99,8 +120,153 @@ var creditsData:Array<Array<Dynamic>> = [
     },
     {
         category: "Innersloth",
-		link: "https://www.innersloth.com",
-    }
+		portrait: "innersloth-big",
+		scale: 0.45,
+		about: "This is the company behind Among Us.\nGo support them!",
+		website: "https://www.innersloth.com",
+		youtube: "https://www.youtube.com/channel/UCKuI2VapWQjkMz2DDrLvLKw",
+		discord: "https://discord.com/invite/innersloth",
+		twitter: "https://twitter.com/InnerslothDevs",
+		tiktok: "https://www.tiktok.com/@amongus"
+    },
+	{
+		category: "Codename Engine",
+		portrait: "codename-big",
+		scale: 0.7,
+		about: "The engine this mod uses!\nThank you so much for making this amazing engine <3\nIf you want to make big mods, I recommend you this engine! It's really powerful.\nThank you Codename Crew for making this beautiful engine, and for easing mod production.",
+		website: "https://codename-engine.com",
+		youtube: "https://www.youtube.com/@CodenameEngine",
+		twitter: "https://twitter.com/FNFCodenameEG",
+		bluesky: "https://bsky.app/profile/codename-engine.com",
+		discord: "https://discord.com/servers/codename-engine-860561967383445535/",
+		github: "https://github.com/CodenameCrew/CodenameEngine",
+		itchio: "https://nex-isdumb.itch.io/codename-engine",
+		gamebanana: "https://gamebanana.com/studios/38320",
+		kofi: "https://ko-fi.com/codename_engine",
+		contributors: [
+			{name: "YoshiCrafter29", github: "https://github.com/YoshiCrafter29"},
+			{name: "NeeEoo", github: "https://github.com/NeeEoo"},
+			{name: "lunarcleint", github: "https://github.com/lunarcleint"},
+			{name: "NexIsDumb", github: "https://github.com/NexIsDumb"},
+			{name: "Raltyro", github: "https://github.com/Raltyro"},
+			{name: "Frakits", github: "https://github.com/Frakits"},
+			{name: "SrtHero278", github: "https://github.com/SrtHero278"},
+			{name: "FuroYT", github: "https://github.com/FuroYT"},
+			{name: "TheZoroForce240", github: "https://github.com/TheZoroForce240"},
+			{name: "WizardMantis441", github: "https://github.com/WizardMantis441"},
+			{name: "Verwex", github: "https://github.com/Verwex"},
+			{name: "SenDoesStuff", github: "https://github.com/SenDoesStuff"},
+			{name: "swordcube", github: "https://github.com/swordcube"},
+			{name: "chronicsilly", github: "https://github.com/chronicsilly"},
+			{name: "WhosGalaxie", github: "https://github.com/WhosGalaxie"},
+			{name: "KolzeYT", github: "https://github.com/KolzeYT"},
+			{name: "MAJigsaw77", github: "https://github.com/MAJigsaw77"},
+			{name: "rodney528", github: "https://github.com/rodney528"},
+			{name: "bopcityfan", github: "https://github.com/bopcityfan"},
+			{name: "crowplexus", github: "https://github.com/crowplexus"},
+			{name: "HeroEyad", github: "https://github.com/HeroEyad"},
+			{name: "bctix", github: "https://github.com/bctix"},
+			{name: "WhosGalaxie", github: "https://github.com/WhosGalaxie"},
+			{name: "mariosbignuts", github: "https://github.com/mariosbignuts"},
+			{name: "Sword352", github: "https://github.com/Sword352"},
+			{name: "TechnikTil", github: "https://github.com/TechnikTil"},
+			{name: "Jamextreme140", github: "https://github.com/Jamextreme140"},
+			{name: "Jurtaa", github: "https://github.com/Jurtaa"},
+			{name: "theeoo-h", github: "https://github.com/theoo-h"},
+			{name: "betpowo", github: "https://github.com/betpowo"},
+			{name: "ItsLJcool", github: "https://github.com/ItsLJcool"},
+		]
+	},
+	{
+		category: "Friday Night Funkin'",
+		portrait: "fnf-big",
+		scale: 0.75,
+		offset: 10,
+		about: "The creators of our beloved rhythm game!",
+		website: "https://funkin.me/blog/",
+		youtube: "https://www.youtube.com/@FNF_Developers",
+		twitter: "https://x.com/FNF_Developers",
+		instagram: "https://www.instagram.com/fnf_developers/",
+		tiktok: "https://www.tiktok.com/@fnf_developers",
+		playstore: "https://play.google.com/store/apps/details?id=me.funkin.fnf",
+		appstore: "https://apps.apple.com/us/app/friday-night-funkin-mobile/id6740428530",
+		itchio: "https://ninja-muffin24.itch.io/funkin",
+		github: "https://github.com/FunkinCrew/Funkin",
+		newgrounds: "https://www.newgrounds.com/portal/view/770371",
+		kickstarter: "https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game",
+		spotify: "https://open.spotify.com/artist/4fqDivs0BnIje4XZ10cF2d",
+		appleMusic: "https://music.apple.com/es/artist/funkin-sound-team/1680992035",
+		gamebanana: "https://gamebanana.com/games/8694",
+		gamejolt: "https://gamejolt.com/games/tag-fnf",
+
+		// taken from the wiki lol (mostly)
+		contributors: [
+			{
+				name: "PhantomArcade",
+				jobs: ["director", "artist", "animator", "designer", "writter"],
+				youtube: "https://www.youtube.com/PhantomArcade",
+				twitch: "https://www.twitch.tv/phantom_arcade",
+				twitter: "https://x.com/PhantomArcade3K",
+				instagram: "https://www.instagram.com/phantomarcade/",
+				newgrounds: "https://phantomarcade.newgrounds.com",
+			},
+			{
+				name: "ninjamuffin99",
+				jobs: ["programmer"],
+				newgrounds: "https://ninjamuffin99.newgrounds.com",
+				twitter: "https://x.com/ninja_muffin99",
+				github: "https://github.com/ninjamuffin99"
+			},
+			{
+				name: "evilsk8r",
+				jobs: ["artist", "designer"],
+				twitter: "https://x.com/evilsk8r",
+				newgrounds: "https://evilsk8r.newgrounds.com"
+			},
+			{
+				name: "Kawai Sprite",
+				jobs: ["musician"],
+				newgrounds: "https://kawaisprite.newgrounds.com",
+				appleMusic: "https://music.apple.com/ve/artist/kawai-sprite/1358602718",
+				soundcloud: "https://soundcloud.com/kawaispritefak",
+				twitter: "https://x.com/kawaisprite",
+				spotify: "https://open.spotify.com/artist/19nnKeOt6Vo1g0ijPcFxdu"
+			},
+			{
+				name: "EliteMasterEric",
+				jobs: ["programmer"],
+				twitter: "https://x.com/EliteMasterEric",
+				github: "https://github.com/EliteMasterEric",
+				twitch: "https://www.twitch.tv/elitemastereric"
+			},
+			{
+				name: "Saruky",
+				jobs: ["musician"],
+				youtube: "https://www.youtube.com/@Saruky",
+				twitter: "https://x.com/Saruky__",
+				spotify: "https://open.spotify.com/artist/3MqkT4MbvBItBby3mUmvIS",
+				soundcloud: "https://soundcloud.com/saruky",
+				appleMusic: "https://music.apple.com/us/artist/saruky/1586337554"
+			},
+			{
+				name: "brekkits",
+				jobs: ["artist", "designer"],
+				twitter: "https://x.com/brekkist"
+			},
+			{
+				name: "Hundrec",
+				jobs: ["organizer"],
+				youtube: 'https://www.youtube.com/@hundrec',
+				twitter: "https://x.com/Hundrec",
+				github: "https://github.com/Hundrec"
+			},
+			{
+				name: "Abnormal",
+				jobs: ["organizer"],
+				github: "https://github.com/AbnormalPoof"
+			}
+		]
+	}
 ];
 
 var baseScale:Float = 4;
@@ -154,36 +320,55 @@ function create() {
 	var lastGroup:FlxSpriteGroup = creditsGroup[creditsGroup.length - 1];
 	var lastObjectPos:Float = lastGroup.members[lastGroup.members.length - 1].y;
 
-	impostorm = new BackButton(0, -1, () -> setPosition(creditsGroup[1].members[0].y - FlxG.height / 2), 0.63, "menus/credits/impostorm", false, true);
-	impostorm.multiPress = true;
-	impostorm.scrollFactor.set(0, 0);
-	impostorm.screenCenter(FlxAxes.X);
-
-	impostorPixel = new BackButton(impostorm.x - 40, 0, () -> setPosition(creditsGroup[0].members[0].y - FlxG.height / 2), baseScale * 0.8, "menus/credits/pixel", false, true);
-	impostorPixel.multiPress = true;
-	impostorPixel.scrollFactor.set(0, 0);
-	impostorPixel.x -= impostorPixel.width;
-
-	innersloth = new BackButton(impostorm.x + impostorm.width + 40, 6, () -> setPosition(creditsGroup[2].members[0].y - FlxG.height / 2), 0.52, "menus/credits/innersloth", false, true);
-	innersloth.multiPress = true;
-	innersloth.scrollFactor.set(0, 0);
-
 	creditsPanel = new CreditsPanel(FlxG.width, topBorder.height, 512, FlxG.height - topBorder.height);
 	creditsPanel.scrollFactor.set(0, 0);
 	creditsPanel.x -= creditsPanel.width;
 	add(creditsPanel);
 
-	add(topBorder);
-	add(backButton);
-	add(impostorPixel);
-	add(impostorm);
-	add(innersloth);
+	arrow = new FunkinSprite(8, 0, Paths.image("menus/credits/arrow"));
+	arrow.scale.set(4, 4);
+	arrow.updateHitbox();
+	arrow.scrollFactor.set();
+	arrow.screenCenter(FlxAxes.Y);
+	arrow.y += topBorder.height / 2;
+	add(arrow);
 
-	FlxG.camera.minScrollY = firstObjectPos;
-	lerpScroll = firstObjectPos;
+	add(topBorder);
+
+	categoriesGroup = new FlxSpriteGroup();
+	categoriesGroup.scrollFactor.set();
+	add(categoriesGroup);
+
+	add(backButton);
+
+	impostorPixel = new BackButton(0, 1, () -> setPosition(creditsGroup[0].members[0].y - FlxG.height / 2 - positionOffset), baseScale * 0.8, "menus/credits/pixel", false, true);
+	impostorPixel.multiPress = true;
+
+	impostorm = new BackButton(impostorPixel.x + impostorPixel.width + 40, -1, () -> setPosition(creditsGroup[1].members[0].y - FlxG.height / 2 - positionOffset), 0.63, "menus/credits/impostorm", false, true);
+	impostorm.multiPress = true;
+
+	innersloth = new BackButton(impostorm.x + impostorm.width + 40, 6, () -> setPosition(creditsGroup[2].members[0].y - FlxG.height / 2 - positionOffset), 0.52, "menus/credits/innersloth", false, true);
+	innersloth.multiPress = true;
+
+	codename = new BackButton(innersloth.x + innersloth.width + 40, 0, () -> setPosition(creditsGroup[3].members[0].y - FlxG.height / 2 - positionOffset), 0.6, "menus/credits/codename", false, true);
+	codename.multiPress = true;
+
+	fridayNightFunkin = new BackButton(codename.x + codename.width + 40, -1, () -> setPosition(creditsGroup[4].members[0].y - FlxG.height / 2 - positionOffset), 0.55, "menus/credits/fnf", false, true);
+	fridayNightFunkin.multiPress = true;
+
+	categoriesGroup.add(impostorPixel);
+	categoriesGroup.add(impostorm);
+	categoriesGroup.add(innersloth);
+	categoriesGroup.add(codename);
+	categoriesGroup.add(fridayNightFunkin);
+
+	categoriesGroup.screenCenter(FlxAxes.X);
+
+	FlxG.camera.minScrollY = firstObjectPos - positionOffset;
+	lerpScroll = firstObjectPos - positionOffset;
 	snapPosition();
 
-	FlxG.camera.maxScrollY = lastObjectPos + FlxG.height / 2;
+	FlxG.camera.maxScrollY = lastObjectPos + FlxG.height / 2 - positionOffset;
 
 	stars.setPosition(0, FlxG.camera.minScrollY - FlxG.height / 2);
 	stars.setLimits(FlxG.width, FlxG.camera.maxScrollY);
@@ -211,6 +396,13 @@ function update(elapsed:Float) {
             }
         }
     }
+
+	if (FlxG.keys.justPressed.HOME)
+		setPosition(creditsGroup[0].members[0].y - FlxG.height / 2 - positionOffset);
+	if (FlxG.keys.justPressed.END) {
+		var group = creditsGroup[creditsGroup.length - 1];
+		setPosition(group.members[group.members.length - 1].y - FlxG.height / 2 - positionOffset);
+	}
 
 	var data:Array<Dynamic> = getContributorData(getSelected());
 	creditsPanel.update(elapsed);
@@ -269,9 +461,11 @@ function getSelected():FunkinText {
 function getContributorData(object:FunkinText):Array<Dynamic> {
 	if (object != null) {
 		for (credits in creditsData) {
+			if (credits.category == object.text)
+				return credits;
 			if (credits.contributors != null) {
 				for (contributor in credits.contributors) {
-					if (object.text == contributor.name)
+					if (contributor.name == object.text)
 						return contributor;
 				}
 			}
@@ -300,7 +494,8 @@ class CreditsPanel extends MusicBeatGroup {
 	var title:FunkinText;
 	var portrait:FunkinSprite;
 	var quote:FunkinText;
-	var socialsGroup:FlxSpriteGroup;
+	var socialsGroup1:FlxSpriteGroup;
+	var socialsGroup2:FlxSpriteGroup;
 	var background:FlxSprite;
 
 	var _lastData:Array<Dynamic> = [];
@@ -327,12 +522,19 @@ class CreditsPanel extends MusicBeatGroup {
 		quote.visible = false;
 		add(quote);
 
-		socialsGroup = new FlxSpriteGroup();
-		add(socialsGroup);
+		socialsGroup1 = new FlxSpriteGroup();
+		add(socialsGroup1);
+
+		socialsGroup2 = new FlxSpriteGroup();
+		add(socialsGroup2);
 	}
 
 	public function update(elapsed:Float) {
-		for (social in socialsGroup.members) {
+		for (social in socialsGroup1.members) {
+			if (social != null && pointerOverlaps(social) && pointerJustPressed())
+				social.select();
+		}
+		for (social in socialsGroup2.members) {
 			if (social != null && pointerOverlaps(social) && pointerJustPressed())
 				social.select();
 		}
@@ -343,16 +545,52 @@ class CreditsPanel extends MusicBeatGroup {
 
 		portrait.visible = false;
 		quote.visible = false;
+		quote.scale.set(1, 1);
+		quote.updateHitbox();
 
-		for (sprite in socialsGroup)
+		for (sprite in socialsGroup1)
 			sprite.destroy();
+		socialsGroup1.clear();
 
-		socialsGroup.clear();
+		for (sprite in socialsGroup2)
+			sprite.destroy();
+		socialsGroup2.clear();
 
 		if (data.name == null) {
-			title.y = this.y + 250;
-			title.text = "Hover over a contributor to show its information.";
-			title.size = 26;
+			if (data.category == null) {
+				title.y = this.y + 250;
+				title.text = "Hover over an organization/team or contributor to show their information.";
+				title.size = 26;
+			} else {
+				portrait.loadGraphic(Paths.image("menus/credits/" + data.portrait));
+				portrait.scale.set(data.scale ?? 1, data.scale ?? 1);
+				portrait.updateHitbox();
+				portrait.visible = true;
+				portrait.y = this.y + 15;
+				portrait.y -= data.offset ?? 0;
+				portrait.x = this.x + (background.width - portrait.width) / 2;
+
+				var nextPosition:Float = portrait.height + 30;
+
+				title.y = this.y + nextPosition;
+				title.text = data.category;
+				title.size = 30;
+
+				nextPosition += title.height + 10;
+
+				quote.text = data.about;
+				quote.visible = true;
+				quote.y = this.y + nextPosition;
+				nextPosition += quote.height;
+
+				createSocials(data);
+
+				var quoteHeightlimit:Float = distanceBetweenFloats(quote.y, socialsGroup1.y) - 10;
+				if (quote.height > quoteHeightlimit) {
+					quote.scale.y = quoteHeightlimit / quote.height;
+					quote.updateHitbox();
+				}
+			}
 		} else {
 			title.y = this.y + 20;
 			title.text = data.name;
@@ -375,62 +613,117 @@ class CreditsPanel extends MusicBeatGroup {
 				nextPosition += quote.height;
 			}
 
-			socialsGroup.y = this.y + background.height - 20;
-
-			var iconXPos:Float = 0;
-			var iconScale:Float = 3.2;
-			var iconLength:Int = 0;
-			if (data.youtube != null && data.youtube != "") {
-				var youtubeIcon:SocialIcon = new SocialIcon(0, 0, iconScale, "youtube", data.youtube);
-				socialsGroup.add(youtubeIcon);
-				iconLength++;
-			}
-			if (data.discord != null && data.discord != "") {
-				var discordIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * iconLength, 0, iconScale, "discord", data.discord);
-				socialsGroup.add(discordIcon);
-				iconLength++;
-			}
-			if (data.github != null && data.github != "") {
-				var githubIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * iconLength, 0, iconScale, "github", data.github);
-				socialsGroup.add(githubIcon);
-				iconLength++;
-			}
-			if (data.twitter != null && data.twitter != "") {
-				var twitterIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * iconLength, 0, iconScale, "twitter", data.twitter);
-				socialsGroup.add(twitterIcon);
-				iconLength++;
-			}
-			if (data.spotify != null && data.spotify != "") {
-				var spotifyIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * iconLength, 0, iconScale, "spotify", data.spotify);
-				socialsGroup.add(spotifyIcon);
-				iconLength++;
-			}
-			if (data.soundcloud != null && data.soundcloud != "") {
-				var soundcloudIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * iconLength, 0, iconScale, "soundcloud", data.soundcloud);
-				socialsGroup.add(soundcloudIcon);
-				iconLength++;
-			}
-			if (data.appleMusic != null && data.appleMusic != "") {
-				var appleMusicIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * iconLength, 0, iconScale, "appleMusic", data.appleMusic);
-				socialsGroup.add(appleMusicIcon);
-				iconLength++;
-			}
-			if (data.kofi != null && data.kofi != "") {
-				var kofiIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * iconLength, 0, iconScale, "kofi", data.kofi);
-				socialsGroup.add(kofiIcon);
-				iconLength++;
-			}
-			if (data.newgrounds != null && data.newgrounds != "") {
-				var newgroundsIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * iconLength, 0, iconScale, "newgrounds", data.newgrounds);
-				socialsGroup.add(newgroundsIcon);
-				iconLength++;
-			}
-
-			socialsGroup.x = this.x + (background.width - socialsGroup.width) / 2;
-			socialsGroup.y -= socialsGroup.height;
+			createSocials(data);
 		}
 
 		_lastData = data;
+	}
+
+	function createSocials(data:Array<Dynamic>) {
+		socialsGroup1.y = this.y + background.height - 20;
+		socialsGroup2.y = socialsGroup1.y;
+
+		var iconXPos:Float = 0;
+		var iconScale:Float = 3.2;
+		var iconLength:Int = 0;
+		var maxIconsRow:Int = 8;
+		function addSocial(social:SocialIcon) {
+			if (iconLength > maxIconsRow - 1)
+				socialsGroup2.add(social);
+			else
+				socialsGroup1.add(social);
+			iconLength++;
+		}
+
+		if (data.website != null && data.website != "") {
+			var websiteIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "website", data.website);
+			addSocial(websiteIcon);
+		}
+		if (data.youtube != null && data.youtube != "") {
+			var youtubeIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "youtube", data.youtube);
+			addSocial(youtubeIcon);
+		}
+		if (data.instagram != null && data.instagram != "") {
+			var instagramIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "instagram", data.instagram);
+			addSocial(instagramIcon);
+		}
+		if (data.twitter != null && data.twitter != "") {
+			var twitterIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "twitter", data.twitter);
+			addSocial(twitterIcon);
+		}
+		if (data.bluesky != null && data.bluesky != "") {
+			var blueskyIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "bluesky", data.bluesky);
+			addSocial(blueskyIcon);
+		}
+		if (data.tiktok != null && data.tiktok != "") {
+			var tiktokIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "tiktok", data.tiktok);
+			addSocial(tiktokIcon);
+		}
+		if (data.twitch != null && data.twitch != "") {
+			var twitchIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "twitch", data.twitch);
+			addSocial(twitchIcon);
+		}
+		if (data.discord != null && data.discord != "") {
+			var discordIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "discord", data.discord);
+			addSocial(discordIcon);
+		}
+		if (data.spotify != null && data.spotify != "") {
+			var spotifyIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "spotify", data.spotify);
+			addSocial(spotifyIcon);
+		}
+		if (data.soundcloud != null && data.soundcloud != "") {
+			var soundcloudIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "soundcloud", data.soundcloud);
+			addSocial(soundcloudIcon);
+		}
+		if (data.appleMusic != null && data.appleMusic != "") {
+			var appleMusicIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "appleMusic", data.appleMusic);
+			addSocial(appleMusicIcon);
+		}
+		if (data.github != null && data.github != "") {
+			var githubIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "github", data.github);
+			addSocial(githubIcon);
+		}
+		if (data.playstore != null && data.playstore != "") {
+			var playstoreIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "playstore", data.playstore);
+			addSocial(playstoreIcon);
+		}
+		if (data.appstore != null && data.appstore != "") {
+			var appstoreIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "appstore", data.appstore);
+			addSocial(appstoreIcon);
+		}
+		if (data.itchio != null && data.itchio != "") {
+			var itchioIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "itchio", data.itchio);
+			addSocial(itchioIcon);
+		}
+		if (data.newgrounds != null && data.newgrounds != "") {
+			var newgroundsIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "newgrounds", data.newgrounds);
+			addSocial(newgroundsIcon);
+		}
+		if (data.gamebanana != null && data.gamebanana != "") {
+			var gamebananaIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "gamebanana", data.gamebanana);
+			addSocial(gamebananaIcon);
+		}
+		if (data.gamejolt != null && data.gamejolt != "") {
+			var gamejoltIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "gamejolt", data.gamejolt);
+			addSocial(gamejoltIcon);
+		}
+		if (data.kickstarter != null && data.kickstarter != "") {
+			var kickstarterIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "kickstarter", data.kickstarter);
+			addSocial(kickstarterIcon);
+		}
+		if (data.kofi != null && data.kofi != "") {
+			var kofiIcon:SocialIcon = new SocialIcon((10 + 16 * iconScale) * (iconLength % maxIconsRow), 0, iconScale, "kofi", data.kofi);
+			addSocial(kofiIcon);
+		}
+
+		socialsGroup1.x = this.x + (background.width - socialsGroup1.width) / 2;
+		socialsGroup1.y -= socialsGroup1.height;
+
+		if (socialsGroup2.members.length > 0) {
+			socialsGroup2.x = this.x + (background.width - socialsGroup2.width) / 2;
+			socialsGroup2.y = socialsGroup1.y;
+			socialsGroup1.y -= socialsGroup2.height + 4;
+		}
 	}
 }
 
