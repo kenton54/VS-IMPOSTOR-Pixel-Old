@@ -24,7 +24,7 @@ importScript("utils/stats");
 importScript("utils/achievements");
 importScript("utils/flags");
 
-public static final MOD_VERSION:String = "1.0";
+public static final MOD_VERSION:String = "1.2";
 
 public static final PIXEL_SAVE_PATH:String = "kenton";
 public static final PIXEL_SAVE_NAME:String = "impostorPixel";
