@@ -21,10 +21,6 @@ function update(elapsed:Float) {
 }
 
 function checkUpdates() {
-	introVideo.stop();
-	introVideo.dispose();
-	FlxG.removeChild(introVideo);
-
 	MusicBeatState.skipTransOut = true;
 
 	setTransition("closingSharpCircle");
