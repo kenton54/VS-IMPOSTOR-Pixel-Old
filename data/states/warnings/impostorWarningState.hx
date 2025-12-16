@@ -302,9 +302,9 @@ function checkSelection() {
 function checkNextState() {
 	FlxG.save.data.seenImpostorStartupWarnings = true;
 
-	/*if (isBelowStoryPoint("deadMenu"))
+	if (isBelowStoryPoint("deadMenu"))
 		FlxG.switchState(new ModState("legacy/legacyTitleState"));
-	else*/
+	else
 		FlxG.switchState(new ModState("impostorTitleState"));
 }
 
