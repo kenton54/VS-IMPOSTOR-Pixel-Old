@@ -37,10 +37,6 @@ var introTextEmotes:Array<FlxSprite> = [];
  * But for now, these are here as placeholders.
  */
 var titleColors:Array<Array<FlxColor>> = [
-	/*
-	[0xFFE31629, 0xFF90003A],
-	[0xFF00791C, 0xFF0D412E]
-	*/
 	[0xFFE31629, 0xFF90003A],
 	[0xFF3842AE, 0xFF2A1F78],
 	[0xFF18683B, 0xFF0D412E],

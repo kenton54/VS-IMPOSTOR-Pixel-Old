@@ -3,6 +3,7 @@ import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatState;
 import funkin.backend.MusicBeatTransition;
 import funkin.savedata.FunkinSave;
+import modchart.Config as ModchartConfig;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
@@ -24,7 +25,7 @@ importScript("utils/stats");
 importScript("utils/achievements");
 importScript("utils/flags");
 
-public static final MOD_VERSION:String = "1.2";
+public static final MOD_VERSION:String = "1.3";
 
 public static final PIXEL_SAVE_PATH:String = "kenton";
 public static final PIXEL_SAVE_NAME:String = "impostorPixel";
@@ -37,12 +38,14 @@ public static var totalPlaytime:Float = 0;
 
 var mobileUtilsInitiated:Bool = false;
 
+var lastAntialias:Bool = FlxSprite.defaultAntialiasing;
+var last3DConfig:Bool = ModchartConfig.CAMERA3D_ENABLED;
+var lastOptHolds:Bool = ModchartConfig.OPTIMIZE_HOLDS;
+
 function new() {
 	if (modInitialized) return;
 
 	modInitialized = false;
-
-    FlxSprite.defaultAntialiasing = false;
 
     FlxG.bitmap.clearCache();
 	Assets.cache.clear();
@@ -58,6 +61,10 @@ function new() {
     Options.streamedMusic = false;
     Options.streamedVocals = false;*/
     Options.save();
+
+	FlxSprite.defaultAntialiasing = false;
+	ModchartConfig.CAMERA3D_ENABLED = false;
+	ModchartConfig.OPTIMIZE_HOLDS = true;
 
     if (getPlatform() == "mobile")
         initMobile();
@@ -347,5 +354,7 @@ function destroy() {
 
 	modInitialized = false;
 
-    FlxSprite.defaultAntialiasing = true;
+	ModchartConfig.CAMERA3D_ENABLED = last3DConfig;
+	ModchartConfig.OPTIMIZE_HOLDS = lastOptHolds;
+	FlxSprite.defaultAntialiasing = lastAntialias;
 }

@@ -103,6 +103,7 @@ public var holdCoverHandlers:Array<HoldCoverHandler> = [];
  * An array holding the black background of each visible strumline.
  */
 public var strumlineBackgrounds:Array<FlxSprite> = [];
+final backgroundPadding:Int = 32;
 
 /**
  * The note style the HUD will be using during the song. changing this value mid-song wouldn't do anything.
@@ -379,16 +380,16 @@ function improveStrums() {
     if (FlxG.save.data.impPixelStrumBG > 0) {
         for (strumline in strumLines.members) {
             if (strumline.visible) {
-                if (FlxG.save.data.middlescroll && strumline.data.type != 1) return;
+                if (FlxG.save.data.middlescroll && strumline.data.type != 1) continue;
 
                 var strumSpacing:Float = (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1);
-                var bgWidth:Float = (strumline.members[0].width + strumline.extra.get("separate")) * strumline.data.keyCount * strumSpacing + 30;
-                var strumBG:FlxSprite = new FlxSprite(strumline.members[0].x).makeGraphic(Std.int(bgWidth), FlxG.height, FlxColor.BLACK);
+				var bgWidth:Float = strumline.data.keyCount * strumSpacing * (strumline.members[0].width + strumline.extra.get("separate")) + backgroundPadding * 2;
+                var strumBG:FlxSprite = new FlxSprite().makeGraphic(Std.int(bgWidth), FlxG.height, FlxColor.BLACK);
                 strumBG.alpha = FlxG.save.data.impPixelStrumBG;
                 strumBG.camera = camHUD;
 
                 var fullWidth:Float = distanceBetweenFloats(strumline.members[0].x, strumline.members[strumline.members.length - 1].x + strumline.members[strumline.members.length - 1].width);
-                strumBG.x += (fullWidth / 2) - (strumBG.width / 2);
+				strumBG.x = strumline.members[0].x + (fullWidth - strumBG.width) / 2;
 
                 insert(members.indexOf(strumline), strumBG);
                 strumlineBackgrounds.push(strumBG);

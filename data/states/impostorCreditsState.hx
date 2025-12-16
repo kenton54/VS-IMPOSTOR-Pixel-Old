@@ -37,7 +37,8 @@ var creditsData:Array<Array<Dynamic>> = [
                 quote: "I've spent almost 2 years developing this mod from Beta 2.1 to Version 1, I've learn a lot in the process and met a lot of cool people too!\nYes I'm the only one that worked for this mod, and thank you for your patience! And sorry for not delivering something... bigger, specially with the amount of time this mod took to develop.",
 				youtube: "https://www.youtube.com/@kenton.54",
 				github: "https://github.com/kenton54",
-				kofi: "https://ko-fi.com/kenton54"
+				kofi: "https://ko-fi.com/kenton54",
+				twitter: "https://x.com/kenton__54"
             },
 			{
                 name: "Silte",
