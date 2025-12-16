@@ -14,9 +14,9 @@ import funkin.menus.StoryMenuState;
 import funkin.savedata.FunkinSave;
 import funkin.savedata.HighscoreChange;
 import funkin.options.Options;
+import impostor.ImpostorCharacter;
 import Date;
 import HoldCoverHandler;
-import VSliceCharacter;
 
 /**
  * A camera that can hold extra information that wouldn't fit in the HUD camera (mostly because of the zoom events).
@@ -40,7 +40,7 @@ public var camExtra:FlxCamera;
  * 
  * This doesn't really matter if what you store in `customValues` is a string, a number or a boolean.
  */
-public var songExtraMetadata:Array<Dynamic> = [];
+var songExtraMetadata:Array<Dynamic> = [];
 
 /**
  * Whether the task bar text should update.
@@ -131,7 +131,7 @@ function create() {
 
     var songPath:String = Paths.getPath("songs/" + PlayState.SONG.meta.name);
     if (Assets.exists(songPath + "/impostor-meta.json"))
-        songExtraMetadata = Json.parse(Assets.getText(songPath + "/impostor-meta.json"));
+        songExtraMetadata = CoolUtil.parseJson(songPath + "/impostor-meta.json");
 
     camZooming = true;
     validScore = true;
@@ -214,6 +214,9 @@ function postCreate() {
 
     WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "] (SOLO)" : " (VERSUS)");
 
+	PauseSubState.script = "data/states/game/pauseScreen";
+	GameOverSubstate.script = "data/states/game/gameOverScreen";
+
 	startNewEvents();
 
     scripts.call("postUIOverhaul");
@@ -287,7 +290,7 @@ function improveCharacters() {
     for (i => strL in PlayState.SONG.strumLines) {
         if (strL == null) continue;
 
-        var chars:Array<VSliceCharacter> = [];
+		var chars:Array<ImpostorCharacter> = [];
         var charPos:String = strL.position == null ? (switch(strL.type) {
             case 0: "dad";
             case 1: "boyfriend";
@@ -296,7 +299,7 @@ function improveCharacters() {
 
         if (strL.characters != null) {
             for (c => char in strL.characters) {
-                var character:VSliceCharacter = new VSliceCharacter(0, 0, char, stage.isCharFlipped(stage.characterPoses[char] != null ? char : charPos, strL.type == 1));
+				var character:ImpostorCharacter = new ImpostorCharacter(0, 0, char, stage.isCharFlipped(stage.characterPoses[char] != null ? char : charPos, strL.type == 1));
                 stage.applyCharStuff(character, charPos, c);
                 chars.push(character);
 
@@ -408,6 +411,10 @@ function startNewEvents() {
     }
 }
 
+public inline function getImpostorMetadata():Array<Dynamic> {
+    return songExtraMetadata;
+}
+
 function update(elapsed:Float) {
     if (generatedMusic && updateSongPercent)
         songPercent = (Conductor.songPosition / percentDeadline);
@@ -438,14 +445,6 @@ function postUpdate(elapsed:Float) {
 
     if (FlxG.keys.justPressed.ONE)
         playerStrums.cpu = !playerStrums.cpu;
-
-    if (FlxG.keys.pressed.RIGHT && generatedMusic && !endingSong) {
-        if (FlxG.sound.music != null) {
-            for (strL in strumLines.members) strL.vocals.time += 800;
-            inst.time += 800;
-            vocals.time += 800;
-        }
-    }
 
     if (PlayState.chartingMode) {
         if (FlxG.keys.justPressed.NINE)

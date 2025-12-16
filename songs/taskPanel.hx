@@ -23,7 +23,7 @@ public var taskPanel:TaskPanel;
 
 function postUIOverhaul() {
     if (!isPlayingVersus) {
-        taskPanel = new TaskPanel(FlxG.height * 0.25, true, PlayState.SONG.meta.displayName, "Song", songExtraMetadata.artists);
+		taskPanel = new TaskPanel(FlxG.height * 0.25, true, PlayState.SONG.meta.displayName, "Song", getImpostorMetadata().artists);
         taskPanel.group.camera = camExtra;
         add(taskPanel.group);
     }

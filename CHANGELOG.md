@@ -1,5 +1,30 @@
 This changelog keeps track of everything that has been added, changed, fixed or deleted in every VS IMPOSTOR Pixel version.
 
+# Version 1.3
+## Additions
+- Added Game Over screen.
+
+## Changes
+- Deactivated some modchart features, improved performance.
+- Pause Menu now plays the song Sussus Muzak.
+- Lowered the mod's file size.
+
+## Fixes
+- Splashes now play their animation correctly.
+- Strumline Backgrounds now work in middlescroll.
+
+# Version 1.2
+## Changes
+- Improved the Credits Menu and added a lot of missing credits.
+
+## Fixes
+- Mod API was using a newer version (which isnt available in Codename 1.0.1).
+- Version numbering was incorrect.
+
+# Version 1.1
+## Fixes
+- Clowfoe's Youtube link redirected you to his Twitter link, fixed LOL.
+
 # Version 1.0
 THE FIRST ACTUAL RELEASE AND ITS NOT A FREAKING BETA NOR DEMO ANYMORE WOOOOOOOOOOOOOOOOOOOOOOOOOO!!!!!!
 actually this version looks more like a demo ngl, BUT WHO CARESSSSSSSSSS i make the rules.

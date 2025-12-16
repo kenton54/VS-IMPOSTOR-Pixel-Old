@@ -1,7 +1,9 @@
+package impostor;
+
 import flixel.animation.FlxAnimation;
 import flixel.util.FlxBaseSignal;
 
-class VSliceCharacter extends Character {
+class ImpostorCharacter extends Character {
     /**
      * This character plays a given animation when hitting these specific combo numbers.
      */
@@ -11,6 +13,8 @@ class VSliceCharacter extends Character {
      * This character plays a given animation when dropping combos larger than these numbers.
      */
     public var dropNoteCounts(default, null):Array<Int> = [];
+
+    public var bioID:String = "";
 
     public var onPlayAnim:FlxBaseSignal<(animName:String, forced:Bool, context:Dynamic, reversed:Bool, frame:Int)->Void> = new FlxBaseSignal();
 

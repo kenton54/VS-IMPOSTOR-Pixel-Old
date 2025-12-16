@@ -1,17 +1,17 @@
 import flixel.effects.particles.FlxEmitter.FlxTypedEmitter;
 import flixel.util.FlxGradient;
 import funkin.options.Options;
+import impostor.ImpostorCharacter;
 import StarsBackdrop;
-import VSliceCharacter;
 
 public var songUsesLightsSabotage:Bool = false;
 public var customSnowEmitterInit:Bool = false;
 public var makeCrowdAppear:Bool = false;
 public var hasBlue:Bool = false;
 
-public var darkDadChar:VSliceCharacter;
-public var darkBoyfriendChar:VSliceCharacter;
-public var darkGfChar:VSliceCharacter;
+public var darkDadChar:ImpostorCharacter;
+public var darkBoyfriendChar:ImpostorCharacter;
+public var darkGfChar:ImpostorCharacter;
 
 public var snowParticles:FlxTypedEmitter;
 
@@ -84,26 +84,26 @@ public function emitSnowParticles() {
 	if (snowParticles != null) snowParticles.start(false, 0.08);
 }
 
-function onCharacterSetup(character:VSliceCharacter) {
+function onCharacterSetup(character:ImpostorCharacter) {
     character.shader = polusShader;
 }
 
 function postCharacterSetup() {
     if (!songUsesLightsSabotage) return;
 
-    darkDadChar = new VSliceCharacter(dad.x, dad.y, dad.curCharacter + "-lightsOut", false);
+	darkDadChar = new ImpostorCharacter(dad.x, dad.y, dad.curCharacter + "-lightsOut", false);
     darkDadChar.visible = false;
     dad.onPlayAnim.add(function(name:String, force:Bool, context:Dynamic, reverse:Bool, frame:Int) {
         darkDadChar.playAnim(name, force, "LOCK", reverse, frame);
     });
 
-    darkBoyfriendChar = new VSliceCharacter(boyfriend.x, boyfriend.y, boyfriend.curCharacter + "-lightsOut", true);
+	darkBoyfriendChar = new ImpostorCharacter(boyfriend.x, boyfriend.y, boyfriend.curCharacter + "-lightsOut", true);
     darkBoyfriendChar.visible = false;
     boyfriend.onPlayAnim.add(function(name:String, force:Bool, context:Dynamic, reverse:Bool, frame:Int) {
         darkBoyfriendChar.playAnim(name, force, "LOCK", reverse, frame);
     });
 
-    darkGfChar = new VSliceCharacter(gf.x, gf.y, gf.curCharacter + "-lightsOut", false);
+	darkGfChar = new ImpostorCharacter(gf.x, gf.y, gf.curCharacter + "-lightsOut", false);
     darkGfChar.visible = false;
     gf.onPlayAnim.add(function(name:String, force:Bool, context:Dynamic, reverse:Bool, frame:Int) {
         darkGfChar.playAnim(name, force, "LOCK", reverse, frame);

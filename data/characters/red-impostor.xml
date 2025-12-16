@@ -1,12 +1,9 @@
-<character sprite="red-impostor" scale="10" antialiasing="false" icon="red-impostor" color="#AF2121" holdTime="8">
+<character sprite="red-impostor" scale="10" antialiasing="false" icon="red-impostor" color="#AF2121" holdTime="8" x="396" y="72" camx="-320" camy="-32">
 	<anim name="idle" anim="idle" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singLEFT" anim="note left" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singDOWN" anim="note down" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singUP" anim="note up" x="0" y="0" fps="24" loop="false"/>
 	<anim name="singRIGHT" anim="note right" x="0" y="0" fps="24" loop="false"/>
-	<anim name="preShoot-front" anim="preshoot front" x="0" y="0" fps="24" loop="false"/>
-	<anim name="preShoot-camera" anim="preshoot camera" x="0" y="0" fps="24" loop="false"/>
-	<anim name="shoot-front" anim="shoot front" x="0" y="0" fps="24" loop="false"/>
-	<anim name="shoot-camera" anim="shoot camera" x="0" y="0" fps="24" loop="false"/>
 	<anim name="sabotage" anim="sabotage" x="0" y="0" fps="24" loop="false"/>
+	<anim name="kill" anim="kill" x="0" y="0" fps="24" loop="false"/>
 </character>
