@@ -12,14 +12,7 @@ function create() {
 
 	MusicBeatState.skipTransIn = true;
 
-	introVideo = new FlxVideo();
-	introVideo.onEndReached.add(checkUpdates);
-	FlxG.addChildBelowMouse(introVideo);
-
-	if (introVideo.load(Paths.video("startup-placeholder")))
-		introVideo.play();
-    else
-		checkUpdates();
+	checkUpdates();
 }
 
 function update(elapsed:Float) {
