@@ -215,7 +215,7 @@ function postCreate() {
     WindowUtils.suffix = " - " + PlayState.SONG.meta.displayName + (!isPlayingVersus ? " [" + FlxStringUtil.toTitleCase(PlayState.difficulty) + "] (SOLO)" : " (VERSUS)");
 
 	PauseSubState.script = "data/states/game/pauseScreen";
-	GameOverSubstate.script = "data/states/game/gameOverScreen";
+	//GameOverSubstate.script = "data/states/game/gameOverScreen";
 
 	startNewEvents();
 
