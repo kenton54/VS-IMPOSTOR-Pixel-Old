@@ -10,7 +10,7 @@ This changelog keeps track of everything that has been added, changed, fixed or 
 - Lowered the mod's file size.
 
 ## Fixes
-- Splashes now play their animation correctly.
+- ~~Splashes now play their animation correctly.~~
 - Strumline Backgrounds now work in middlescroll.
 
 # Version 1.2
