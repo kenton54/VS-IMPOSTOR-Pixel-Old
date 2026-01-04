@@ -1,11 +1,12 @@
 import impostor.ImpostorCharacter;
 
 function onGameOver(event) {
-	camExtra.kill();
-	taskPanel.group.visible = false;
+	//camExtra.kill();
+	//taskPanel.group.visible = false;
 }
 
 function onPostGameOver(event) {
+	/*
 	persistentDraw = true;
 
 	FlxG.camera.stopFX();
@@ -15,4 +16,5 @@ function onPostGameOver(event) {
 	camFollow.setPosition(camPos.pos.x, camPos.pos.y);
 	FlxG.camera.snapToTarget();
 	FlxG.camera.zoom = 0.8;
+	*/
 }

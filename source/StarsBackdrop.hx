@@ -1,9 +1,9 @@
+import flixel.FlxBasic;
 import flixel.addons.display.FlxBackdrop;
 import flixel.effects.particles.FlxEmitter.FlxTypedEmitter;
 import flixel.graphics.frames.FlxTileFrames;
-import flixel.math.FlxVelocity;
 import flixel.math.FlxRect;
-import flixel.FlxBasic;
+import flixel.math.FlxVelocity;
 import openfl.geom.Rectangle;
 
 class StarsBackdrop extends FlxBasic {
