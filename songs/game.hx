@@ -437,6 +437,7 @@ function postUpdate(elapsed:Float) {
     if (!inCutscene)
         processNotes(elapsed);
 
+    /*
     if (FlxG.keys.justPressed.NINE)
         endSong();
 
@@ -445,6 +446,7 @@ function postUpdate(elapsed:Float) {
 
     if (FlxG.keys.justPressed.ONE)
         playerStrums.cpu = !playerStrums.cpu;
+    */
 
     if (PlayState.chartingMode) {
         if (FlxG.keys.justPressed.NINE)
