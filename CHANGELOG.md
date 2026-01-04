@@ -2,7 +2,7 @@ This changelog keeps track of everything that has been added, changed, fixed or 
 
 # Version 1.3
 ## Additions
-- Added Game Over screen.
+- ~~Added Game Over screen~~.
 
 ## Changes
 - Deactivated some modchart features, improved performance.
