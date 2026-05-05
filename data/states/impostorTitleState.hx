@@ -1,7 +1,8 @@
 import flixel.effects.particles.FlxEmitter.FlxTypedEmitter;
 import flixel.effects.FlxFlicker;
 import flixel.input.keyboard.FlxKey;
-import flixel.text.FlxText.FlxTextFormat;
+import flixel.graphics.frames.FlxBitmapFont;
+import flixel.text.FlxBitmapText;
 import flixel.util.FlxGradient;
 import funkin.backend.system.Flags;
 import funkin.backend.MusicBeatState;
@@ -17,7 +18,7 @@ enum TitleState {
     DEMO;
 }
 
-var deadVersion:Bool = false; //isBelowStoryPoint("postWeek1");
+var deadVersion:Bool = false;
 
 var curState:TitleState = TitleState.IDLE;
 
@@ -30,11 +31,14 @@ var introGroup:FlxGroup;
 var introText:FunkinText;
 var introTextEmotes:Array<FlxSprite> = [];
 
+var legacyLogo:FlxSprite;
+
+var titleRGB:RGBPalette;
 /**
  * This is supposed to only show the colors of the impostors and crewmates currently
  * being displayed besides the title.
  * 
- * But for now, these are here as placeholders.
+ * But for now, all of them are available.
  */
 var titleColors:Array<Array<FlxColor>> = [
 	[0xFFE31629, 0xFF90003A],
@@ -57,20 +61,15 @@ var titleColors:Array<Array<FlxColor>> = [
 ];
 var titleMain:FlxSprite;
 var titleColor:FlxSprite;
-var titleGrp:FlxGroup;
 var baseScale:Float = 4 * gameScale.y;
 
-var pressStart:FunkinText;
+var pressStart:FlxBitmapText;
 
-var demoVideo:FlxVideoSprite;
-
-var fakeBlackTransition:FlxSprite;
+var transitionSprite:FlxSprite;
 
 var christmasParticles:FlxTypedEmitter;
 
 static var gameStarted:Bool = false;
-
-static var playedIntro:Bool = false;
 
 var acceptKey:FlxKey = Reflect.field(Options, "P1_ACCEPT")[0];
 var pressTxt = translate("press", [CoolUtil.keyToString(acceptKey)]).toUpperCase();
@@ -83,7 +82,7 @@ var initialZoom:Float = 1;
 
 function startMod() {
 	gameStarted = false;
-	playedIntro = false;
+	playedTitleIntro = false;
 	MusicBeatState.skipTransOut = true;
 	FlxG.switchState(new ModState("intro/impostorIntroState"));
 }
@@ -97,49 +96,52 @@ function create() {
         return;
     }*/
 
+	CoolUtil.playMenuSong();
+
     changeDiscordMenuStatus("Title Screen");
 
 	stars = new StarsBackdrop(-10, 5);
     stars.scrollFactor = FlxPoint.get(0.25, 0.25);
 	add(stars);
 
-	titleGrp = new FlxGroup();
-	//titleGrp.visible = !deadVersion;
-	add(titleGrp);
+	var titleSpriteGroup:FlxSpriteGroup = new FlxSpriteGroup();
+	titleSpriteGroup.y = FlxG.height * 0.2;
+	//titleSpriteGroup.visible = !deadVersion;
+	add(titleSpriteGroup);
 
-	var rgb:RGBPalette = new RGBPalette(titleColors[0][0], titleColors[0][1]);
+	titleRGB = new RGBPalette(titleColors[0][0], titleColors[0][1]);
+
     titleColor = new FlxSprite().loadGraphic(Paths.image("menus/title/color"));
     titleColor.scale.set(baseScale, baseScale);
     titleColor.updateHitbox();
     titleColor.centerOffsets();
     titleColor.screenCenter(FlxAxes.X);
-    titleColor.y = FlxG.height * 0.2;
-    titleColor.shader = rgb.shader;
-	titleGrp.add(titleColor);
+	titleColor.shader = titleRGB.shader;
+	titleSpriteGroup.add(titleColor);
 
-	var titleAnimIndices:Array<Int> = [0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0];
+	var titleAnimIndices:Array<Int> = [0, 0, 0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0];
     titleMain = new FlxSprite().loadGraphic(Paths.image("menus/title/title"), true, 197, 65);
 	titleMain.animation.add("anim", titleAnimIndices, 24, false);
     titleMain.scale.set(baseScale, baseScale);
     titleMain.updateHitbox();
     titleMain.centerOffsets();
     titleMain.screenCenter(FlxAxes.X);
-    titleMain.y = FlxG.height * 0.2;
-	titleGrp.add(titleMain);
+	titleSpriteGroup.add(titleMain);
 
-	fakeBlackTransition = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height * 4, [0x00000000, 0xFF000000, 0xFF000000]);
-	fakeBlackTransition.visible = false;
-	add(fakeBlackTransition);
+	transitionSprite = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height * 2, [0x00000000, 0xFF000000, 0xFF000000]);
+	transitionSprite.visible = false;
+	add(transitionSprite);
 
-    pressStart = new FunkinText(0, 0, FlxG.width, "", 52);
+	pressStart = new FlxBitmapText(0, 0, "", FlxBitmapFont.fromMonospace(Paths.font('gameboy.png'), ' !"#%&\'()*+.-,/0123456789:;<=>?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`{|}~', FlxPoint.get(8, 10)));
+	pressStart.scrollFactor.set();
+	pressStart.scale.set(6, 6);
+	pressStart.updateHitbox();
+	pressStart.fieldWidth = FlxG.width;
     pressStart.alignment = "center";
-    pressStart.color = FlxColor.TRANSPARENT;
-    pressStart.borderColor = FlxColor.WHITE;
-    pressStart.borderSize = 6.8;
-    pressStart.font = Paths.font("gameboy.ttf");
-	pressStart.y = FlxG.height * 0.9 - pressStart.height;
+	pressStart.letterSpacing = -1;
+	pressStart.y = FlxG.height * 0.85 - pressStart.height;
+	pressStart.screenCenter(FlxAxes.X);
     pressStart.alpha = 0;
-	pressStart.scrollFactor.set(0, 0);
     add(pressStart);
 
 	introGroup = new FlxGroup();
@@ -157,22 +159,22 @@ function create() {
 	introText.y = FlxG.height * 0.35;
 	introGroup.add(introText);
 
-	demoVideo = new FlxVideoSprite(0, -FlxG.height);
-	demoVideo.bitmap.volume = 0;
-	demoVideo.bitmap.onEndReached.add(endDemo);
-	demoVideo.kill();
-	add(demoVideo);
+	legacyLogo = new FlxSprite().loadGraphic(Paths.image("menus/title/legacyLogo"));
+	legacyLogo.scale.set(0.65, 0.65);
+	legacyLogo.updateHitbox();
+	legacyLogo.screenCenter(FlxAxes.X);
+	legacyLogo.y = FlxG.height * 0.88 - legacyLogo.height;
+	legacyLogo.visible = false;
+	introGroup.add(legacyLogo);
 
 	if (deadVersion) {
 		window.title = "...";
 		killIntroText();
 		showTitle();
 	} else {
-		window.title = Flags.MOD_NAME;
 		allowInput = true;
 
-		if (!playedIntro && (Conductor.curStep <= 3 || Conductor.curStep >= 304)) {
-			CoolUtil.playMenuSong();
+		if (!playedTitleIntro && (Conductor.curStep <= 3 || Conductor.curStep >= 304)) {
 			introGroup.revive();
 			prepareIntro();
 			playIntro();
@@ -188,52 +190,99 @@ var accepted:Bool = false;
 var transitioning:Bool = false;
 var pressedWithKeyboard:Bool = false;
 function update(elapsed:Float) {
-	if (!allowInput) return;
-
 	FlxG.camera.zoom = CoolUtil.fpsLerp(FlxG.camera.zoom, initialZoom, 0.05);
 
-	if (curState == TitleState.IDLE) {
-		if (controls.BACK) {
-			if (!canPlayIntro) {
-				logTraceColored([{text: "Queued intro repetition!"}], "information");
-				prepareIntro();
-			}
+	var pressedEnter:Bool = controls.ACCEPT || pointerJustReleased();
+
+	if (allowInput) {
+		switch (curState) {
+			case TitleState.INTRO:
+				if (pressedEnter)
+					skipIntro();
+
+			case TitleState.IDLE:
+				if (controls.BACK) {
+					if (!canPlayIntro) {
+						logTraceColored([{text: "Queued intro repetition!"}], "information");
+						prepareIntro();
+					}
+				}
+
+				if (pressedEnter) {
+					if (transitionTimer.active)
+						transitionToMainMenu(true);
+					else
+						startTransitionToMainMenu(controls.ACCEPT);
+				}
 		}
+	}
+}
 
-		if (controls.ACCEPT) {
-			pressedWithKeyboard = true;
+var transitionTimer:FlxTimer = new FlxTimer();
 
-			if (transitionTimer.active && !deadVersion) {
-				transitionTimer.cancel();
-				setTransition("fadeUp");
-				FlxG.switchState(new MainMenuState());
-			} else if (!transitionTimer.active) {
-				pressStart.text = pressTxt;
-				pressStart.text += deadVersion ? "" : (" " + playSuffix);
-				accept();
-			}
-		}
-		if (pointerJustReleased()) {
-			pressedWithKeyboard = false;
+function startTransitionToMainMenu(keyboard:Bool) {
+	accepted = true;
+	playMenuSound("confirm");
 
-			if (transitionTimer.active && !deadVersion) {
-				transitionTimer.cancel();
-				setTransition("fadeUp");
-				FlxG.switchState(new MainMenuState());
-			} else if (!transitionTimer.active) {
-				pressStart.text = isMobile ? touchTxt : clickTxt;
-				pressStart.text += deadVersion ? "" : (" " + playSuffix);
-				accept();
-			}
-		}
+	killIntroText();
 
-		if (accepted) return;
+	stopPressStartTween();
 
-		doSecretCodes();
-	} else if (curState == TitleState.INTRO) {
-		if (controls.ACCEPT || pointerJustReleased())
-			skipIntro();
-    }
+	pressStart.alpha = 1;
+	pressStart.text = keyboard ? pressTxt : (FlxG.onMobile ? touchTxt : clickTxt);
+	pressStart.text += deadVersion ? "" : (" " + playSuffix);
+
+	doCameraBop = false;
+
+	bopTitle();
+	FlxG.camera.zoom += 0.08;
+
+	pressStart.screenCenter(FlxAxes.X);
+
+	var fakePressStart:FlxBitmapText = new FlxBitmapText(0, 0, pressStart.text, pressStart.font);
+	fakePressStart.scrollFactor.copyFrom(pressStart.scrollFactor);
+	fakePressStart.scale.x = fakePressStart.scale.y = pressStart.scale.x;
+	fakePressStart.updateHitbox();
+	fakePressStart.fieldWidth = pressStart.fieldWidth;
+	fakePressStart.alignment = pressStart.alignment;
+	fakePressStart.y = pressStart.y;
+	fakePressStart.screenCenter(FlxAxes.X);
+	fakePressStart.x -= 372;
+	insert(members.indexOf(pressStart), fakePressStart);
+
+	var scaleTo:Float = pressStart.scale.x * 1.25;
+	FlxTween.tween(fakePressStart, {"scale.x": scaleTo, "scale.y": scaleTo}, 1, {ease: FlxEase.quintOut});
+	FlxTween.tween(fakePressStart, {alpha: 0}, 0.5);
+
+	FlxFlicker.flicker(pressStart, 1, 0.05, false, true);
+
+	transitionTimer.start(1, _ -> transitionToMainMenu(false));
+}
+
+function transitionToMainMenu(forced:Bool) {
+	allowInput = false;
+	transitioning = true;
+
+	if (forced) {
+		transitionTimer.cancel();
+
+		setTransition("fadeUp");
+		FlxG.switchState(new MainMenuState());
+	}
+	else {
+		transitionSprite.visible = true;
+		transitionSprite.flipY = false;
+		transitionSprite.y = FlxG.height;
+		var transOutTimer:Float = deadVersion ? 2 : 1;
+		FlxTween.tween(transitionSprite, {y: 0}, transOutTimer, {ease: FlxEase.quadIn});
+		FlxTween.tween(FlxG.camera.scroll, {y: FlxG.height}, transOutTimer, {ease: FlxEase.quartIn});
+
+		new FlxTimer().start(1.01 * transOutTimer, _ -> {
+			MusicBeatState.skipTransOut = true;
+			setTransition("fadeUp");
+			FlxG.switchState(new ModState("impostorMenuState"));
+		});
+	}
 }
 
 var tweenDur:Float = 1.5;
@@ -241,7 +290,6 @@ var tweenIn:FlxTween = null;
 var tweenOut:FlxTween = null;
 var mouseTxt:Bool = false;
 function tweenPressStart() {
-	pressStart.borderColor = deadVersion ? FlxColor.WHITE : FlxColor.interpolate(0xFF33FFFF, 0xFF4141CF, FlxG.random.float(0, 1));
     if (isMobile) {
         pressStart.text = touchTxt;
 		pressStart.text += deadVersion ? "" : (" " + playSuffix);
@@ -255,8 +303,9 @@ function tweenPressStart() {
 		pressStart.text += deadVersion ? "" : (" " + playSuffix);
     }
 
-    if (tweenIn != null) tweenIn.cancel();
-    if (tweenOut != null) tweenOut.cancel();
+	pressStart.screenCenter(FlxAxes.X);
+
+	stopPressStartTween();
 
 	pressStart.alpha = 0;
     tweenIn = FlxTween.tween(pressStart, {alpha: 1}, tweenDur, {ease: FlxEase.quadOut, onComplete: _ -> {
@@ -264,16 +313,16 @@ function tweenPressStart() {
     }});
 }
 
+function stopPressStartTween() {
+	if (tweenIn != null) tweenIn.cancel();
+    if (tweenOut != null) tweenOut.cancel();
+}
+
 function stepHit(curStep:Int) {
 	if (accepted) return;
 
 	if (curStep == 0) {
-		if (!_isPlayingDemo && !canPlayIntro && !(introGroup.exists && introGroup.active)) {
-			triggerDemo();
-			return;
-		}
-
-		if (!_isPlayingDemo && (!playedIntro || canPlayIntro) && (introGroup.exists && introGroup.active))
+		if ((!playedTitleIntro || canPlayIntro) && (introGroup.exists && introGroup.active))
 			playIntro();
 	}
 
@@ -285,7 +334,7 @@ var doCameraBop:Bool = true;
 function beatHit(curBeat:Int) {
 	if (accepted) return;
 
-	if (curBeat == 76 && canPlayIntro && !canPlayDemos)
+	if (curBeat == 76 && canPlayIntro)
 		transitionToIntro();
 
 	if (curBeat % 4 == 3) // last beat of a measure
@@ -307,9 +356,8 @@ function measureHit(curMeasure:Int) {
 	if (!canChangeColor) return;
 
 	var selectedColors:Array<FlxColor> = titleColors[FlxG.random.int(0, titleColors.length - 1)];
-	titleColor.shader.r = RGBPalette.convertColorToFloatArray(selectedColors[0]);
-	titleColor.shader.g = RGBPalette.convertColorToFloatArray(selectedColors[1]);
-	titleColor.shader.b = RGBPalette.convertColorToFloatArray(selectedColors[2]);
+	titleRGB.shader.r = RGBPalette.convertColorToFloatArray(selectedColors[0]);
+	titleRGB.shader.g = RGBPalette.convertColorToFloatArray(selectedColors[1]);
 }
 
 function transitionToIntro() {
@@ -322,7 +370,6 @@ function transitionToIntro() {
 
 var canPlayIntro:Bool = false;
 function prepareIntro() {
-	canPlayDemos = false;
 	gameStarted = false;
 	canPlayIntro = true;
 }
@@ -369,20 +416,22 @@ function introBeat(curStep:Int) {
 
 	switch (curStep) {
 		case 4: // beat 1
-			showSplash(startSplash, 1);
-		case 12: // beat 3
-			showSplash(startSplash, 2);
-		case 14:
-			showSplash(startSplash, 3);
+			showText("kenton", 1);
+		case 8: // beat 3
+			showText("and the VS IMPOSTOR Pixel Team", 2);
+		case 12:
+			showText("Presents:", 3);
 		case 16: // beat 4
 			resetIntroText();
 		case 20: // beat 5
-			showText("kenton");
-		case 24: // beat 6
-			showText("and the VS IMPOSTOR Community");
+			introText.y -= 100;
+			showText("A mod based of");
 		case 28: // beat 7
-			showText("Presents:");
+			showText("VS IMPOSTOR Legacy");
+			legacyLogo.visible = true;
 		case 32: // beat 8
+			introText.y += 100;
+			legacyLogo.visible = false;
 			resetIntroText();
 		case 36: // beat 9
 			showSplash(midSplash, 1);
@@ -399,7 +448,7 @@ function introBeat(curStep:Int) {
 		case 60: // beat 15
 			showSplash(endSplash, 3, true);
 		case 64: // beat 16
-			playedIntro = true;
+			playedTitleIntro = true;
             endIntro();
     }
 }
@@ -544,136 +593,25 @@ function showTitle(?flash:Bool) {
 }
 
 function bopTitle() {
-	titleGrp.forEach(function(spr) {
-        FlxTween.cancelTweensOf(spr, ["scale.x", "scale.y"]);
-		spr.scale.set(baseScale, baseScale);
-		spr.updateHitbox();
+	FlxTween.cancelTweensOf(titleMain, ["scale.x", "scale.y"]);
+	FlxTween.cancelTweensOf(titleColor, ["scale.x", "scale.y"]);
 
-		var beatScale:Float = (baseScale * 1.08);
-        var duration:Float = (Conductor.stepCrochet / 1000) * 4;
+	var beatScale:Float = baseScale * 1.05;
+	var duration:Float = (Conductor.stepCrochet / 1000) * 4;
 
-		spr.scale.set(beatScale, beatScale);
-		FlxTween.tween(spr, {"scale.x": baseScale, "scale.y": baseScale}, duration, {ease: FlxEase.quartOut});
-    });
+	titleMain.scale.set(beatScale, beatScale);
+	titleColor.scale.set(beatScale, beatScale);
+	FlxTween.tween(titleMain, {"scale.x": baseScale, "scale.y": baseScale}, duration, {ease: FlxEase.quadOut});
+	FlxTween.tween(titleColor, {"scale.x": baseScale, "scale.y": baseScale}, duration, {ease: FlxEase.quadOut});
 }
 
 function doSecretCodes() {}
 
-var _isPlayingDemo:Bool = false;
-var canPlayDemos:Bool = false;
-function triggerDemo() {
-	if (!canPlayDemos) {
-		canPlayDemos = true;
-		logTraceColored([{text: "Queued demo play!"}], "information");
-        return;
-    }
-
-	var chosenVideo:Null<String> = null;
-	if (watchedVideos.length > 0)
-		choosenVideo = watchedVideos[FlxG.random.int(0, watchedVideos.length - 1)];
-
-	if (chosenVideo == null) {
-		canPlayDemos = false;
-		_isPlayingDemo = false;
-		logTraceColored([{text: "User hasn't watched any videos!", color: getLogColor("yellow")}], "warning");
-		return;
-	}
-
-	curState = TitleState.DEMO;
-
-    if (tweenIn != null) tweenIn.cancel();
-    if (tweenOut != null) tweenOut.cancel();
-
-	_isPlayingDemo = true;
-	demoVideo.revive();
-
-	fakeBlackTransition.visible = true;
-	fakeBlackTransition.flipY = true;
-	fakeBlackTransition.y = -FlxG.height - fakeBlackTransition.height;
-	FlxTween.tween(stars, {verticalSpeed: 400}, 1, {startDelay: 1.5, ease: FlxEase.quartIn});
-	FlxTween.tween(fakeBlackTransition, {y: FlxG.height - fakeBlackTransition.height}, 3, {ease: FlxEase.quadIn});
-	FlxTween.tween(FlxG.camera.scroll, {y: -FlxG.height * 2}, 3, {ease: FlxEase.quartIn, onComplete: _ -> {
-		if (demoVideo.load(chosenVideo))
-			demoVideo.play();
-	}});
-}
-
-function endDemo() {
-	canPlayDemos = false;
-	_isPlayingDemo = false;
-	demoVideo.kill();
-
-	//fakeBlackTransition.y = FlxG.height - fakeBlackTransition.height * 2;
-	FlxTween.tween(stars, {verticalSpeed: 0}, 1, {startDelay: 1.5, ease: FlxEase.quartOut});
-	FlxTween.tween(fakeBlackTransition, {y: -FlxG.height - fakeBlackTransition.height}, 3, {ease: FlxEase.quadOut});
-	FlxTween.tween(FlxG.camera.scroll, {y: 0}, 3, {ease: FlxEase.quartOut, onComplete: _ -> {
-        fakeBlackTransition.visible = false;
-		fakeBlackTransition.flipY = false;
-
-        curState = TitleState.IDLE;
-
-		mouseTxt = false;
-        tweenPressStart();
-	}});
-}
-
-var transitionTimer:FlxTimer = new FlxTimer();
-function accept() {
-	accepted = true;
-	doCameraBop = false;
-	killIntroText();
-	bopTitle();
-
-    if (tweenIn != null && tweenIn.active) tweenIn.cancel();
-    if (tweenOut != null && tweenOut.active) tweenOut.cancel();
-    FlxTween.cancelTweensOf(pressStart, ["alpha"]);
-    pressStart.alpha = 1;
-    pressStart.borderColor = FlxColor.WHITE;
-
-    playMenuSound("confirm");
-    FlxG.camera.zoom += 0.08;
-
-    var fakePressStart:FunkinText = pressStart.clone();
-    fakePressStart.setPosition(pressStart.x, pressStart.y);
-	fakePressStart.scrollFactor.copyFrom(pressStart.scrollFactor);
-    insert(members.indexOf(pressStart), fakePressStart);
-    FlxTween.tween(fakePressStart, {"scale.x": 1.25, "scale.y": 1.25}, 1, {ease: FlxEase.quartOut});
-    FlxTween.tween(fakePressStart, {alpha: 0}, 0.5);
-    FlxFlicker.flicker(pressStart, 1, 0.05, false, true);
-
-    transitionTimer.start(1, _ -> {
-		allowInput = false;
-        transitioning = true;
-
-		fakeBlackTransition.visible = true;
-		fakeBlackTransition.y = FlxG.height;
-		var transOutTimer:Float = deadVersion ? 2 : 1;
-		FlxTween.tween(stars, {verticalSpeed: -400}, transOutTimer, {startDelay: 0.5, ease: FlxEase.quartIn});
-		FlxTween.tween(fakeBlackTransition, {y: -FlxG.height}, transOutTimer, {ease: FlxEase.quadIn});
-		FlxTween.tween(FlxG.camera.scroll, {y: FlxG.height * 2}, transOutTimer, {ease: FlxEase.quartIn});
-
-		new FlxTimer().start(1.01 * transOutTimer, _ -> {
-			MusicBeatState.skipTransOut = true;
-			setTransition("fadeUpSlow");
-            FlxG.switchState(new ModState("impostorMenuState"));
-        });
-    });
-}
-
 function destroy() {
-	if (stars != null) {
-        stars.destroy();
-        stars = null;
-    }
+	stars.destroy();
 
-    if (tweenIn != null) tweenIn.destroy();
-    if (tweenOut != null) tweenOut.destroy();
+    stopPressStartTween();
     transitionTimer.destroy();
-
-	if (titleGrp != null) titleGrp.destroy();
-	if (pressStart != null) pressStart.destroy();
-	if (introGroup != null) introGroup.destroy();
-	if (demoVideo != null) demoVideo.destroy();
 
 	for (emote in introTextEmotes) {
 		if (emote != null) {
@@ -681,5 +619,6 @@ function destroy() {
 			emote.destroy();
 		}
 	}
+
 	introTextEmotes = null;
 }

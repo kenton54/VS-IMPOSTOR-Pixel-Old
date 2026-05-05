@@ -5,7 +5,7 @@ import hxdiscord_rpc.Types as DiscordTypes;
 function new() {}
 
 var curActivity:ActivityType = ActivityType.Playing;
-var curLargeImageKey:String = "mainhd";
+var curLargeImageKey:String = "mainnew";
 var curLargeImageText:String = "VS IMPOSTOR Pixel";
 
 function onDiscordPresenceUpdate(event) {

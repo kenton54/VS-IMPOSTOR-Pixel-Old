@@ -1,3 +1,5 @@
+package impostor;
+
 import flixel.util.FlxBaseSignal;
 
 class BackButton extends FunkinSprite {

@@ -16,7 +16,7 @@ import funkin.menus.ModSwitchMenu;
 import funkin.options.Options;
 import funkin.options.OptionsMenu;
 import openfl.system.System;
-import BackButton;
+import impostor.BackButton;
 import FunkinGroup;
 import StarsBackdrop;
 import ResizableUIBox;
@@ -558,7 +558,7 @@ function create() {
 
 	createMainSectionButtons();
 
-    var version:FunkinText = new FunkinText(buttonsBack.x, buttonsBack.y + buttonsBack.height + 2 * baseScale, buttonsBack.width, "VS IMPOSTOR Pixel " + translate("version", [MOD_VERSION]) /*+ '\nCodename Version: ' + Main.releaseVersion*/, 18 * gameScale.y);
+    var version:FunkinText = new FunkinText(buttonsBack.x, buttonsBack.y + buttonsBack.height + 2 * baseScale, buttonsBack.width, translate("version", [MOD_VERSION]) /*+ '\nCodename Version: ' + Main.releaseVersion*/, 18 * gameScale.y);
     version.font = Paths.font("pixeloidsans.ttf");
     version.alignment = "center";
 	version.borderSize = 2.2 * gameScale.y;

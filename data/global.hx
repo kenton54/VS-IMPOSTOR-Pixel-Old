@@ -1,4 +1,5 @@
 import funkin.backend.system.framerate.Framerate;
+import funkin.backend.system.Flags;
 import funkin.backend.utils.WindowUtils;
 import funkin.backend.MusicBeatState;
 import funkin.backend.MusicBeatTransition;
@@ -25,12 +26,13 @@ importScript("utils/stats");
 importScript("utils/achievements");
 importScript("utils/flags");
 
-public static final MOD_VERSION:String = "1.3";
+public static final MOD_VERSION:String = "1.4";
 
 public static final PIXEL_SAVE_PATH:String = "kenton";
 public static final PIXEL_SAVE_NAME:String = "impostorPixel";
 
 public static var modInitialized:Bool = false;
+public static var playedTitleIntro:Bool = false;
 
 public static var allowAFK:Bool = true;
 
@@ -353,6 +355,7 @@ function destroy() {
 	Assets.cache.clear();
 
 	modInitialized = false;
+	playedTitleIntro = false;
 
 	ModchartConfig.CAMERA3D_ENABLED = last3DConfig;
 	ModchartConfig.OPTIMIZE_HOLDS = lastOptHolds;
