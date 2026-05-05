@@ -327,24 +327,24 @@ function improveStrums() {
         if (FlxG.save.data.middlescroll) {
             if (strumline.data.type == 1) {
                 strumline.extra.set("separate", 20);
-                var middleScale:Float = chartStrumline.strumScale * 1.1;
+                var middleScale:Float = chartStrumline.strumScale * 1.05;
                 var strumSpacing:Float = (chartStrumline.strumSpacing != null ? chartStrumline.strumSpacing : 1);
                 var strumXPos:Float = StrumLine.calculateStartingXPos(0.5, middleScale, strumSpacing, chartStrumline.keyCount);
                 var strumPos:FlxPoint = FlxPoint.get(strumXPos, chartStrumline.strumPos[1]);
                 strumline.startingPos = strumPos;
                 for (s => strum in strumline.members) {
-                    strum.scale.x *= 1.1;
-                    strum.scale.y *= 1.1;
+					strum.scale.x *= 1.05;
+					strum.scale.y *= 1.05;
                     strum.updateHitbox();
                     strum.x = strumline.startingPos.x + ((strum.width + strumline.extra.get("separate")) * chartStrumline.strumScale * strumSpacing * s);
                 }
                 for (note in strumline.notes.members) {
-                    note.scale.x *= 1.1;
-                    note.scale.y *= 1.1;
+                    note.scale.x *= 1.05;
+                    note.scale.y *= 1.05;
                     note.updateHitbox();
                 }
                 if (holdCoverHandlers[i] != null)
-                    holdCoverHandlers[i]._scale *= 1.1;
+					holdCoverHandlers[i]._scale *= 1.05;
             }
             else {
                 var strumXPos:Float = StrumLine.calculateStartingXPos((modulo % 2 == 0) ? strumPosScreenSides[0] : strumPosScreenSides[1], chartStrumline.strumScale / 1.5, (chartStrumline.strumSpacing != null ? chartStrumline.strumSpacing : 1), chartStrumline.keyCount);
@@ -388,7 +388,7 @@ function improveStrums() {
                 var strumSpacing:Float = (strumline.data.strumSpacing != null ? strumline.data.strumSpacing : 1);
 				var bgWidth:Float = strumline.data.keyCount * strumSpacing * (strumline.members[0].width + strumline.extra.get("separate")) + backgroundPadding * 2;
                 var strumBG:FlxSprite = new FlxSprite().makeGraphic(Std.int(bgWidth), FlxG.height, FlxColor.BLACK);
-                strumBG.alpha = FlxG.save.data.impPixelStrumBG;
+                strumBG.alpha = FlxG.save.data.impPixelStrumBG / 100;
                 strumBG.camera = camHUD;
 
                 var fullWidth:Float = distanceBetweenFloats(strumline.members[0].x, strumline.members[strumline.members.length - 1].x + strumline.members[strumline.members.length - 1].width);

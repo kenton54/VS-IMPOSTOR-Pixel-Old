@@ -2,7 +2,7 @@ import flixel.effects.particles.FlxEmitter.FlxTypedEmitter;
 import flixel.util.FlxGradient;
 import funkin.options.Options;
 import impostor.ImpostorCharacter;
-import StarsBackdrop;
+import impostor.StarsBackdrop;
 
 public var songUsesLightsSabotage:Bool = false;
 public var customSnowEmitterInit:Bool = false;
