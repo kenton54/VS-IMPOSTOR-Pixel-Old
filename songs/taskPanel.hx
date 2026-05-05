@@ -1,4 +1,4 @@
-import TaskPanel;
+import impostor.TaskPanel;
 
 /**
  * The task panel handler holds information about who made the current-playing-song possible to exist.

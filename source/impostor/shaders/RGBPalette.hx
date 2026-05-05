@@ -1,3 +1,5 @@
+package impostor;
+
 class RGBPalette {
     public static function convertColorToFloatArray(color:FlxColor):Array<Float> {
         var red:Float = ((color >> 16) & 0xFF) / 255;

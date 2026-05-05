@@ -1,8 +1,8 @@
 import flixel.addons.display.FlxBackdrop;
 import funkin.backend.system.framerate.Framerate;
 import funkin.backend.MusicBeatGroup;
-import BackButton;
-import StarsBackdrop;
+import impostor.BackButton;
+import impostor.StarsBackdrop;
 
 var stars:StarsBackdrop;
 var topBorder:FlxBackdrop;
@@ -50,11 +50,11 @@ var creditsData:Array<Array<Dynamic>> = [
         ]
     },
     {
-        category: "IMPOSTORM",
-		portrait: "impostorm-big",
+        category: "MOTORFROG",
+		portrait: "motorfrog-big",
 		scale: 0.8,
 		offset: 8,
-		about: "These are the people that made the original VS IMPOSTOR.\nGo check them out!",
+		about: "The team that made VS IMPOSTOR.\nGo check them out!",
 		website: "https://vsimpostor.com",
 
 		// If anyone asks, this list is from https://vsimpostor.com/#credits
@@ -123,7 +123,7 @@ var creditsData:Array<Array<Dynamic>> = [
         category: "Innersloth",
 		portrait: "innersloth-big",
 		scale: 0.45,
-		about: "This is the company behind Among Us.\nGo support them!",
+		about: "The creators of Among Us.\nGo support them!",
 		website: "https://www.innersloth.com",
 		youtube: "https://www.youtube.com/channel/UCKuI2VapWQjkMz2DDrLvLKw",
 		discord: "https://discord.com/invite/innersloth",
@@ -134,7 +134,7 @@ var creditsData:Array<Array<Dynamic>> = [
 		category: "Codename Engine",
 		portrait: "codename-big",
 		scale: 0.7,
-		about: "The engine this mod uses!\nThank you so much for making this amazing engine <3\nIf you want to make big mods, I recommend you this engine! It's really powerful.\nThank you Codename Crew for making this beautiful engine, and for easing mod production.",
+		about: "The engine this mod is running on!\nThank you so much CNE Devs for making this amazing engine <3\nI can't recommend you this engine enough! It's so damn good and really powerful.",
 		website: "https://codename-engine.com",
 		youtube: "https://www.youtube.com/@CodenameEngine",
 		twitter: "https://twitter.com/FNFCodenameEG",

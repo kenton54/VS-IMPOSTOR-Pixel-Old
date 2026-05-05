@@ -1,3 +1,5 @@
+package impostor;
+
 import flixel.group.FlxSpriteGroup;
 
 class ResizableUIBox {

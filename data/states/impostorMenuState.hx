@@ -17,9 +17,9 @@ import funkin.options.Options;
 import funkin.options.OptionsMenu;
 import openfl.system.System;
 import impostor.BackButton;
+import impostor.StarsBackdrop;
+import impostor.ResizableUIBox;
 import FunkinGroup;
-import StarsBackdrop;
-import ResizableUIBox;
 
 var discordIntegration:Bool = false;
 

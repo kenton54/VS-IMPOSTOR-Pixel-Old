@@ -1,3 +1,5 @@
+package impostor;
+
 import flixel.FlxBasic;
 import flixel.addons.display.FlxBackdrop;
 import flixel.effects.particles.FlxEmitter.FlxTypedEmitter;

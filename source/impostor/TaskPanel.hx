@@ -1,3 +1,5 @@
+package impostor;
+
 class TaskPanel {
     public var group:FlxSpriteGroup;
 

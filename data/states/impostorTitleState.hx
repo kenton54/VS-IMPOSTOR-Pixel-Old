@@ -8,9 +8,9 @@ import funkin.backend.system.Flags;
 import funkin.backend.MusicBeatState;
 import funkin.options.Options;
 import hxvlc.flixel.FlxVideoSprite;
+import impostor.shaders.RGBPalette;
+import impostor.StarsBackdrop;
 import EReg;
-import StarsBackdrop;
-import RGBPalette;
 
 enum TitleState {
     INTRO;
