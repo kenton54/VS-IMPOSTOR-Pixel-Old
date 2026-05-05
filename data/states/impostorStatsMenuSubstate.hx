@@ -1,6 +1,6 @@
 import flixel.text.FlxText.FlxTextFormat;
 import flixel.util.FlxStringUtil;
-import ResizableUIBox;
+import impostor.ResizableUIBox;
 
 // the only reason these are here is becuz maps fuck up the order
 var statsList:Array<String> = [
