@@ -3,6 +3,7 @@ import flixel.effects.FlxFlicker;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.frames.FlxBitmapFont;
 import flixel.text.FlxBitmapText;
+import flixel.text.FlxText.FlxTextFormat;
 import flixel.util.FlxGradient;
 import funkin.backend.system.Flags;
 import funkin.backend.MusicBeatState;
@@ -30,6 +31,10 @@ var endSplash:Array<String> = [];
 var introGroup:FlxGroup;
 var introText:FunkinText;
 var introTextEmotes:Array<FlxSprite> = [];
+
+var logoGlow:FlxSprite;
+var logoShine:FlxSprite;
+var introLogo:FunkinSprite;
 
 var legacyLogo:FlxSprite;
 
@@ -121,7 +126,7 @@ function create() {
 
 	var titleAnimIndices:Array<Int> = [0, 0, 0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0];
     titleMain = new FlxSprite().loadGraphic(Paths.image("menus/title/title"), true, 197, 65);
-	titleMain.animation.add("anim", titleAnimIndices, 24, false);
+	titleMain.animation.add("anim", titleAnimIndices, 24 /** (Conductor.crochet / 1000) * 4*/, false);
     titleMain.scale.set(baseScale, baseScale);
     titleMain.updateHitbox();
     titleMain.centerOffsets();
@@ -164,8 +169,33 @@ function create() {
 	legacyLogo.updateHitbox();
 	legacyLogo.screenCenter(FlxAxes.X);
 	legacyLogo.y = FlxG.height * 0.88 - legacyLogo.height;
-	legacyLogo.visible = false;
+	legacyLogo.alpha = 0;
 	introGroup.add(legacyLogo);
+
+	logoGlow = new FlxSprite().loadGraphic(Paths.image('menus/title/logoGlow'));
+	logoGlow.alpha = 0;
+	introGroup.add(logoGlow);
+
+	logoShine = new FlxSprite().loadGraphic(Paths.image('menus/title/logoShine'));
+	logoShine.alpha = 0;
+	introGroup.add(logoShine);
+
+	introLogo = new FunkinSprite().loadSprite(Paths.image('menus/title/introLogo'));
+	introLogo.addAnim('versus', 'versus', 0, false);
+	introLogo.addAnim('impostor', 'impostor', 0, false);
+	introLogo.addAnim('pixel', 'pixel', 30, false);
+	introLogo.playAnim('versus');
+	introLogo.scale.set(baseScale, baseScale);
+	introLogo.updateHitbox();
+	introLogo.setPosition(titleMain.x, titleMain.y);
+	introLogo.alpha = 0;
+	introGroup.add(introLogo);
+
+	logoGlow.x = introLogo.x + (introLogo.width - logoGlow.width) / 2;
+	logoGlow.y = introLogo.y + (introLogo.height - logoGlow.height) / 2;
+
+	logoShine.x = introLogo.x + (introLogo.width - logoShine.width) / 2;
+	logoShine.y = introLogo.y + (introLogo.height - logoShine.height) / 2;
 
 	if (deadVersion) {
 		window.title = "...";
@@ -174,7 +204,7 @@ function create() {
 	} else {
 		allowInput = true;
 
-		if (!playedTitleIntro && (Conductor.curStep <= 3 || Conductor.curStep >= 304)) {
+		if (!playedTitleIntro) {
 			introGroup.revive();
 			prepareIntro();
 			playIntro();
@@ -203,8 +233,8 @@ function update(elapsed:Float) {
 			case TitleState.IDLE:
 				if (controls.BACK) {
 					if (!canPlayIntro) {
-						logTraceColored([{text: "Queued intro repetition!"}], "information");
 						prepareIntro();
+						playIntro();
 					}
 				}
 
@@ -243,11 +273,8 @@ function startTransitionToMainMenu(keyboard:Bool) {
 	fakePressStart.scrollFactor.copyFrom(pressStart.scrollFactor);
 	fakePressStart.scale.x = fakePressStart.scale.y = pressStart.scale.x;
 	fakePressStart.updateHitbox();
-	fakePressStart.fieldWidth = pressStart.fieldWidth;
-	fakePressStart.alignment = pressStart.alignment;
 	fakePressStart.y = pressStart.y;
 	fakePressStart.screenCenter(FlxAxes.X);
-	fakePressStart.x -= 372;
 	insert(members.indexOf(pressStart), fakePressStart);
 
 	var scaleTo:Float = pressStart.scale.x * 1.25;
@@ -319,13 +346,6 @@ function stopPressStartTween() {
 }
 
 function stepHit(curStep:Int) {
-	if (accepted) return;
-
-	if (curStep == 0) {
-		if ((!playedTitleIntro || canPlayIntro) && (introGroup.exists && introGroup.active))
-			playIntro();
-	}
-
 	if (_isPlayingIntro)
 		introBeat(curStep);
 }
@@ -333,9 +353,6 @@ function stepHit(curStep:Int) {
 var doCameraBop:Bool = true;
 function beatHit(curBeat:Int) {
 	if (accepted) return;
-
-	if (curBeat == 76 && canPlayIntro)
-		transitionToIntro();
 
 	if (curBeat % 4 == 3) // last beat of a measure
 		titleMain.animation.play("anim", true);
@@ -351,31 +368,28 @@ function beatHit(curBeat:Int) {
 var canChangeColor:Bool = true;
 function measureHit(curMeasure:Int) {
 	// measure 20 is when the song ends
-	if (FlxG.sound.music == null || curMeasure >= 20 || accepted) return;
+	if (FlxG.sound.music == null || accepted) return;
 
-	if (!canChangeColor) return;
-
-	var selectedColors:Array<FlxColor> = titleColors[FlxG.random.int(0, titleColors.length - 1)];
-	titleRGB.shader.r = RGBPalette.convertColorToFloatArray(selectedColors[0]);
-	titleRGB.shader.g = RGBPalette.convertColorToFloatArray(selectedColors[1]);
-}
-
-function transitionToIntro() {
-	introGroup.revive();
-	introGroup.forEach(function(obj) {
-		obj.visible = true;
-		FlxTween.tween(obj, {alpha: 1}, (Conductor.stepCrochet / 1000) * 8);
-	});
+	if (canChangeColor) {
+		var selectedColors:Array<FlxColor> = titleColors[FlxG.random.int(0, titleColors.length - 1)];
+		titleRGB.red = selectedColors[0];
+		titleRGB.green = selectedColors[1];
+	}
 }
 
 var canPlayIntro:Bool = false;
 function prepareIntro() {
 	gameStarted = false;
 	canPlayIntro = true;
+
+	FlxG.sound.music.time = 0;
+	reviveIntroText();
 }
 
 var _isPlayingIntro:Bool = false;
 function playIntro() {
+	FlxG.camera.stopFX();
+
 	doCameraBop = false;
 	canChangeColor = false;
 
@@ -428,26 +442,41 @@ function introBeat(curStep:Int) {
 			showText("A mod based of");
 		case 28: // beat 7
 			showText("VS IMPOSTOR Legacy");
-			legacyLogo.visible = true;
+			legacyLogo.alpha = 1;
 		case 32: // beat 8
 			introText.y += 100;
-			legacyLogo.visible = false;
+			legacyLogo.alpha = 0;
 			resetIntroText();
 		case 36: // beat 9
 			showSplash(midSplash, 1);
 		case 44: // beat 11
 			showSplash(midSplash, 2);
-		case 46:
 			showSplash(midSplash, 3);
 		case 48: // beat 12
 			resetIntroText();
 		case 52: // beat 13
-			showSplash(endSplash, 1);
+			FlxTween.cancelTweensOf(introLogo);
+			introLogo.playAnim('versus');
+			introLogo.alpha = 1;
+			FlxTween.tween(introLogo, {alpha: 0}, (Conductor.stepCrochet / 1000) * 4);
 		case 56: // beat 14
-			showSplash(endSplash, 2);
+			FlxTween.cancelTweensOf(introLogo);
+			introLogo.playAnim('impostor');
+			introLogo.alpha = 1;
+			FlxTween.tween(introLogo, {alpha: 0}, (Conductor.stepCrochet / 1000) * 4);
 		case 60: // beat 15
-			showSplash(endSplash, 3, true);
+			FlxTween.cancelTweensOf(introLogo);
+			introLogo.playAnim('pixel');
+			introLogo.alpha = 1;
+
+			FlxG.camera.fade(0x40FFFFFF, (Conductor.stepCrochet / 1000) * 4);
+			FlxTween.tween(logoGlow, {alpha: 0.5}, (Conductor.stepCrochet / 1000) * 4, {ease: FlxEase.quadIn});
+			FlxTween.tween(logoShine, {alpha: 0.4}, (Conductor.stepCrochet / 1000) * 4, {ease: FlxEase.quartIn});
 		case 64: // beat 16
+			FlxTween.cancelTweensOf(introLogo);
+			FlxTween.cancelTweensOf(logoGlow);
+			FlxTween.cancelTweensOf(logoShine);
+			introLogo.alpha = logoGlow.alpha = logoShine.alpha = 0;
 			playedTitleIntro = true;
             endIntro();
     }
@@ -555,10 +584,18 @@ function killIntroText() {
 	resetIntroText();
 	introGroup.forEach(function(obj) {
 		FlxTween.cancelTweensOf(obj);
-		obj.alpha = 0;
 		obj.visible = false;
 	});
 	introGroup.kill();
+}
+
+function reviveIntroText() {
+	resetIntroText();
+	introGroup.forEach(function(obj) {
+		FlxTween.cancelTweensOf(obj);
+		obj.visible = true;
+	});
+	introGroup.revive();
 }
 
 function endIntro() {
@@ -576,6 +613,8 @@ function endIntro() {
 }
 
 function showTitle(?flash:Bool) {
+	FlxG.camera.stopFX();
+
 	if (flash != null && flash)
         FlxG.camera.flash(FlxColor.WHITE, !gameStarted ? 3 : 1.5);
     else {
