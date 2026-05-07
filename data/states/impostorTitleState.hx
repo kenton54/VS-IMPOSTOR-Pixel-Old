@@ -183,7 +183,7 @@ function create() {
 	introLogo = new FunkinSprite().loadSprite(Paths.image('menus/title/introLogo'));
 	introLogo.addAnim('versus', 'versus', 0, false);
 	introLogo.addAnim('impostor', 'impostor', 0, false);
-	introLogo.addAnim('pixel', 'pixel', 30, false);
+	introLogo.addAnim('pixel', 'pixel', 40, false);
 	introLogo.playAnim('versus');
 	introLogo.scale.set(baseScale, baseScale);
 	introLogo.updateHitbox();
@@ -233,6 +233,7 @@ function update(elapsed:Float) {
 			case TitleState.IDLE:
 				if (controls.BACK) {
 					if (!canPlayIntro) {
+						FlxG.sound.music.time = 0;
 						prepareIntro();
 						playIntro();
 					}
@@ -382,7 +383,6 @@ function prepareIntro() {
 	gameStarted = false;
 	canPlayIntro = true;
 
-	FlxG.sound.music.time = 0;
 	reviveIntroText();
 }
 
