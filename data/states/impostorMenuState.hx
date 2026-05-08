@@ -16,24 +16,21 @@ import funkin.menus.ModSwitchMenu;
 import funkin.options.Options;
 import funkin.options.OptionsMenu;
 import openfl.system.System;
+import impostor.menus.mainmenu.MainMenuButton;
+import impostor.menus.mainmenu.MainMenuButton.MainMenuButtonType;
+import impostor.menus.mainmenu.ExitPrompt;
+import impostor.menus.mainmenu.TopButton;
+import impostor.utils.FunkinMath;
 import impostor.BackButton;
 import impostor.StarsBackdrop;
 import impostor.ResizableUIBox;
 import FunkinGroup;
-
-var discordIntegration:Bool = false;
 
 var deadVersion:Bool = false; //isBelowStoryPoint("menuRevival");
 
 enum SelectionMode {
     MAIN;
     WINDOW;
-}
-
-enum ButtonType {
-	MAIN;
-	EXTRAS;
-	OTHERS;
 }
 
 var curSelectionMode:SelectionMode = SelectionMode.MAIN;
@@ -52,12 +49,9 @@ var backButton:BackButton;
 var topButtonsGroup:FlxSpriteGroup;
 var statsButton:TopButton;
 
-var discordAvatar:FlxSprite;
-var discordUsername:FunkinText;
-
-var lightThing:FlxSprite;
+var lightBulb:FlxSprite;
 var lightGlow:FlxSprite;
-var lightLight:FlxSprite;
+var lightBulbOverlay:FlxSprite;
 
 var baseScale:Float = 5 * gameScale.y;
 
@@ -71,7 +65,7 @@ var mainSectionButtons:Array<Dynamic> = [
         available: true,
         icon: getImage("icons/play"),
         scale: baseScale,
-        type: ButtonType.MAIN,
+		type: MainMenuButtonType.MAIN,
         onSelect: function() {
 			var worldmapImage:String = getImage("bigButtons/worldmap-dead"); //deadVersion ? getImage("bigButtons/worldmap-dead") : getImage("bigButtons/worldmap");
 			var worldmapText:String = translate("questionMarks"); //deadVersion ? (isBelowStoryPoint("postLobby") ? translate("questionMarks") : translate("mainMenu.sections.worldmap")) : translate("mainMenu.sections.worldmap");
@@ -92,7 +86,7 @@ var mainSectionButtons:Array<Dynamic> = [
 			worldmapButton.hoverColor = deadVersion ? 0xFF484848 : 0xFF10584B;
 			worldmapButton.available = false;//!isBelowStoryPoint("postTutorial");
 			worldmapButton.addLabel(worldmapText, FlxPoint.get(0, 43.5));
-			objectCenter(worldmapButton.label, worldmapButton.button, FlxAxes.X);
+			FunkinMath.objectCenter(worldmapButton.label, worldmapButton.button, FlxAxes.X);
 			window.add(worldmapButton);
 
 			var freeplayButton:WindowButton = new WindowButton(windowArea, windowArea.width / 2, 3 * baseScale, {
@@ -110,7 +104,7 @@ var mainSectionButtons:Array<Dynamic> = [
                 disableInput();
                 new FlxTimer().start(1, _ -> FlxG.switchState(new FreeplayState()));
             };
-			objectCenter(freeplayButton.label, freeplayButton.button, FlxAxes.X);
+			FunkinMath.objectCenter(freeplayButton.label, freeplayButton.button, FlxAxes.X);
 			window.add(freeplayButton);
 
 			var tutorialButton:WindowButton = new WindowButton(windowArea, windowArea.width / 2, 59 * baseScale, {
@@ -124,7 +118,7 @@ var mainSectionButtons:Array<Dynamic> = [
 			tutorialButton.hoverColor = 0xFFFFFFFF;
 			tutorialButton.available = false;
 			tutorialButton.addLabel(translate("questionMarks"), FlxPoint.get(0, 1.5));
-			objectCenter(tutorialButton.label, tutorialButton.button, FlxAxes.X);
+			FunkinMath.objectCenter(tutorialButton.label, tutorialButton.button, FlxAxes.X);
 			window.add(tutorialButton);
 
             openWindowSubMenu(window);
@@ -134,9 +128,9 @@ var mainSectionButtons:Array<Dynamic> = [
         name: translate("generic.achievements"),
 		available: false,
         icon: getImage("icons/achievements"),
+		iconOffsets: [4, 0],
 		scale: baseScale,
-		type: ButtonType.MAIN,
-        offset: [4, 0],
+		type: MainMenuButtonType.MAIN,
         onSelect: function() {
 			new FlxTimer().start(0.5, _ -> {
 				setTransition("fade");
@@ -148,9 +142,9 @@ var mainSectionButtons:Array<Dynamic> = [
         name: translate("generic.shop"),
 		available: false,
 		icon: getImage("icons/shop"),
+		iconOffsets: [1, 1],
 		scale: baseScale,
-		type: ButtonType.MAIN,
-		offset: [1, 1],
+		type: MainMenuButtonType.MAIN,
 		onSelect: function() {
 			new FlxTimer().start(0.5, _ -> {
 				setTransition("fade");
@@ -163,8 +157,9 @@ var mainSectionButtons:Array<Dynamic> = [
 		available: true,
 		icon: getImage("icons/options"),
 		scale: baseScale,
-		type: ButtonType.EXTRAS,
+		type: MainMenuButtonType.EXTRA,
         onSelect: function() {
+			disableInput();
 			new FlxTimer().start(0.5, _ -> {
 				setTransition("fade");
 				FlxG.switchState(new OptionsMenu());
@@ -177,7 +172,7 @@ var mainSectionButtons:Array<Dynamic> = [
 		available: true,
 		icon: getImage("icons/credits"),
 		scale: baseScale,
-		type: ButtonType.EXTRAS,
+		type: MainMenuButtonType.EXTRA,
         onSelect: function() {
 			var window:WindowSubMenu = new WindowSubMenu(translate("generic.extras"));
 
@@ -241,7 +236,7 @@ var mainSectionButtons:Array<Dynamic> = [
 		name: translate("generic.mods"),
 		available: true,
 		scale: baseScale,
-		type: ButtonType.OTHERS,
+		type: MainMenuButtonType.OTHER,
         onSelect: function() {
             if (Flags.VERSION == "1.0.1" || Flags.VERSION == "1.0.0") {
 				modSubState();
@@ -313,7 +308,7 @@ var mainSectionButtons:Array<Dynamic> = [
 		name: translate("generic.exit"),
 		available: true,
 		scale: baseScale,
-		type: ButtonType.OTHERS,
+		type: MainMenuButtonType.OTHER,
         onSelect: function() {
             exitPrompt.open();
         }
@@ -322,9 +317,6 @@ var mainSectionButtons:Array<Dynamic> = [
 
 var allButtonsArray:Array<Dynamic> = [];
 var mainButtons:FlxGroup;
-var buttonsMainGroup:FlxSpriteGroup;
-var buttonsLabelGroup:FlxSpriteGroup;
-var buttonsIconGroup:FlxSpriteGroup;
 
 function create() {
     changeDiscordMenuStatus("Main Menu");
@@ -349,31 +341,29 @@ function create() {
     var starField:StarsBackdrop = new StarsBackdrop(-5, 3);
     starField.scale = FlxPoint.get(1.2, 1.2);
     starField.scrollFactor = FlxPoint.get(0.2, 0.2);
-	starField.camera = spaceCamera;
 	add(starField);
 
 	var bgLeft:FlxSprite = new FlxSprite().loadGraphic(getImage("bg-left"));
     bgLeft.scale.set(baseScale, baseScale);
     bgLeft.updateHitbox();
 	bgLeft.camera = mainCamera;
+	add(bgLeft);
 
 	var bgRight:FlxSprite = new FlxSprite(FlxG.width).loadGraphic(getImage("bg-right"));
     bgRight.scale.set(baseScale, baseScale);
     bgRight.updateHitbox();
     bgRight.x -= bgRight.width;
 	bgRight.camera = mainCamera;
+	add(bgRight);
 
-	var bgDistance:Float = distanceBetweenFloats(bgLeft.x + bgLeft.width, bgRight.x);
+	var bgDistance:Float = FunkinMath.distanceBetweenFloats(bgLeft.x + bgLeft.width, bgRight.x);
 	var bgMiddle:FlxSprite = new FlxSprite(bgLeft.x + bgLeft.width).loadGraphic(getImage("bg-middle"));
 	bgMiddle.scale.set(baseScale, baseScale);
     bgMiddle.updateHitbox();
 	bgMiddle.setGraphicSize(bgDistance, bgMiddle.height);
 	bgMiddle.updateHitbox();
     bgMiddle.camera = mainCamera;
-
     add(bgMiddle);
-    add(bgLeft);
-    add(bgRight);
 
 	var topLeft:FlxSprite = new FlxSprite(1 * baseScale, 2 * baseScale).loadGraphic(getImage("top-left"));
     topLeft.scale.set(baseScale, baseScale);
@@ -386,8 +376,12 @@ function create() {
     topRight.x -= topRight.width;
     topRight.camera = mainCamera;
 
-	var topDistance:Float = distanceBetweenFloats(topLeft.x + topLeft.width, topRight.x + 1 / gameScale.y);
-	var topMiddle:FlxSprite = new FlxSprite(topLeft.x + topLeft.width, topLeft.y).loadGraphic(getImage("top-middle"));
+	var topDistance:Float = FunkinMath.distanceBetweenFloats(topLeft.x + topLeft.width, topRight.x + 1 / gameScale.y);
+	var topMiddle:FlxSprite = new FlxSprite(topLeft.x + topLeft.width, topLeft.y).makeGraphic(1, 18, 0xFF282828);
+
+	for (position in [0, 17])
+		topMiddle.pixels.setPixel(0, position, 0x111111);
+
     topMiddle.scale.set(baseScale, baseScale);
     topMiddle.updateHitbox();
 	topMiddle.setGraphicSize(topDistance, topMiddle.height);
@@ -399,6 +393,7 @@ function create() {
     topShadowL.updateHitbox();
     topShadowL.blend = getBlendMode("multiply");
     topShadowL.camera = mainCamera;
+	add(topShadowL);
 
 	var topShadowR:FlxSprite = new FlxSprite(topRight.x, (topRight.y + topRight.height) - 2 * baseScale).loadGraphic(getImage("top-shadow"));
     topShadowR.scale.set(baseScale, baseScale);
@@ -406,93 +401,52 @@ function create() {
     topShadowR.blend = getBlendMode("multiply");
     topShadowR.flipX = true;
     topShadowR.camera = mainCamera;
+	add(topShadowR);
 
-	var topShadowDistance:Float = distanceBetweenFloats(topShadowL.x + topShadowL.width, topShadowR.x + 1 / gameScale.y);
+	var topShadowDistance:Float = FunkinMath.distanceBetweenFloats(topShadowL.x + topShadowL.width, topShadowR.x + 1 / gameScale.y);
     var topShadowM:FlxSprite = new FlxSprite(topShadowL.x + topShadowL.width, topShadowL.y).makeGraphic(Std.int(topShadowDistance), Std.int(4 * baseScale), 0xFF999999);
 	topShadowM.blend = getBlendMode("multiply");
 	topShadowM.camera = mainCamera;
+	add(topShadowM);
 
-	lightThing = new FlxSprite(topLeft.x + 24 * baseScale, topLeft.y + 4 * baseScale).loadGraphic(getImage("lightThing"));
-    lightThing.scale.set(baseScale, baseScale);
-    lightThing.updateHitbox();
-	lightThing.camera = mainCamera;
+	add(topLeft);
+	add(topRight);
+	add(topMiddle);
+
+	lightBulb = new FlxSprite(topLeft.x + 24 * baseScale, topLeft.y + 4 * baseScale).loadGraphic(getImage("lightBulb"));
+	lightBulb.scale.set(baseScale, baseScale);
+    lightBulb.updateHitbox();
+	lightBulb.camera = mainCamera;
+	add(lightBulb);
 
 	lightGlow = new FlxSprite().loadGraphic(getImage("lightGlow"));
     lightGlow.scale.set(1.5, 1.5);
     lightGlow.updateHitbox();
-    lightGlow.setPosition(lightThing.x + (lightThing.width / 2) - (lightGlow.width / 2), lightThing.y + (lightThing.height / 2) - (lightGlow.height / 2));
+	lightGlow.setPosition(lightBulb.x + (lightBulb.width / 2) - (lightGlow.width / 2), lightBulb.y + (lightBulb.height / 2) - (lightGlow.height / 2));
     lightGlow.blend = getBlendMode("add");
 	lightGlow.camera = mainCamera;
+	add(lightGlow);
 
-	lightLight = new FlxSprite(lightThing.x, lightThing.y).loadGraphic(getImage("lightLight"));
-    lightLight.scale.set(baseScale, baseScale);
-    lightLight.updateHitbox();
-	lightLight.blend = getBlendMode("add");
-	lightLight.camera = mainCamera;
+	lightBulbOverlay = new FlxSprite(lightBulb.x, lightBulb.y).loadGraphic(getImage("lightBulbOverlay"));
+	lightBulbOverlay.scale.set(baseScale, baseScale);
+	lightBulbOverlay.updateHitbox();
+	lightBulbOverlay.blend = getBlendMode("multiply");
+	lightBulbOverlay.camera = mainCamera;
+	add(lightBulbOverlay);
 
-	if (!isMobile && discordIntegration && !deadVersion) {
-		discordAvatar = new FlxSprite(lightThing.x + lightThing.width + 6 * baseScale, lightThing.y - 1.5 * baseScale);
-
-        if (DiscordUtil.ready) {
-            try {
-				discordAvatar.loadGraphic(DiscordUtil.user.getAvatar(64 * gameScale.y));
-            }
-            catch (e:Dynamic) {
-                discordAvatar.loadGraphic(getImage("nullAvatar"));
-				discordAvatar.scale.set(gameScale.y, gameScale.y);
-                discordAvatar.updateHitbox();
-            }
-        }
-        else {
-			discordAvatar.loadGraphic(getImage("nullAvatar"));
-			discordAvatar.scale.set(gameScale.y, gameScale.y);
-            discordAvatar.updateHitbox();
-        }
-
-        discordAvatar.shader = new CustomShader("spriteSphereBounds");
-        discordAvatar.shader.uRadius = 0.5;
-		discordAvatar.shader.uCenter = [discordAvatar.width / 2 / gameScale.y, discordAvatar.height / 2 / gameScale.y];
-		discordAvatar.camera = mainCamera;
-    }
-
-	if (isMobile && !deadVersion) {
-        lightThing.color = 0xFF43A25A;
-        lightGlow.color = 0xFF43A25A;
-    } else if (discordIntegration && !deadVersion) {
-		discordUsername = new FunkinText(0, 0, 0, "", 32 * gameScale.y);
-		discordUsername.borderSize = 3.4 * gameScale.y;
-        discordUsername.font = Paths.font("pixeloidsans.ttf");
-
-        if (DiscordUtil.ready) {
-            lightThing.color = 0xFF43A25A;
-            lightGlow.color = 0xFF43A25A;
-            discordUsername.text = DiscordUtil.user.globalName;
-            discordUsername.color = FlxColor.WHITE;
-        } else {
-            lightThing.color = 0xFF333333;
-            lightGlow.color = 0xFF333333;
-            lightGlow.visible = false;
-            lightLight.visible = false;
-            discordUsername.text = "Disconnected";
-            discordUsername.color = FlxColor.GRAY;
-        }
-
-        discordUsername.fieldWidth = discordUsername.width + 40;
-        discordUsername.alignment = "center";
-		discordUsername.setPosition(discordAvatar.x + discordAvatar.width, topLeft.y + 5 * baseScale);
-        discordUsername.camera = mainCamera;
-    } else if (!deadVersion) {
-        lightThing.color = 0xFF43A25A;
+	if (!deadVersion) {
+		lightBulb.color = 0xFF43A25A;
         lightGlow.color = 0xFF43A25A;
     } else {
-		lightThing.color = 0xFF333333;
+		lightBulb.color = 0xFF333333;
 		lightGlow.color = 0xFF333333;
 		lightGlow.visible = false;
-		lightLight.visible = false;
+		lightBulbOverlay.visible = false;
     }
 
     topButtonsGroup = new FlxSpriteGroup();
 	topButtonsGroup.camera = mainCamera;
+	add(topButtonsGroup);
 
 	statsButton = new TopButton("stats", topRight.x + topRight.width, topLeft.y + topLeft.height);
     statsButton.scale.set(baseScale, baseScale);
@@ -503,18 +457,8 @@ function create() {
     topButtonsGroup.add(statsButton);
 
     if (!isMobile) {
-		var discordButton:TopButton;
-		if (discordIntegration && !deadVersion) {
-			discordButton = new TopButton("discord", statsButton.x - statsButton.width - 4 * baseScale, statsButton.y);
-			discordButton.scale.set(baseScale, baseScale);
-			discordButton.updateHitbox();
-			topButtonsGroup.add(discordButton);
-		}
-
         if (Options.devMode) {
-			var xPos:Float = (discordButton != null) ? discordButton.x - discordButton.width : statsButton.x - statsButton.width;
-			var yPos:Float = (discordButton != null) ? discordButton.y : statsButton.y;
-			var debugButton:TopButton = new TopButton("debug", xPos - 4 * baseScale, yPos);
+			var debugButton:TopButton = new TopButton("debug", statsButton.x - statsButton.width - 4 * baseScale, statsButton.y);
             debugButton.scale.set(baseScale, baseScale);
             debugButton.updateHitbox();
 			debugButton.onPress = debugShit;
@@ -539,11 +483,15 @@ function create() {
     buttonsBackShadow.updateHitbox();
 	buttonsBackShadow.blend = getBlendMode("multiply");
 	buttonsBackShadow.camera = mainCamera;
-
     add(buttonsBackShadow);
+
     add(buttonsBack);
 
-	var divisionThing:FlxSprite = new FlxSprite(buttonsBack.x + 4 * baseScale, buttonsBack.y + 46 * baseScale).loadGraphic(getImage("buttonsDivision"));
+	var divisionThing:FlxSprite = new FlxSprite(buttonsBack.x + 4 * baseScale, buttonsBack.y + 46 * baseScale).makeGraphic(94, 1, 0xFF5A5B61);
+
+	for (position in [0, 1, 92, 93])
+		divisionThing.pixels.setPixel(position, 0, 0x3E4044);
+
     divisionThing.scale.set(baseScale, baseScale);
     divisionThing.updateHitbox();
 	divisionThing.camera = mainCamera;
@@ -552,11 +500,11 @@ function create() {
     var buttonsXPos:Float = buttonsBack.x + 3 * baseScale * 2;
 	var buttonsYPos:Float = buttonsBack.y + 3 * baseScale * 2;
 
-	mainButtons = new FlxSpriteGroup(buttonsXPos, buttonsYPos);
+	mainButtons = new FlxGroup(7);
     mainButtons.camera = mainCamera;
 	add(mainButtons);
 
-	createMainSectionButtons();
+	createMainSectionButtons(buttonsBack.x + 3 * baseScale * 2, buttonsBack.y + 3 * baseScale * 2);
 
     var version:FunkinText = new FunkinText(buttonsBack.x, buttonsBack.y + buttonsBack.height + 2 * baseScale, buttonsBack.width, translate("version", [MOD_VERSION]) /*+ '\nCodename Version: ' + Main.releaseVersion*/, 18 * gameScale.y);
     version.font = Paths.font("pixeloidsans.ttf");
@@ -591,18 +539,17 @@ function create() {
 	windowBorderShadowM.blend = getBlendMode("multiply");
     windowBorderShadowM.camera = mainCamera;
 
-    var spaceHpos:Float = windowBorderLeft.x + 8 * baseScale;
-    var spaceVpos:Float = windowBorderLeft.y + 8 * baseScale;
-    var spaceWidth:Int = Std.int(FlxG.width - spaceHpos);
-    var spaceHeight:Int = Std.int(112 * baseScale - 8 * baseScale * 2);
-	windowArea = new FlxRect(spaceHpos, spaceVpos, spaceWidth, spaceHeight);
+    var windowAreaX:Float = windowBorderLeft.x + 8 * baseScale;
+	var windowAreaY:Float = windowBorderLeft.y + 8 * baseScale;
+	var windowAreaW:Int = Std.int(FlxG.width - windowAreaX);
+	var windowAreaH:Int = Std.int(FunkinMath.distanceBetweenFloats(windowAreaY, windowBorderLeft.y + windowBorderLeft.height - 8 * baseScale));
+	windowArea = new FlxRect(windowAreaX, windowAreaY, windowAreaW, windowAreaH);
 
 	spaceCamera.setPosition(windowArea.x, windowArea.y);
 	spaceCamera.setSize(windowArea.width, windowArea.height);
-	starField.setBounds(spaceCamera.x, spaceCamera.y, spaceCamera.width, spaceCamera.height);
+	//starField.setBounds(FlxG.camera.x, FlxG.camera.y, FlxG.camera.width, FlxG.camera.height);
 
 	spaceGroup = new FlxSpriteGroup();
-	spaceGroup.camera = spaceCamera;
 	add(spaceGroup);
 
 	var windowShine:FlxSprite = new FlxSprite().loadGraphic(getImage("window-shine"));
@@ -611,8 +558,8 @@ function create() {
     windowShine.blend = getBlendMode("add");
     windowShine.alpha = 0.15;
 	windowShine.x = windowArea.width * (windowArea.width / 1280) * 0.4;
-	windowShine.camera = spaceCamera;
     windowShine.scrollFactor.set(0, 0);
+	windowShine.camera = spaceCamera;
 	add(windowShine);
 
 	windowMenu = new WindowSubMenuHandler(spaceCamera);
@@ -622,19 +569,6 @@ function create() {
 	add(windowBorderShadowL);
 	add(windowBorderMiddle);
 	add(windowBorderLeft);
-
-	add(topShadowM);
-	add(topShadowL);
-	add(topShadowR);
-	add(topMiddle);
-	add(topLeft);
-	add(topRight);
-	if (discordAvatar != null) add(discordAvatar);
-	if (discordUsername != null) add(discordUsername);
-	add(lightGlow);
-	add(lightThing);
-	add(lightLight);
-	add(topButtonsGroup);
 
 	if (deadVersion) {
 		var grayShader:CustomShader = new CustomShader("grayscale");
@@ -649,8 +583,6 @@ function create() {
 	}
 
     exitPrompt = new ExitPrompt();
-    exitPrompt.onOpen = disableInput;
-    exitPrompt.onClose = enableInput;
 
 	if (globalUsingKeyboard)
 	    changeMainEntry(0);
@@ -662,13 +594,8 @@ function createMainSectionButtons(?x:Float, ?y:Float) {
 	for (i => buttonData in mainSectionButtons) {
         if (i >= 7) return;
 
-		var button:MainMenuButton = new MainMenuButton(i, xPos, yPos, buttonData);
+		var button:MainMenuButton = new MainMenuButton(i, xPos, yPos, buttonData, mainCamera, baseScale);
 		mainButtons.add(button);
-
-        if (deadVersion) {
-			button.hideIcon = true;
-            button.greyscale = true;
-        }
 
         if (i < 5) {
 			yPos += button.height + baseScale + 1;
@@ -686,9 +613,12 @@ function postCreate() {
     backButton.x -= backButton.width;
     backButton.y -= backButton.height * 1.1;
     backButton.camera = mainCamera;
+	backButton.alpha = 0;
     add(backButton);
 
     backButton.onConfirm.add(disableInput);
+
+	FlxTween.tween(backButton, {alpha: 1}, 1, {startDelay: 0.5, ease: FlxEase.quintOut});
 
 	FlxG.mouse.visible = !globalUsingKeyboard;
     if (isMobile) FlxG.mouse.visible = false;
@@ -775,15 +705,13 @@ function debugShit() {
 }
 
 var allowInput:Bool = true;
+var curMainEntry:Int = 0;
+var curPointerEntry:Int = 0;
+var lastPointerEntry:Int = -1;
 function update(elapsed:Float) {
 	if (!allowInput) return;
 
-	if (globalUsingKeyboard) {
-		handleKeyboard(elapsed);
-        return;
-    }
-
-	handlePointer();
+	handleKeyboard(elapsed);
     if (isMobile)
         handleTouch();
     else
@@ -791,75 +719,73 @@ function update(elapsed:Float) {
 }
 
 function postUpdate(elapsed:Float) {
-    if (exitPrompt.isOpen)
-        handleExitPromptInput();
-
-	if (!isBelowStoryPoint("menuRevival") && foundCrew.length > 0)
-        floatSus();
+	/*if (!isBelowStoryPoint("menuRevival") && foundCrew.length > 0)
+        floatSus();*/
 }
 
-// main, window
-//var currentSelectionMode:String = "main";
-
-var curMainEntry:Int = 0;
-var lastMainEntry:Int = -1;
 var curWindowEntry:Array<Int> = [0, 0];
 var lastWindowEntry:Array<Int> = [-1, -1];
 
 var holdTimer:Float = 0;
 var maxHeldTime:Float = 0.5;
 var frameDelayer:Int = 0;
-var maxDelay:Int = 2;
+var maxFrameDelay:Int = 2;
 function handleKeyboard(elapsed:Float) {
     if (FlxG.keys.justPressed.ANY)
 		useKeyboard();
 
 	if (curSelectionMode == SelectionMode.MAIN) {
-        if (controls.UP_P)
-            changeMainEntry(-1);
-        if (controls.DOWN_P)
-            changeMainEntry(1);
+        if (exitPrompt.isOpen) {
+			if (controls.LEFT_P)
+				exitPrompt.pressedLeft();
+			if (controls.RIGHT_P)
+				exitPrompt.pressedRight();
 
-        if (controls.UP) {
-            if (holdTimer >= maxHeldTime) {
-                if (frameDelayer >= maxDelay) {
-                    changeMainEntry(-1);
-                    frameDelayer = 0;
-                }
-                else {
-                    frameDelayer++;
-                }
-            }
-            else
-                holdTimer += elapsed;
-        }
-        else if (controls.DOWN) {
-            if (holdTimer >= maxHeldTime)
-                if (frameDelayer >= maxDelay) {
-                    changeMainEntry(1);
-                    frameDelayer = 0;
-                }
-                else {
-                    frameDelayer++;
-                }
-            else
-                holdTimer += elapsed;
+			if (controls.ACCEPT)
+				exitPrompt.pressedConfirm();
         }
         else {
-            frameDelayer = 0;
-            holdTimer = 0;
+			if (controls.UP_P)
+				changeMainEntry(-1);
+			if (controls.DOWN_P)
+				changeMainEntry(1);
+
+			if (controls.UP) {
+				if (holdTimer >= maxHeldTime) {
+					if (frameDelayer >= maxFrameDelay) {
+						changeMainEntry(-1);
+						frameDelayer = 0;
+					}
+                    else
+						frameDelayer++;
+				}
+                else
+					holdTimer += elapsed;
+			}
+            else if (controls.DOWN) {
+				if (holdTimer >= maxHeldTime) {
+					if (frameDelayer >= maxFrameDelay) {
+						changeMainEntry(1);
+						frameDelayer = 0;
+					}
+                    else
+						frameDelayer++;
+                }
+				else
+					holdTimer += elapsed;
+			}
+            else {
+				frameDelayer = 0;
+				holdTimer = 0;
+			}
+
+			if (controls.SWITCHMOD)
+				statsMenu();
+
+			if (controls.ACCEPT)
+				checkMainSelection(curMainEntry);
         }
-
-        if (controls.SWITCHMOD)
-            statsMenu();
-
-        if (controls.ACCEPT)
-            selectMain();
-
-        if (controls.BACK)
-            goBack2Title();
     }
-	else if (curSelectionMode == SelectionMode.WINDOW) {
         /*
         if (controls.UP_P)
             changeWindowEntry(-1, 0);
@@ -874,9 +800,8 @@ function handleKeyboard(elapsed:Float) {
             checkSelectedWindowEntry();
         */
 
-        if (controls.BACK)
-            closeWindowSection();
-    }
+    if (controls.BACK)
+		checkBackAction();
 }
 
 function useKeyboard() {
@@ -884,99 +809,84 @@ function useKeyboard() {
     FlxG.mouse.visible = false;
 }
 
-var isOverButton:Bool = false;
 function handleMouse() {
-	if (pointerDoesAnything())
-        FlxG.mouse.visible = true;
-
-    if (!FlxG.mouse.visible) return;
-	if (globalUsingKeyboard) return;
-
-    if (isOverButton)
-        setMouseCursor("button");
-    else
-		setMouseCursor();
-}
-
-function handleTouch() {
-    // only available on real mobile
-    if (FlxG.onMobile) {
-        if (FlxG.android.justReleased.BACK)
-            goBack2Title();
-    }
-}
-
-function handlePointer() {
 	if (pointerDoesAnything()) {
 		holdTimer = 0;
 		if (curSelectionMode == SelectionMode.MAIN)
 			backButton.visible = true;
+
+		FlxG.mouse.visible = true;
     }
 
-    isOverButton = false;
+	if (!FlxG.mouse.visible || globalUsingKeyboard) return;
 
-	if (curSelectionMode == SelectionMode.MAIN) {
-		handleMainButtons();
-		//handleTopButtons();
-	}
-	else if (curSelectionMode == SelectionMode.WINDOW)
-		handleWindow();
-
-    /*
-    if (isOverButton) {
-		if (curSelectionMode == SelectionMode.MAIN) {
-			if (pointerJustReleased())
-                checkSelectedMainEntry();
-        }
-		else if (curSelectionMode == SelectionMode.WINDOW) {
-			if (pointerJustReleased())
-                checkSelectedWindowEntry();
-        }
-    }
-    else {
-        lastMainEntry = -1;
-        lastWindowEntry[0] = -1;
-        lastWindowEntry[1] = -1;
-    }
-    */
-}
-
-function handleMainButtons() {
-	if (curSelectionMode != SelectionMode.MAIN) return;
-
-    mainButtons.forEach(function(button) {
-		if (button != null && button.enabled)
-            button.updateButton();
-
-		if (button.isHovered)
-            isOverButton = true;
-    });
-}
-
-function handleExitPromptInput() {
-    if (globalUsingKeyboard) {
-        FlxG.mouse.visible = false;
-
-        if (controls.LEFT_P)
-            exitPrompt.pressedLeft();
-		if (controls.RIGHT_P)
-			exitPrompt.pressedRight();
-
-        if (controls.ACCEPT)
-			exitPrompt.pressedConfirm();
-
+	if (exitPrompt.isOpen) {
+		exitPrompt.updatePointer();
         return;
     }
 
-	FlxG.mouse.visible = true;
-	exitPrompt.updatePointer();
+	var isOverButton:Bool = false;
+
+	for (button in mainButtons.members) {
+		if (FlxG.mouse.overlaps(button, mainCamera) && button.available) {
+			button.hover();
+			pointerSelection(button.index);
+			isOverButton = true;
+        }
+        else
+			button.idle();
+    }
+
+    if (isOverButton) {
+        setMouseCursor("button");
+        if (FlxG.mouse.justReleased)
+			checkMainSelection(curPointerEntry);
+    }
+    else {
+		pointerSelection();
+		setMouseCursor();
+    }
 }
 
-function playSoundMain() {
-    if (curMainEntry != lastMainEntry) {
-        playMenuSound("scroll");
-        lastMainEntry = curMainEntry;
+function handleTouch() {
+	if (pointerDoesAnything()) {
+		holdTimer = 0;
+		if (curSelectionMode == SelectionMode.MAIN)
+			backButton.visible = true;
+	}
+
+	if (globalUsingKeyboard) return;
+
+	if (exitPrompt.isOpen) {
+		exitPrompt.updatePointer();
+		return;
+	}
+
+	var isOverButton:Bool = false;
+
+    for (touch in FlxG.touches.list) {
+		for (button in mainButtons.members) {
+			if (touch.overlaps(button, mainCamera) && button.available) {
+				button.hover();
+				pointerSelection(button.index);
+				isOverButton = true;
+			} else
+				button.idle();
+		}
     }
+
+	if (isOverButton) {
+		if (pointerJustReleased())
+			checkMainSelection(curPointerEntry);
+    }
+    else
+        pointerSelection();
+
+    // only available on real mobile devices
+    #if mobile
+    if (FlxG.android.justReleased.BACK)
+        goBack2Title();
+    #end
 }
 
 function playSoundWindow() {
@@ -990,18 +900,34 @@ function playSoundWindow() {
 }
 
 function changeMainEntry(change:Int) {
+	var oldEntry:Int = curMainEntry;
 	curMainEntry = FlxMath.wrap(curMainEntry + change, 0, mainButtons.length - 1);
 
-	if (!mainButtons.members[curMainEntry].isAvailable()) {
+	if (!mainButtons.members[curMainEntry].available) {
         changeMainEntry(change);
         return;
     }
 
-    playSoundMain();
+	for (button in mainButtons.members) {
+		if (button.index == curMainEntry)
+			button.hover();
+		else
+			button.idle();
+	}
 
-	mainButtons.forEach(function(button) {
-        button.checkPosition(curMainEntry);
-    });
+	if (curMainEntry != oldEntry)
+		playMenuSound("scroll");
+}
+
+function pointerSelection(?index:Int) {
+	curPointerEntry = index ?? -1;
+
+	if (curPointerEntry != lastPointerEntry) {
+		lastPointerEntry = curPointerEntry;
+
+		if (index >= 0)
+			playMenuSound("scroll");
+    }
 }
 
 function changeWindowEntry(changeColumn:Int, changeRow:Int) {
@@ -1016,24 +942,14 @@ function changeWindowEntry(changeColumn:Int, changeRow:Int) {
     playSoundWindow();
 }
 
-function selectMain() {
-	mainButtons.forEach(function(button) {
-		button.checkSelected(curMainEntry);
-	});
-}
+function checkMainSelection(index:Int) {
+	playMenuSound("confirm");
+	FlxFlicker.flicker(mainButtons.members[index], 1, 0.05, true, true);
 
-function checkSelectedMainEntry() {
-    playMenuSound("confirm");
-
-    disableInput();
-
-    FlxFlicker.flicker(buttonsMainGroup.members[curMainEntry], 1, 0.05, true, true);
-    FlxFlicker.flicker(buttonsLabelGroup.members[curMainEntry], 1, 0.05, true, true);
-    if (buttonsIconGroup.members[curMainEntry] != null) FlxFlicker.flicker(buttonsIconGroup.members[curMainEntry], 1, 0.05, true, true);
+	mainSectionButtons[index].onSelect();
 }
 
 function openWindowSubMenu(subMenu:WindowSubMenu) {
-	FlxG.inputs.onStateSwitch();
 	curSelectionMode = SelectionMode.WINDOW;
     backButton.visible = false;
 
@@ -1044,13 +960,6 @@ function openWindowSubMenu(subMenu:WindowSubMenu) {
 	FlxG.mouse.visible = !globalUsingKeyboard;
 }
 
-function handleWindow() {
-	windowMenu.curSubMenu.forEach(function(button) {
-		if (button.isHovered)
-            isOverButton = true;
-    });
-}
-
 function closeWindowSection() {
 	if (windowMenu.isOpen)
 		windowMenu.close(false);
@@ -1059,7 +968,6 @@ function closeWindowSection() {
 
     enableInput();
 
-	FlxG.inputs.onStateSwitch();
 	curSelectionMode = SelectionMode.MAIN;
 }
 
@@ -1080,67 +988,7 @@ function checkSelectedWindowEntry() {
     curWindowChooseBehaviour();
 }
 
-function floatSus() {}
-
-function shutdownDiscordRPC() {
-    DiscordUtil.shutdown();
-    DiscordUtil.ready = false;
-    updateDiscordUserStatus(false);
-}
-
-var connecting:Bool = false;
-function initDiscordRPC() {
-    DiscordUtil.currentID = "-1";
-    DiscordUtil.init();
-    discordUsername.fieldWidth = 0;
-    discordUsername.text = "Connecting to Discord...";
-    discordUsername.color = FlxColor.GRAY;
-    discordUsername.fieldWidth = discordUsername.width + 40;
-
-    connecting = true;
-    new FlxTimer().start(5, _ -> {
-        connecting = false;
-        updateDiscordUserStatus(true);
-    });
-}
-
-function updateDiscordUserStatus(fetchInfo:Bool) {
-    function fail(?error) {
-		discordAvatar.loadGraphic(getImage("nullAvatar"));
-		discordUsername.fieldWidth = 0;
-		discordUsername.text = "Disconnected";
-		discordUsername.color = FlxColor.GRAY;
-		discordUsername.fieldWidth = discordUsername.width + 40;
-		lightThing.color = 0xFF333333;
-		lightGlow.color = 0xFF333333;
-		lightGlow.visible = false;
-		lightLight.visible = false;
-
-        if (error != null)
-            logTraceErrorState("Discord", 'Error while trying to fetch Discord User information (Error log: "' + error + '")');
-    }
-
-    if (fetchInfo && DiscordUtil.ready) {
-        try {
-            discordAvatar.loadGraphic(DiscordUtil.user.getAvatar(64));
-			discordUsername.fieldWidth = 0;
-			discordUsername.text = DiscordUtil.user.globalName;
-			discordUsername.color = FlxColor.WHITE;
-			discordUsername.fieldWidth = discordUsername.width + 40;
-			lightThing.color = 0xFF43A25A;
-			lightGlow.color = 0xFF43A25A;
-			lightGlow.visible = true;
-			lightLight.visible = true;
-
-			changeDiscordMenuStatus("Main Menu");
-        }
-        catch (e:Dynamic) {
-			throw fail(e);
-        }
-    }
-    else
-        fail();
-}
+//function floatSus() {}
 
 function onOpenSubState(event) {
     disableInput();
@@ -1156,28 +1004,23 @@ function enableInput() {
 	allowInput = true;
     backButton.enabled = true;
 	windowMenu.enabled = true;
-	setMouseCursor();
-	enableMainButton(true);
 	topButtonsGroup.forEach(function(button) button.enabled = true);
+	setMouseCursor();
 }
 
 function disableInput() {
 	allowInput = false;
     backButton.enabled = false;
     windowMenu.enabled = false;
-    setMouseCursor();
-    enableMainButton(false);
     topButtonsGroup.forEach(function(button) button.enabled = false);
+    setMouseCursor();
 }
 
-function enableMainButton(enable:Bool) {
-    if (curSelectionMode != SelectionMode.MAIN) return;
-
-    if (mainButtons != null) {
-		mainButtons.forEach(function(button) {
-			button.enabled = enable;
-		});
-	}
+function checkBackAction() {
+	if (curSelectionMode == SelectionMode.WINDOW)
+		closeWindowSection();
+    else
+		goBack2Title();
 }
 
 function goBack2Title() {
@@ -1185,545 +1028,11 @@ function goBack2Title() {
     FlxG.switchState(new ModState("impostorTitleState"));
 }
 
-function destroy() {
-    mainButtons.destroy();
-    topButtonsGroup.destroy();
-    //statsHint.destroy();
-
-    // discord stuff
-	if (!isMobile && discordIntegration && !deadVersion) {
-        discordAvatar.destroy();
-        discordUsername.destroy();
-    }
-
-	lightThing.destroy();
-	lightGlow.destroy();
-	lightLight.destroy();
-
-	windowMenu.destroy();
-    backButton.destroy();
-
-	mainCamera.destroy();
-	spaceCamera.destroy();
-}
-
 enum ButtonState {
     IDLE;
     HOVER;
     SELECTED;
     BLOCKED;
-}
-
-class MainMenuButton extends MusicBeatGroup {
-	public var button:FunkinSprite;
-
-    public var label:FunkinText;
-
-	public var icon:FunkinSprite;
-
-	public var type(default, null):ButtonType;
-
-	public var onSelect(default, null):Void->Void;
-
-	public var hideIcon(default, set):Bool;
-
-    public var greyscale(default, set):Bool;
-
-    public var enabled:Bool = true;
-
-    public var isHovered(default, null):Bool = false;
-
-	var _position:Int = 0;
-
-	var _available:Bool;
-
-    var _selectColor:FlxColor;
-
-    var _idleColor:FlxColor;
-
-    var _blockedColor:FlxColor = FlxColor.BLACK;
-
-    var _state:ButtonState = ButtonState.IDLE;
-
-    var _flickerTimer:Float = 1;
-
-	public function new(position:Int, x:Float, y:Float, data:Array<Dynamic>) {
-        super(x, y);
-
-        _position = position;
-        _available = data.available ?? true;
-		this.type = data.type ?? ButtonType.MAIN;
-
-        this.onSelect = data.onSelect ?? null;
-
-        var offsets:Array<Int> = data.offset ?? [0, 0];
-
-        switch(this.type) {
-			case ButtonType.MAIN:
-				createMainButton(data.name, data.icon, data.scale, FlxPoint.get(offsets[0], offsets[1]));
-			case ButtonType.EXTRAS:
-				createExtrasButton(data.name, data.icon, data.scale, FlxPoint.get(offsets[0], offsets[1]));
-			case ButtonType.OTHERS:
-				createOthersButton(data.name, data.icon, data.scale, FlxPoint.get(offsets[0], offsets[1]));
-        }
-
-		this.greyscale = false;
-		this.hideIcon = false;
-    }
-
-    public function destroy() {
-		button.destroy();
-        label.destroy();
-
-        if (icon != null)
-            icon.destroy();
-
-		onSelect = null;
-    }
-
-    public function isAvailable():Bool
-		return _available;
-
-    public function updateButton() {
-        if (!enabled || !isAvailable()) return;
-
-		if (_state == ButtonState.BLOCKED || _state == ButtonState.SELECTED) return;
-
-		var overlaps:Bool = pointerOverlaps(this);
-
-		if (overlaps && _state == ButtonState.IDLE)
-            hover();
-
-        if (overlaps && _state == ButtonState.HOVER && pointerJustReleased())
-            select();
-
-		if (!overlaps && _state != ButtonState.IDLE)
-            goIdle();
-    }
-
-    public function checkPosition(position:Int) {
-        if (!enabled || !isAvailable()) return;
-
-        if (position == _position)
-            hover();
-        else
-            goIdle();
-    }
-
-    public function checkSelected(position:Int) {
-		if (!enabled || !isAvailable()) return;
-
-		if (position == _position)
-			select();
-    }
-
-    public function hover() {
-        _state = ButtonState.HOVER;
-		playMenuSound("scroll");
-
-        isHovered = true;
-
-        button.playAnim("hover");
-		label.color = _selectColor;
-    }
-
-    public function goIdle() {
-		_state = ButtonState.IDLE;
-
-		isHovered = false;
-
-		button.playAnim("idle");
-		label.color = _idleColor;
-    }
-
-	public function select() {
-		_state = ButtonState.SELECTED;
-		playMenuSound("confirm");
-
-		isHovered = false;
-
-		if (!hideIcon && icon != null && icon.active && icon.exists)
-            FlxFlicker.flicker(icon, _flickerTimer, 0.05, true, true);
-
-		FlxFlicker.flicker(label, _flickerTimer, 0.05, true, true);
-		FlxFlicker.flicker(button, _flickerTimer, 0.05, true, true, _ -> {
-            _state = ButtonState.HOVER;
-        });
-
-		if (onSelect != null)
-            onSelect();
-    }
-
-	function createMainButton(name:String, iconPath:String, scale:Float, offset:FlxPoint) {
-		_idleColor = 0xFF0A3C33;
-		_selectColor = 0xFF10584B;
-
-		button = new FunkinSprite().loadGraphic(getImage("mainButton"), true, 90, 12);
-		button.animation.add("idle", [0], 0, false);
-		button.animation.add("hover", [1], 0, false);
-		button.animation.add("blocked", [2], 0, false);
-		button.scale.set(scale, scale);
-		button.updateHitbox();
-		add(button);
-
-		var labelPosition:Float = 4 * scale;
-		label = new FunkinText(labelPosition, button.height / 2, button.width - labelPosition * 2, name, 32 * gameScale.y, false);
-		label.font = Paths.font("pixeloidsans.ttf");
-		label.color = _idleColor;
-		label.alignment = "right";
-		label.y -= label.height / 2;
-		add(label);
-
-		icon = new FunkinSprite(8 * scale).loadGraphic(iconPath);
-		icon.scale.set(scale, scale);
-		icon.updateHitbox();
-		add(icon);
-
-        if (iconPath == null) icon.kill();
-
-        icon.x -= offset.x * scale;
-        icon.y += offset.y * scale;
-
-		if (!isAvailable()) {
-			button.animation.play("blocked");
-
-			label.color = _blockedColor;
-
-			icon.color = 0xFF888888;
-			icon.shader = new CustomShader("grayscale");
-			icon.shader._amount = 1;
-
-			_state = ButtonState.BLOCKED;
-		}
-    }
-
-	function createExtrasButton(name:String, iconPath:String, scale:Float, offset:FlxPoint) {
-		_idleColor = 0xFFAAE2DC;
-		_selectColor = 0xFFFFFFFF;
-
-		button = new FunkinSprite().loadGraphic(getImage("otherButton"), true, 90, 9);
-		button.animation.add("idle", [0], 0, false);
-		button.animation.add("hover", [1], 0, false);
-		button.animation.add("blocked", [2], 0, false);
-		button.scale.set(scale, scale);
-		button.updateHitbox();
-		add(button);
-
-		var labelPosition:Float = 8 * scale;
-		label = new FunkinText(labelPosition, button.height / 2, button.width - labelPosition * 2, name, 25 * gameScale.y, false);
-		label.font = Paths.font("pixeloidsans.ttf");
-		label.color = _idleColor;
-		label.alignment = "right";
-		label.y -= label.height / 2;
-		add(label);
-
-        if (iconPath != null) {
-            icon = new FunkinSprite(6 * scale).loadGraphic(iconPath);
-            icon.scale.set(scale, scale);
-            icon.updateHitbox();
-            add(icon);
-
-            icon.x -= offset.x * scale;
-		    icon.y += offset.y * scale;
-        }
-
-		if (!isAvailable()) {
-			button.animation.play("blocked");
-
-			label.color = _blockedColor;
-
-			icon.color = 0xFF888888;
-			icon.shader = new CustomShader("grayscale");
-			icon.shader._amount = 1;
-
-			_state = ButtonState.BLOCKED;
-		}
-    }
-
-	function createOthersButton(name:String, iconPath:String, scale:Float, offset:FlxPoint) {
-		_idleColor = 0xFFFFFFFF;
-		_selectColor = _idleColor;
-
-		button = new FunkinSprite().loadGraphic(getImage("lonelyButton"), true, 44, 6);
-		button.animation.add("idle", [0], 0, false);
-		button.animation.add("hover", [1], 0, false);
-		button.animation.add("blocked", [2], 0, false);
-		button.scale.set(scale, scale);
-		button.updateHitbox();
-		add(button);
-
-		var labelPosition:Float = 4 * scale;
-		label = new FunkinText(labelPosition, button.height / 2, button.width - labelPosition * 2, name, 18 * gameScale.y, false);
-		label.font = Paths.font("pixeloidsans.ttf");
-		label.color = _idleColor;
-		label.alignment = "right";
-		label.y -= label.height / 2;
-		add(label);
-
-        if (iconPath != null) {
-			icon = new FunkinSprite(6 * scale).loadGraphic(iconPath);
-			icon.scale.set(scale, scale);
-			icon.updateHitbox();
-			add(icon);
-
-			icon.x -= offset.x * scale;
-			icon.y += offset.y * scale;
-        }
-
-		if (!isAvailable()) {
-			button.animation.play("blocked");
-
-			label.color = _blockedColor;
-
-			icon.color = 0xFF888888;
-			icon.shader = new CustomShader("grayscale");
-			icon.shader._amount = 1;
-
-			_state = ButtonState.BLOCKED;
-		}
-	}
-
-    function set_hideIcon(value:Bool):Bool {
-        hideIcon = value;
-		if (icon != null) icon.visible = !value;
-        return value;
-    }
-
-    function set_greyscale(value:Bool):Bool {
-        if (_state != ButtonState.BLOCKED) {
-            greyscale = value;
-
-            if (greyscale) {
-				var gsShader:CustomShader = new CustomShader("grayscale");
-				gsShader._amount = 1;
-
-				button.shader = gsShader;
-				label.shader = gsShader;
-
-				if (!hideIcon && icon != null && icon.active && icon.exists)
-					icon.shader = gsShader;
-            }
-            else {
-                button.shader = null;
-				label.shader = null;
-
-                if (!hideIcon && icon != null && icon.active && icon.exists)
-					icon.shader = null;
-            }
-
-			return greyscale;
-        }
-        else
-            return greyscale = false;
-    }
-}
-
-class TopButton extends FunkinSprite {
-    public var onPress:Void->Void;
-
-	public var enabled:Bool = true;
-
-	public function new(button:String, ?x:Float, ?y:Float) {
-        x ??= 0;
-        y ??= 0;
-        super(x, y);
-
-        loadGraphic(getImage("topButtons/" + button + "Button"), true, 14, 14);
-        animation.add("idle", [0], 0, false);
-		animation.add("press", [1], 0, false);
-    }
-
-    override public function update(elapsed:Float) {
-        if (!enabled) return;
-
-		super.update(elapsed);
-
-		var overlaps = pointerOverlaps(this);
-
-		if (overlaps && pointerIsHolding())
-            playAnim("press");
-
-		if (overlaps && pointerJustReleased())
-            press();
-
-		if (!overlaps)
-            playAnim("idle");
-    }
-
-    public function press() {
-		playAnim("idle");
-        if (onPress != null) onPress();
-    }
-}
-
-enum SelectingPromtOption {
-	NONE;
-	YES;
-	NO;
-}
-
-class ExitPrompt {
-    public var isOpen(default, null):Bool = false;
-
-    public var onOpen:Void->Void;
-
-    public var onClose:Void->Void;
-
-    var prompt:FlxSpriteGroup;
-
-	var bg:FlxSprite;
-	var promptBackground:ResizableUIBox;
-	var promptText:FunkinText;
-	var no:FunkinText;
-	var yes:FunkinText;
-
-    public function new() {}
-
-    public function open() {
-		if (prompt != null || isOpen) return;
-
-		playMenuSound("cancel");
-
-        prompt = new FlxSpriteGroup();
-        prompt.camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
-        FlxG.state.add(prompt);
-
-		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		bg.alpha = 0.6;
-		prompt.add(bg);
-
-		promptBackground = new ResizableUIBox(0, 0, 640, 180);
-		promptBackground.screenCenter();
-		prompt.add(promptBackground.box);
-
-		var limits:Float = 4 * 4;
-		promptText = new FunkinText(promptBackground.x + limits, promptBackground.y + promptBackground.height / 8, promptBackground.width - limits * 2, translate("mainMenu.exitPrompt"), 32, false);
-		promptText.font = Paths.font("pixeloidsans.ttf");
-		promptText.alignment = "center";
-		prompt.add(promptText);
-
-		no = new FunkinText(promptText.x + promptText.width / 6, promptText.y + promptBackground.height / 2, 100, translate("no"), 40, false);
-		no.font = Paths.font("pixeloidsans.ttf");
-		no.alignment = "center";
-		no.alpha = 0.5;
-		prompt.add(no);
-
-		yes = new FunkinText(promptText.x + promptText.width / 2 + promptText.width / 6, no.y, 100, translate("yes"), 40, false);
-		yes.font = Paths.font("pixeloidsans.ttf");
-		yes.alignment = "center";
-		yes.alpha = 0.5;
-		prompt.add(yes);
-
-        if (onOpen != null)
-            onOpen();
-
-		isOpen = true;
-    }
-
-    public function close() {
-		if (prompt == null || !isOpen) return;
-
-		playMenuSound("cancel");
-
-		bg.destroy();
-		promptBackground.destroy();
-		promptText.destroy();
-		no.destroy();
-		yes.destroy();
-        prompt.destroy();
-        prompt = null;
-
-        curSelection = SelectingPromtOption.NONE;
-        _isHoveringSmth = false;
-
-        if (onClose != null)
-            onClose();
-
-		isOpen = false;
-    }
-
-	var curSelection:SelectingPromtOption = SelectingPromtOption.NONE;
-    public function pressedLeft() {
-		if (curSelection == SelectingPromtOption.NO) return;
-
-		playMenuSound("scroll");
-		curSelection = SelectingPromtOption.NO;
-		updateSelection();
-    }
-
-	public function pressedRight() {
-        if (curSelection == SelectingPromtOption.YES) return;
-
-		playMenuSound("scroll");
-		curSelection = SelectingPromtOption.YES;
-		updateSelection();
-	}
-
-	public function pressedConfirm()
-        checkSelection();
-
-	var _isHoveringSmth:Bool = false;
-    public function updatePointer() {
-		if (prompt == null && !isOpen) return;
-
-		if (pointerOverlaps(no)) {
-			if (!_isHoveringSmth) {
-				_isHoveringSmth = true;
-				playMenuSound("scroll");
-				curSelection = SelectingPromtOption.NO;
-				updateSelection();
-			}
-		}
-        else if (pointerOverlaps(yes)) {
-			if (!_isHoveringSmth) {
-				_isHoveringSmth = true;
-				playMenuSound("scroll");
-				curSelection = SelectingPromtOption.YES;
-				updateSelection();
-			}
-		}
-        else {
-			_isHoveringSmth = false;
-			curSelection = SelectingPromtOption.NONE;
-			updateSelection();
-		}
-
-		if (pointerJustReleased())
-			checkSelection();
-    }
-
-	function updateSelection() {
-		no.alpha = 0.5;
-		yes.alpha = 0.5;
-
-		if (curSelection == SelectingPromtOption.YES)
-			yes.alpha = 1;
-		if (curSelection == SelectingPromtOption.NO)
-			no.alpha = 1;
-	}
-
-	function checkSelection() {
-        switch(curSelection) {
-            case SelectingPromtOption.YES:
-                accept();
-            case SelectingPromtOption.NO:
-                decline();
-        }
-    }
-
-	function accept() {
-		if (FlxG.sound.music != null)
-			FlxG.sound.music.fadeOut();
-
-        playMenuSound("confirm");
-
-		FlxG.cameras.list[FlxG.cameras.list.length - 1].fade();
-
-		new FlxTimer().start(1.05, _ -> System.exit(0));
-	}
-
-	function decline()
-        close();
 }
 
 class WindowSubMenuHandler extends FlxBasic {
@@ -1795,7 +1104,7 @@ class WindowSubMenuHandler extends FlxBasic {
 		_cameraRect = new FlxRect(camera.x, camera.y, camera.width, camera.height);
         _windowRect = new FlxRect(camera.x, camera.y + _mainRect.height, camera.width, camera.height - _mainRect.height);
 
-		_subMenuRect = new FlxRect(0, _mainRect.height, _mainRect.width, distanceBetweenFloats(_mainRect.y + _mainRect.height, camera.height));
+		_subMenuRect = new FlxRect(0, _mainRect.height, _mainRect.width, FunkinMath.distanceBetweenFloats(_mainRect.y + _mainRect.height, camera.height));
 
         windowCamera = new FlxCamera(camera.x, camera.y + _subMenuRect.y, camera.width, _subMenuRect.height);
         windowCamera.bgColor = FlxColor.TRANSPARENT;
@@ -1972,7 +1281,7 @@ class WindowSubMenu extends FunkinGroup {
 					button.hover();
                 }
             } else {
-                button.goIdle();
+                button.idle();
             }
 
 			if (_isHovering && pointerJustReleased())
@@ -2116,7 +1425,7 @@ class WindowButton extends MusicBeatGroup {
 			label.color = hoverColor;
     }
 
-    public function goIdle() {
+    public function idle() {
 		if (!available || !_enabled)
 			return;
 

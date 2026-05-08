@@ -72,7 +72,7 @@ function create() {
 
         var value:Dynamic = getStatValue(stat);
         var strValue:String = Std.string(value);
-		if (StringTools.contains(stat.toLowerCase(), "playtime")) strValue = formatTimeAdvanced(value, "%H:%M");
+		if (StringTools.contains(stat.toLowerCase(), "playtime")) strValue = formatTimeAdvanced(value, "%H:%M:%S");
         if (StringTools.contains(stat.toLowerCase(), "storyprogress")) strValue = '"' + value + '"';
 		if (StringTools.contains(stat.toLowerCase(), "speedrun")) strValue = FlxStringUtil.formatTime(value, true);
 		statsValueText.text += (statsValueText.text.length > 0 ? "\n" : "") + strValue;
@@ -97,10 +97,21 @@ function postCreate() {
 }
 
 function update(elapsed:Float) {
+    updateTimer();
+
     if (controls.BACK || pointerOverlaps(closeButton) && pointerJustPressed()) {
         playMenuSound("cancel");
         close();
     }
+}
+
+function updateTimer() {
+	var originalText:String = statsValueText.text;
+	var oldTimerTxt:String = originalText.split('\n')[0];
+	var newTimerTxt:String = formatTimeAdvanced(getStatValue('totalPlaytime'), "%H:%M:%S");
+
+	if (newTimerTxt != oldTimerTxt)
+		statsValueText.text = StringTools.replace(originalText, oldTimerTxt, newTimerTxt);
 }
 
 function destroy() {

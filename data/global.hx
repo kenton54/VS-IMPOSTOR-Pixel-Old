@@ -16,7 +16,6 @@ import openfl.utils.Assets;
 // extra variables and function that can be accessed from anywhere in the mod
 // ordered by importance
 importScript("utils/utils");
-importScript("utils/math");
 importScript("utils/logs");
 importScript("utils/window");
 importScript("utils/input");

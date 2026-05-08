@@ -295,7 +295,7 @@ function transitionToMainMenu(forced:Bool) {
 		transitionTimer.cancel();
 
 		setTransition("fadeUp");
-		FlxG.switchState(new MainMenuState());
+		FlxG.switchState(new ModState("impostorMenuState"));
 	}
 	else {
 		transitionSprite.visible = true;

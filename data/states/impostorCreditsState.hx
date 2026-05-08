@@ -1,6 +1,7 @@
 import flixel.addons.display.FlxBackdrop;
 import funkin.backend.system.framerate.Framerate;
 import funkin.backend.MusicBeatGroup;
+import impostor.utils.FunkinMath;
 import impostor.BackButton;
 import impostor.StarsBackdrop;
 
@@ -120,7 +121,7 @@ var creditsData:Array<Array<Dynamic>> = [
         ]
     },
     {
-        category: "Innersloth",
+        category: "Innersloth LLC",
 		portrait: "innersloth-big",
 		scale: 0.45,
 		about: "The creators of Among Us.\nGo support them!",
@@ -586,7 +587,7 @@ class CreditsPanel extends MusicBeatGroup {
 
 				createSocials(data);
 
-				var quoteHeightlimit:Float = distanceBetweenFloats(quote.y, socialsGroup1.y) - 10;
+				var quoteHeightlimit:Float = FunkinMath.distanceBetweenFloats(quote.y, socialsGroup1.y) - 10;
 				if (quote.height > quoteHeightlimit) {
 					quote.scale.y = quoteHeightlimit / quote.height;
 					quote.updateHitbox();

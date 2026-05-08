@@ -116,7 +116,7 @@ public static function getPointer():FlxPointer {
 // currently crashes the game on mobile upon execute
 public static function vibrateDevice(duration:Float, amplitude:Float) {
     if (FlxG.onMobile) {
-        final amplitudeValue:Float = clamp(amplitude * FlxG.save.data.hapticsIntensity, 0, 1);
+        final amplitudeValue:Float = FunkinMath.clampFloat(amplitude * FlxG.save.data.hapticsIntensity, 0, 1);
         final sharpness:Float = 1;
 
         #if android
