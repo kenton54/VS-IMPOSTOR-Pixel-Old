@@ -69,7 +69,7 @@ class HoldCoverHandler {
                     if (!anim.exists("name")) continue;
 
                     cover.addAnim(anim.get("name"), anim.get("anim"), CoolUtil.getDefault(Std.parseFloat(anim.get("fps")), 24), StringTools.endsWith(anim.get("name"), "loop"), true);
-                    cover.animOffsets.set(anim.get("name"), FlxPoint.get(anim.get("x"), anim.get("y")));
+					cover.animOffsets.set(anim.get("name"), FlxPoint.get(CoolUtil.getDefault(anim.get("x"), 0), CoolUtil.getDefault(anim.get("y"), 0)));
 
                     var fixedName = anim.get("name");
                     fixedName = StringTools.replace(fixedName, "-start", "");
@@ -96,7 +96,7 @@ class HoldCoverHandler {
 
         choosenCover.strum = strum;
         choosenCover.strumID = strum.ID;
-        choosenCover.endTime = length;
+        choosenCover.endTime = Conductor.songPosition + length;
         choosenCover.fromPlayer = fromPlayer;
 
         choosenCover.scale.x = choosenCover.scale.y = _scale;
@@ -109,7 +109,7 @@ class HoldCoverHandler {
 
         choosenCover.playStart(getCoverAnim(choosenCover.strumID));
 
-        FlxG.state.insert(FlxG.state.members.indexOf(strum), choosenCover);
+        FlxG.state.add(choosenCover);
     }
 
     public function destroy() {

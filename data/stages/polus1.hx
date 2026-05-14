@@ -40,7 +40,7 @@ function create() {
     snowParticles = new FlxTypedEmitter(-1600, -800, 180);
     snowParticles.makeParticles(5, 5, FlxColor.WHITE, 100);
     snowParticles.launchAngle.set(120, 60);
-    snowParticles.speed.set(100, 250, 200, 800);
+    snowParticles.speed.set(180, 320, 400, 800);
     snowParticles.scale.set(1, 1, 3, 3);
     snowParticles.lifespan.set(1800, 1800);
     snowParticles.keepScaleRatio = true;
@@ -49,18 +49,20 @@ function create() {
     add(snowParticles);
 
 	if (!Options.naughtyness) {
-        var x:Float = 6;
-        var y:Float = 14;
+        var x:Float = 2;
+        var y:Float = -2;
 
-		deadBanana.x += x * deadBanana.scale.x + 2;
-		deadBanana.y -= y * deadBanana.scale.x;
+		deadBanana.x += x * deadBanana.scale.x;
+		deadBanana.y += y * deadBanana.scale.y;
 		deadBanana.loadSprite(Paths.image("stages/polus1/dead-banana-sentitive"));
 		deadBanana.addAnim("idle", "idle normal", 0);
+		deadBanana.playAnim("idle");
 
-		deadBanana_dark.x += x * deadBanana_dark.scale.x + 2;
-		deadBanana_dark.y -= y * deadBanana.scale.x;
+		deadBanana_dark.x += x * deadBanana_dark.scale.x;
+		deadBanana_dark.y += y * deadBanana_dark.scale.y;
 		deadBanana_dark.loadSprite(Paths.image("stages/polus1/dead-banana-sentitive"));
 		deadBanana_dark.addAnim("idle", "idle dark", 0);
+		deadBanana_dark.playAnim("idle");
     }
 
 	deadBanana.shader = polusShader;
@@ -148,12 +150,37 @@ public function sabotageLights() {
     darkBoyfriendChar.visible = true;
     darkGfChar.visible = true;
 
+	medbay_normal.visible = false;
+	labWall_normal.visible = false;
+	labEntrance_normal.visible = false;
+	ground_normal.visible = false;
+	deadBanana.visible = false;
+    if (blue != null) blue.visible = false;
+
+    boyfriend.alpha = 0;
+	dad.alpha = 0;
+	gf.alpha = 0;
+
+	changeIcons('playables/bf-dark', 'red-impostor-dark');
+	healthBar.createFilledBar(FlxColor.BLACK, 0xFFE1E1E1);
+
     lightsSabotaged = true;
 }
 
 public function fixLights() {
     if (!songUsesLightsSabotage) return;
     if (!lightsSabotaged) return;
+
+	medbay_normal.visible = true;
+	labWall_normal.visible = true;
+	labEntrance_normal.visible = true;
+	ground_normal.visible = true;
+	deadBanana.visible = true;
+	if (blue != null) blue.visible = true;
+
+	boyfriend.alpha = 1;
+	dad.alpha = 1;
+	gf.alpha = 1;
 
     FlxTween.cancelTweensOf(medbay_dark, ["alpha"]);
     FlxTween.cancelTweensOf(labWall_dark, ["alpha"]);
@@ -192,6 +219,8 @@ public function fixLights() {
     FlxTween.tween(darkGfChar, {alpha: 0}, 1, {onComplete: _ -> {
         darkGfChar.visible = false;
     }});
+
+	changeIcons('playables/bf', 'red-impostor');
 
     lightsSabotaged = false;
 }

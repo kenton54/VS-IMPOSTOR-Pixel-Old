@@ -54,8 +54,10 @@ class BackButton extends FunkinSprite {
 
         loadSprite(Paths.image(sprite == null ? "app/backButton" : sprite));
         addAnim("idle", "idle", 0, false);
-        addAnim("hold", "hold", 0, false);
-        addAnim("press", "press", FlxG.save.data.impPixelFastMenus ? 48 : 24, false);
+        addAnim("hold", "press", 0, false);
+        addAnim("press", "confirm", FlxG.save.data.impPixelFastMenus ? 48 : 24, false);
+		animOffsets.set("hold", FlxPoint.get(1, 1));
+		animOffsets.set("press", FlxPoint.get(5, 5));
         playAnim("idle");
 
         this.scale.set(size, size);
@@ -84,7 +86,7 @@ class BackButton extends FunkinSprite {
     override public function update(elapsed:Float) {
         super.update(elapsed);
 
-        if (visible) {
+		if (visible) {
             var isOverlapping:Bool = checkHover();
 
             if (isOverlapping) {

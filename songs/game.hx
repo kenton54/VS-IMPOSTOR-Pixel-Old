@@ -14,9 +14,10 @@ import funkin.menus.StoryMenuState;
 import funkin.savedata.FunkinSave;
 import funkin.savedata.HighscoreChange;
 import funkin.options.Options;
+import impostor.utils.FunkinMath;
 import impostor.ImpostorCharacter;
-import Date;
 import HoldCoverHandler;
+import Date;
 
 /**
  * A camera that can hold extra information that wouldn't fit in the HUD camera (mostly because of the zoom events).
@@ -250,7 +251,7 @@ function improveHUD() {
     insert(2, iconP1);
     insert(3, iconP2);
 
-    scoreTxt.font = Paths.font("gameboy.ttf");
+    scoreTxt.font = Paths.font("pixeloidsans.ttf");
     scoreTxt.text = "0";
     scoreTxt.size = 28;
     scoreTxt.fieldWidth = FlxG.width;
@@ -261,7 +262,7 @@ function improveHUD() {
     scoreTxt.screenCenter(FlxAxes.X);
 
     var healthBarHeightPos:Float = healthBarBG.y + healthBarBG.height;
-    var distanceFromBottom:Float = distanceBetweenFloats(healthBarHeightPos, camHUD.height);
+	var distanceFromBottom:Float = FunkinMath.distanceBetweenFloats(healthBarHeightPos, camHUD.height);
     scoreTxt.y = healthBarHeightPos + (distanceFromBottom / 2) - (scoreTxt.height / 2);
 
     missesTxt.visible = false;
@@ -282,8 +283,10 @@ function improveCharacters() {
 
     // old chars get removed
     for (i => strumline in strumLines.members) {
-        for (char in strumline.characters)
+        for (char in strumline.characters) {
+            char.destroy();
             remove(char);
+        }
     }
 
     // then get replaced with the new ones :smiling_imp:
@@ -391,7 +394,7 @@ function improveStrums() {
                 strumBG.alpha = FlxG.save.data.impPixelStrumBG / 100;
                 strumBG.camera = camHUD;
 
-                var fullWidth:Float = distanceBetweenFloats(strumline.members[0].x, strumline.members[strumline.members.length - 1].x + strumline.members[strumline.members.length - 1].width);
+                var fullWidth:Float = FunkinMath.distanceBetweenFloats(strumline.members[0].x, strumline.members[strumline.members.length - 1].x + strumline.members[strumline.members.length - 1].width);
 				strumBG.x = strumline.members[0].x + (fullWidth - strumBG.width) / 2;
 
                 insert(members.indexOf(strumline), strumBG);
@@ -470,6 +473,15 @@ function onCountdown(event) {
         else
             gf.playAnim("cheer", true);
     }
+}
+
+public function changeIcons(icon1:String, icon2:String) {
+    iconP1.setIcon(icon1);
+    iconP2.setIcon(icon2);
+
+	var leftColor:FlxColor = (dad != null && dad.iconColor != null && Options.colorHealthBar) ? dad.iconColor : (PlayState.opponentMode ? 0xFF66FF33 : 0xFFFF0000);
+	var rightColor:FlxColor = (boyfriend != null && boyfriend.iconColor != null && Options.colorHealthBar) ? boyfriend.iconColor : (PlayState.opponentMode ? 0xFFFF0000 : 0xFF66FF33);
+	healthBar.createFilledBar(leftColor, rightColor);
 }
 
 var holdScoreBonus:Float = 250;
@@ -560,13 +572,15 @@ function onPlayerHit(event) {
 
     var timing:Float = Math.abs(Conductor.songPosition - event.note.strumTime);
 
+	var isSustainNote:Bool = event.note.isSustainNote;
+
     var score2add:Int = calculateScore(timing);
     var health2gain:Float = healthJudge(timing);
     var daRating:String = ratingJudge(timing);
-    var showSplashes:Bool = (timing < sickThreshold);
+	var showSplashes:Bool = (timing < sickThreshold) && !isSustainNote;
     var accuracy:Float = 0;
 
-    if (!event.note.isSustainNote) {
+    if (!isSustainNote) {
         songScore += score2add;
         health += health2gain;
 		addStatPoints("totalNotes", 1);
@@ -583,11 +597,6 @@ function onPlayerHit(event) {
             }
         }
 
-        if (event.note.__strum != null) {
-            event.note.__strum.press(event.note.strumTime);
-            if (showSplashes) splashHandler.showSplash(event.note.splash, event.note.__strum);
-        }
-
         if (daRating == "bad" || daRating == "shit") {
             breakCombo();
         }
@@ -595,6 +604,11 @@ function onPlayerHit(event) {
         displayRating(daRating, score2add);
 
         grantNoteStat(daRating);
+
+		if (event.note.__strum != null) {
+			event.note.__strum.press(event.note.strumTime);
+			if (showSplashes) splashHandler.showSplash(event.note.splash, event.note.__strum);
+		}
     }
 
     if (event.deleteNote)
@@ -634,9 +648,8 @@ function onDadHit(event) {
             }
         }
 
-        if (event.note.__strum != null) {
-            event.note.__strum.press(event.note.strumTime);
-        }
+		if (event.note.__strum != null)
+			event.note.__strum.press(event.note.strumTime);
     }
 
     if (event.deleteNote)
@@ -761,8 +774,7 @@ function onPlayerMiss(event) {
         scor = ghostScore;
     }
 
-    // TODO: rewrite how miss sounds are played
-    //playSound(event.missSound, event.missVolume);
+    playSound("missnote" + FlxG.random.int(1, 3), event.missVolume);
 
     vocals.volume = 0;
     strumline.vocals.volume = 0;
@@ -782,7 +794,7 @@ function onPlayerMiss(event) {
 }
 
 function updateScore() {
-    scoreTxt.text = Std.string(songScore);
+	scoreTxt.text = FlxStringUtil.formatMoney(songScore, false);
 }
 
 function recalculateAccuracy() {
@@ -877,6 +889,7 @@ function onNewCameraMove(position:FlxPoint, strumLine:StrumLine, focusedChars:In
 function onInputUpdate(event) {
     for (i in 0...event.justReleased.length) {
         if (event.justReleased[i]) {
+            /*
             for (strumline in strumLines.members) {
                 if (!strumline.cpu) {
                     var strum:Strum = strumline.members[i];
@@ -890,11 +903,12 @@ function onInputUpdate(event) {
                     });
                 }
             }
+            */
 
             for (coverHandler in holdCoverHandlers) {
                 if (coverHandler == null) continue;
                 for (holdCover in coverHandler.group.members) {
-                    if ((holdCover.strumID == i) && !StringTools.endsWith(holdCover.getAnimName(), "-end"))
+					if ((holdCover.strumID == i) && !StringTools.endsWith(holdCover.getAnimName(), "-end") && holdCover.fromPlayer != null && holdCover.fromPlayer)
                         holdCover.killCover();
                 }
             }
@@ -938,7 +952,7 @@ function onNewNoteHit(event) {
                 nextSustain = nextSustain.nextSustain;
             }
 
-            holdCoverHandlers[strumLines.members.indexOf(noteStrumLine)].showHoldCover(noteStrum, noteStrumLine.cpu == false, note.strumTime + sustainLength);
+            holdCoverHandlers[strumLines.members.indexOf(noteStrumLine)].showHoldCover(noteStrum, noteStrumLine.cpu == false, sustainLength);
         }
     }
     else {

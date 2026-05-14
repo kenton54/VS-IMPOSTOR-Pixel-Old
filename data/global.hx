@@ -57,10 +57,6 @@ function new() {
     Application.current.onExit.add(closeGame);
 
     Options.antialiasing = false;
-    // I have to do this, cuz otherwise it causes crashes (im not kidding)
-    /*
-    Options.streamedMusic = false;
-    Options.streamedVocals = false;*/
     Options.save();
 
 	FlxSprite.defaultAntialiasing = false;
@@ -84,7 +80,7 @@ function new() {
     else {}
     */
 
-	//modInitialized = true;
+	modInitialized = true;
 }
 
 function initSaveData() {
@@ -172,7 +168,7 @@ function initWindow() {
 
     FlxG.mouse.visible = true;
 
-    resizeGame(1280, 720, false);
+    //resizeGame(1280, 720, false);
 }
 
 function initMobile() {

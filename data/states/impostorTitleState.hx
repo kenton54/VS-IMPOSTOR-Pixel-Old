@@ -608,6 +608,7 @@ function endIntro() {
 
 	curState = TitleState.IDLE;
 
+	playedTitleIntro = true;
 	showTitle(true);
 	tweenPressStart();
 }

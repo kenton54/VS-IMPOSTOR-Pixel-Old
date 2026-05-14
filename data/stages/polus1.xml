@@ -53,10 +53,10 @@
 
     <girlfriend x="137" y="24" scroll="1"/>
 
-    <sprite name="deadBanana" sprite="dead-banana" x="-943" y="482" antialiasing="false" scale="10">
+    <sprite name="deadBanana" sprite="dead-banana" x="-912" y="520" antialiasing="false" scale="10">
         <anim name="idle" anim="idle normal" loop="true" fps="0"/>
     </sprite>
-    <sprite name="deadBanana_dark" sprite="dead-banana" x="-943" y="482" antialiasing="false" scale="10">
+    <sprite name="deadBanana_dark" sprite="dead-banana" x="-912" y="520" antialiasing="false" scale="10">
         <anim name="idle" anim="idle dark" loop="true" fps="0"/>
         <property name="visible" type="bool" value="false"/>
     </sprite>
@@ -64,11 +64,11 @@
     <dad x="-452" y="69" camxoffset="0" camyoffset="80"/>
     <boyfriend x="670" y="240" camxoffset="-100" camyoffset="-38"/>
 
-    <sprite name="blue" sprite="blue" x="1042" y="309" antialiasing="false" scale="10">
-        <anim name="idle" anim="idle normal" type="beat" fps="24"/>
+    <sprite name="blue" sprite="blue" x="1044" y="381" antialiasing="false" scale="10">
+        <anim name="idle" anim="blue normal" type="beat" fps="24"/>
     </sprite>
-    <sprite name="blue_dark" sprite="blue" x="1042" y="309" antialiasing="false" scale="10">
-        <anim name="idle" anim="idle dark" type="beat" fps="24"/>
+    <sprite name="blue_dark" sprite="blue" x="1044" y="381" antialiasing="false" scale="10">
+        <anim name="idle" anim="blue dark" type="beat" fps="24" />
         <property name="visible" type="bool" value="false"/>
     </sprite>
 </stage>

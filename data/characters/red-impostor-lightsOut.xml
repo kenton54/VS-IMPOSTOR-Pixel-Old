@@ -1,8 +1,8 @@
-<character sprite="red-impostor-lightsOut" scale="10" antialiasing="false" icon="red-impostor-lightsOut" color="#000000" holdTime="8" x="-71" y="208">
-	<anim name="idle" anim="idle" x="0" y="0" fps="24" loop="false"/>
-	<anim name="singLEFT" anim="note left" x="0" y="0" fps="24" loop="false"/>
-	<anim name="singDOWN" anim="note down" x="0" y="0" fps="24" loop="false"/>
-	<anim name="singUP" anim="note up" x="0" y="0" fps="24" loop="false"/>
-	<anim name="singRIGHT" anim="note right" x="0" y="0" fps="24" loop="false"/>
-	<anim name="sabotage" anim="sabotage" x="0" y="0" fps="24" loop="false"/>
+<!DOCTYPE codename-engine-character>
+<character x="-19" y="270" sprite="red-impostor-dark" icon="red-impostor-dark" scale="10" antialiasing="false" camx="180" camy="-180" color="#000000" holdTime="8">
+	<anim name="idle" anim="idle"/>
+	<anim name="singLEFT" anim="note left" x="-13" y="19"/>
+	<anim name="singDOWN" anim="note down" x="-27" y="1" />
+	<anim name="singUP" anim="note up" x="-7" y="21" />
+	<anim name="singRIGHT" anim="note right" x="-34" y="4" />
 </character>

@@ -323,6 +323,8 @@ var mainSectionButtons:Array<Dynamic> = [
 		triggerType: MainMenuButtonTriggerType.CUSTOM,
         onSelect: function(state:ModState)
 		{
+			backButton.enabled = false;
+			topButtonsGroup.forEach(function(button) button.enabled = false);
             exitPrompt.open();
         }
 	}
@@ -596,6 +598,7 @@ function create() {
 	}
 
     exitPrompt = new ExitPrompt();
+	exitPrompt.onClose = enableInput;
 
 	if (globalUsingKeyboard)
 	    changeMainEntry(0);
@@ -620,11 +623,11 @@ function createMainSectionButtons(?x:Float, ?y:Float) {
 }
 
 function postCreate() {
-    var backBtnScale:Float = isMobile ? 4 : 3;
-    backButton = new BackButton(FlxG.width * 0.975, FlxG.height, goBack2Title, backBtnScale);
+    var backBtnScale:Float = isMobile ? 5 : 3;
+    backButton = new BackButton(FlxG.width * 0.92, FlxG.height * 0.95, goBack2Title, backBtnScale);
     backButton.visible = !globalUsingKeyboard;
     backButton.x -= backButton.width;
-    backButton.y -= backButton.height * 1.1;
+    backButton.y -= backButton.height;
     backButton.camera = mainCamera;
 	backButton.alpha = 0;
     add(backButton);

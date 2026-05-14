@@ -1,6 +1,7 @@
 package impostor.menus.mainmenu;
 
 import openfl.system.System;
+import impostor.ResizableUIBox;
 
 enum SelectingPromtOption {
 	NONE;
