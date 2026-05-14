@@ -163,10 +163,10 @@ var mainSectionButtons:Array<Dynamic> = [
 		icon: getImage("icons/options"),
 		scale: baseScale,
 		type: MainMenuButtonType.EXTRA,
-		triggerType: MainMenuButtonTriggerType.OPEN_SUBSTATE,
+		triggerType: MainMenuButtonTriggerType.SWITCH_STATE,
 		onSelect: function(state:ModState)
 		{
-			return new ModSubState("options/impostorOptionsSubState");
+			return new OptionsMenu();
         }
 	},
 	{
