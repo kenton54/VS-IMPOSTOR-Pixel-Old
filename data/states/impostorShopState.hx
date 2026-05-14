@@ -1,6 +1,6 @@
 import flixel.addons.display.FlxBackdrop;
-import BackButton;
-import StarsBackdrop;
+import impostor.BackButton;
+import impostor.StarsBackdrop;
 
 var stars:StarsBackdrop;
 

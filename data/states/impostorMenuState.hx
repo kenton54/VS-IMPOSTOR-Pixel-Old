@@ -1,21 +1,18 @@
 import flixel.effects.FlxFlicker;
-import flixel.math.FlxMatrix;
 import flixel.math.FlxRect;
 import flixel.FlxBasic;
 import funkin.backend.assets.ModsFolder;
 import funkin.backend.system.framerate.Framerate;
+import funkin.backend.system.Controls;
 import funkin.backend.system.Flags;
-import funkin.backend.utils.DiscordUtil;
 import funkin.backend.MusicBeatGroup;
 import funkin.editors.character.CharacterSelection;
 import funkin.editors.charter.CharterSelection;
 import funkin.editors.stage.StageSelection;
-import funkin.editors.EditorTreeMenu;
-import funkin.menus.credits.CreditsMain;
 import funkin.menus.ModSwitchMenu;
 import funkin.options.Options;
 import funkin.options.OptionsMenu;
-import openfl.system.System;
+import funkin.options.PlayerSettings;
 import impostor.menus.mainmenu.MainMenuButton;
 import impostor.menus.mainmenu.MainMenuButton.MainMenuButtonType;
 import impostor.menus.mainmenu.ExitPrompt;
@@ -25,7 +22,6 @@ import impostor.menus.mainmenu.TopButton;
 import impostor.utils.FunkinMath;
 import impostor.BackButton;
 import impostor.StarsBackdrop;
-import impostor.ResizableUIBox;
 import FunkinGroup;
 
 var deadVersion:Bool = false; //isBelowStoryPoint("menuRevival");
@@ -84,7 +80,7 @@ var mainSectionButtons:Array<Dynamic> = [
 			var freeplayText:String = deadVersion ? translate("questionMarks") : translate("generic.freeplay");
 			var tutorialImage:String = deadVersion ? getImage("bigButtons/tutorial-dead") : getImage("bigButtons/tutorial");
 
-			var window:WindowSubMenu = new WindowSubMenu(translate("generic.play"), 2, 1);
+			var window:WindowSubMenu = new WindowSubMenu(translate("generic.play"));
 
 			var worldmapButton:WindowButton = new WindowButton(windowArea, windowArea.width / 2, 3 * baseScale, {
 				image: worldmapImage,
@@ -145,10 +141,7 @@ var mainSectionButtons:Array<Dynamic> = [
 		triggerType: MainMenuButtonTriggerType.SWITCH_STATE,
 		onSelect: function(state:ModState)
 		{
-			new FlxTimer().start(0.5, _ -> {
-				setTransition("fade");
-				FlxG.switchState(new ModState("impostorAchievementsState"));
-			});
+			return new ModState("impostorAchievementsState");
         }
     },
     {
@@ -161,10 +154,7 @@ var mainSectionButtons:Array<Dynamic> = [
 		triggerType: MainMenuButtonTriggerType.SWITCH_STATE,
 		onSelect: function(state:ModState)
 		{
-			new FlxTimer().start(0.5, _ -> {
-				setTransition("fade");
-				FlxG.switchState(new ModState("impostorShopState"));
-			});
+			return new ModState("impostorShopState");
 		}
     },
 	{
@@ -176,12 +166,7 @@ var mainSectionButtons:Array<Dynamic> = [
 		triggerType: MainMenuButtonTriggerType.OPEN_SUBSTATE,
 		onSelect: function(state:ModState)
 		{
-			disableInput();
-			new FlxTimer().start(0.5, _ -> {
-				setTransition("fade");
-				FlxG.switchState(new OptionsMenu());
-			});
-			//openSubState(new ModSubState("options/impostorOptionsSubState"));
+			return new ModSubState("options/impostorOptionsSubState");
         }
 	},
 	{
@@ -260,7 +245,7 @@ var mainSectionButtons:Array<Dynamic> = [
 		onSelect: function(state:ModState)
 		{
             var modsList:Array<String> = ModsFolder.getModsList();
-            var window:WindowSubMenu = new WindowSubMenu(translate("generic.mods"), 0, modsList.length);
+            var window:WindowSubMenu = new WindowSubMenu(translate("generic.mods"));
 
             var reloadButton:BackButton = new BackButton(106 * baseScale, 58 * baseScale, function() {
 				playMenuSound("cancel");
@@ -268,7 +253,7 @@ var mainSectionButtons:Array<Dynamic> = [
                 setTransition("fade");
                 ModsFolder.switchMod(ModsFolder.currentModFolder);
             }, baseScale, "menus/mainmenu/reload", false, true);
-            reloadButton.scrollFactor.set(0, 0);
+            reloadButton.scrollFactor.set();
 
             var unloadButton:BackButton = new BackButton(124 * baseScale, 58 * baseScale, function() {
 				playMenuSound("cancel");
@@ -276,10 +261,11 @@ var mainSectionButtons:Array<Dynamic> = [
                 setTransition("fade");
                 ModsFolder.switchMod(null);
             }, baseScale, "menus/mainmenu/unload", false, true);
-            unloadButton.scrollFactor.set(0, 0);
+            unloadButton.scrollFactor.set();
 
             var yPos:Float = 0;
-            for (i => modName in modsList) {
+			var i:Int = 0;
+            for (modName in modsList) {
                 if (modName == ModsFolder.currentModFolder) continue;
 
 				var modButton:WindowButton = new WindowButton(windowArea, 0, yPos, {
@@ -300,14 +286,23 @@ var mainSectionButtons:Array<Dynamic> = [
                 window.add(modButton);
 
 				yPos += modButton.height;
+				i++;
             }
 
-			if (window.members[window.getLength() - 1].y + window.members[window.getLength() - 1].height > windowArea.height) {
+			var lastMember:Int = window.getLength() - 1;
+
+			if (window.members[lastMember].y + window.members[lastMember].height > windowArea.height) {
                 window.customUpdate = function(elapsed:Float) {
-                    var windowCamera:FlxCamera = window._parent.windowCamera;
-                    windowCamera.minScrollY = 0;
-                    windowCamera.maxScrollY = window.members[window.getLength() - 1].y + window.members[window.getLength() - 1].height;
+					var windowCamera:FlxCamera = window._parent.windowCamera;
+					windowCamera.minScrollY = 0;
+					windowCamera.maxScrollY = window.members[lastMember].y + window.members[lastMember].height;
                     windowCamera.scroll.y += -FlxG.mouse.wheel * elapsed * 2000;
+
+					if (windowCamera.scroll.y < 0)
+						windowCamera.scroll.y = 0;
+
+					if (windowCamera.scroll.y > windowCamera.maxScrollY - windowCamera.height)
+						windowCamera.scroll.y = windowCamera.maxScrollY - windowCamera.height;
                 };
             }
 
@@ -804,19 +799,6 @@ function handleKeyboard(elapsed:Float) {
 				checkMainSelection(curMainEntry);
         }
     }
-        /*
-        if (controls.UP_P)
-            changeWindowEntry(-1, 0);
-        if (controls.DOWN_P)
-            changeWindowEntry(1, 0);
-        if (controls.LEFT_P)
-            changeWindowEntry(0, -1);
-        if (controls.RIGHT_P)
-            changeWindowEntry(0, 1);
-
-        if (controls.ACCEPT)
-            checkSelectedWindowEntry();
-        */
 
     if (controls.BACK)
 		checkBackAction();
@@ -978,9 +960,11 @@ function selectButton(buttonData:Dynamic) {
 			openWindowSubMenu(buttonData.onSelect(this));
 
 		case MainMenuButtonTriggerType.OPEN_SUBSTATE:
+			disableInput();
 			openSubState(buttonData.onSelect(this));
 
 		case MainMenuButtonTriggerType.SWITCH_STATE:
+			disableInput();
 			new FlxTimer().start(1, _ -> FlxG.switchState(buttonData.onSelect(this)));
 
 		case MainMenuButtonTriggerType.CUSTOM:
@@ -1089,13 +1073,9 @@ class WindowSubMenuHandler extends FlxBasic {
 	var background:FlxSprite;
 
 	var _mainRect:FlxRect;
-	var _cameraRect:FlxRect;
 	var _windowRect:FlxRect;
 	var _subMenuRect:FlxRect;
 
-	var _layout:Array<Int> = [];
-	var _layoutWidth:Int = 0;
-	var _layoutHeight:Int = 0;
 	var _lastPosition:FlxPoint;
 	var _position:FlxPoint;
 
@@ -1129,13 +1109,7 @@ class WindowSubMenuHandler extends FlxBasic {
 		titleText.camera = this.camera;
 
 		_mainRect = new FlxRect(0, 0, camera.width, lineSprite.y + lineSprite.height);
-		closeButton.clipRect = _mainRect;
-		lineSprite.clipRect = _mainRect;
-		titleText.clipRect = _mainRect;
-
-		_cameraRect = new FlxRect(camera.x, camera.y, camera.width, camera.height);
 		_windowRect = new FlxRect(camera.x, camera.y + _mainRect.height, camera.width, camera.height - _mainRect.height);
-
 		_subMenuRect = new FlxRect(0, _mainRect.height, _mainRect.width, FunkinMath.distanceBetweenFloats(_mainRect.y + _mainRect.height, camera.height));
 
 		windowCamera = new FlxCamera(camera.x, camera.y + _subMenuRect.y, camera.width, _subMenuRect.height);
@@ -1205,8 +1179,10 @@ class WindowSubMenuHandler extends FlxBasic {
 			curSubMenu = null;
 		}
 
-		windowCamera.scroll.set(0, 0);
+		windowCamera.scroll.set();
+		windowCamera.minScrollX = null;
 		windowCamera.minScrollY = null;
+		windowCamera.maxScrollX = null;
 		windowCamera.maxScrollY = null;
 
 		kill();
@@ -1256,24 +1232,18 @@ class WindowSubMenu extends FunkinGroup {
 
 	public var customUpdate:Float->Void;
 
+	var controls(get, never):Controls;
+
 	var _parent:WindowSubMenuHandler;
 
 	var _deadzones:Array<FlxObject> = [];
 
-	var _layoutWidth:Int = 0;
-	var _layoutHeight:Int = 0;
-
 	var _isHovering:Bool = false;
 
-	public function new(name:String, ?width:Int, ?height:Int) {
+	public function new(name:String) {
 		super();
 
 		this.name = name;
-
-		width ??= 0;
-		height ??= 0;
-		_layoutWidth = width;
-		_layoutHeight = height;
 	}
 
 	public function addDeadzone(object:FlxObject) {
@@ -1287,17 +1257,67 @@ class WindowSubMenu extends FunkinGroup {
 		customUpdate = null;
 	}
 
+	/**
+	 * this is so hilariously bad
+	 */
+	var selectedButton:WindowButton = null;
+
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
 
 		if (customUpdate != null && pointerWithinBounds(_parent._windowRect))
 			customUpdate(elapsed);
 
-		if (globalUsingKeyboard)
+		// i hate doing this
+		if (globalUsingKeyboard) {
+			if (name == translate('generic.mods')) {
+				if (controls.DOWN_P) {
+					playMenuSound("scroll");
+					_parent._position.y = FlxMath.wrap(_parent._position.y + 1, 0, getLength() - 1);
+					updateButtons();
+					updateCameraScroll();
+				}
+				else if (controls.UP_P) {
+					playMenuSound("scroll");
+					_parent._position.y = FlxMath.wrap(_parent._position.y - 1, 0, getLength() - 1);
+					updateButtons();
+					updateCameraScroll();
+				}
+
+				if (controls.ACCEPT) {
+					for (button in members) {
+						if (!isButtonDeadzone(button) && button.available && button.isHovered)
+							button.checkPosition(0, _parent._position.y);
+					}
+				}
+			}
+			else {
+				// make the player feel like its controling the menu, but in reality hes not doing anything HAHAHAHAH
+				if (controls.LEFT_P || controls.DOWN_P || controls.UP_P || controls.RIGHT_P)
+					playMenuSound("scroll");
+
+				if (controls.ACCEPT && selectedButton != null && selectedButton.isHovered)
+					selectedButton.checkPosition(selectedButton.index.x, selectedButton.index.y);
+
+				if (selectedButton == null) {
+					for (button in members) {
+						if (isButtonDeadzone(button))
+							continue;
+
+						if (button.available) {
+							button.hover();
+							selectedButton = button;
+						}
+					}
+				}
+			}
+
 			return;
+		}
 
 		_isHovering = false;
 		_overlapDeadzone = false;
+		onlyAvailableButton = null;
 
 		for (deadzone in _deadzones) {
 			if (pointerOverlapsComplex(deadzone, _parent.windowCamera))
@@ -1315,9 +1335,9 @@ class WindowSubMenu extends FunkinGroup {
 					_parent._lastPosition.copyFrom(_parent._position);
 					button.hover();
 				}
-			} else {
-				button.idle();
 			}
+			else
+				button.idle();
 
 			if (_isHovering && pointerJustReleased())
 				button.checkPosition(_parent._position.x, _parent._position.y);
@@ -1329,8 +1349,26 @@ class WindowSubMenu extends FunkinGroup {
 		}
 	}
 
-	override public function draw() {
-		super.draw();
+	function updateButtons() {
+		for (button in members) {
+			if (isButtonDeadzone(button))
+				continue;
+
+			if (button.available && button.index.y == _parent._position.y) {
+				selectedButton = button;
+				button.hover();
+			}
+			else
+				button.idle();
+		}
+	}
+
+	function updateCameraScroll() {
+		if (selectedButton != null) {
+			_parent.windowCamera.minScrollY = 0;
+			_parent.windowCamera.maxScrollY = members[getLength() - 1].y + members[getLength() - 1].height;
+			_parent.windowCamera.scroll.y = selectedButton.y + selectedButton.height / 2 - _parent.windowCamera.height / 2;
+		}
 	}
 
 	public function getLength():Int {
@@ -1348,8 +1386,6 @@ class WindowSubMenu extends FunkinGroup {
 			throw 'A "WindowSubMenuHandler" parent must be set!';
 
 		_parent = parent;
-		_parent._layoutWidth = this._layoutWidth;
-		_parent._layoutHeight = this._layoutHeight;
 
 		forEach((spr) -> {
 			spr.camera = _parent.windowCamera;
@@ -1361,6 +1397,10 @@ class WindowSubMenu extends FunkinGroup {
 			if (button == deadzone)
 				return true;
 		return false;
+	}
+
+	function get_controls():Controls {
+		return PlayerSettings.solo.controls;
 	}
 }
 
