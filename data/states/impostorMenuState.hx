@@ -731,18 +731,10 @@ function update(elapsed:Float) {
         handleMouse();
 }
 
-function postUpdate(elapsed:Float) {
-	/*if (!isBelowStoryPoint("menuRevival") && foundCrew.length > 0)
-        floatSus();*/
-}
-
-var curWindowEntry:Array<Int> = [0, 0];
-var lastWindowEntry:Array<Int> = [-1, -1];
-
 var holdTimer:Float = 0;
-var maxHeldTime:Float = 0.5;
+final maxHeldTime:Float = 0.5;
 var frameDelayer:Int = 0;
-var maxFrameDelay:Int = 2;
+final maxFrameDelay:Int = 2;
 function handleKeyboard(elapsed:Float) {
     if (FlxG.keys.justPressed.ANY)
 		useKeyboard();
@@ -889,16 +881,6 @@ function handleTouch() {
     #end
 }
 
-function playSoundWindow() {
-    if (curWindowEntry[0] != lastWindowEntry[0] || curWindowEntry[1] != lastWindowEntry[1]) {
-        playMenuSound("scroll");
-        lastWindowEntry[0] = curWindowEntry[0];
-        lastWindowEntry[1] = curWindowEntry[1];
-
-        //trace("Column Pos: "+curWindowEntry[0],"Row Pos: "+curWindowEntry[1]);
-    }
-}
-
 function changeMainEntry(change:Int) {
 	var oldEntry:Int = curMainEntry;
 	curMainEntry = FlxMath.wrap(curMainEntry + change, 0, mainButtons.length - 1);
@@ -928,18 +910,6 @@ function pointerSelection(?index:Int) {
 		if (index >= 0)
 			playMenuSound("scroll");
     }
-}
-
-function changeWindowEntry(changeColumn:Int, changeRow:Int) {
-    curWindowEntry[0] = FlxMath.wrap(curWindowEntry[0] + changeColumn, 0, curWindow.length - 1);
-    curWindowEntry[1] = FlxMath.wrap(curWindowEntry[1] + changeRow, 0, curWindow[curWindowEntry[0]].length - 1);
-
-    if (!curWindow[curWindowEntry[0]][curWindowEntry[1]].available) {
-        changeWindowEntry(changeColumn, changeRow);
-        return;
-    }
-
-    playSoundWindow();
 }
 
 function checkMainSelection(index:Int) {
@@ -993,25 +963,6 @@ function closeWindowSection() {
 
 	curSelectionMode = SelectionMode.MAIN;
 }
-
-function checkSelectedWindowEntry() {
-    if (curWindow == null) return;
-
-    disableInput();
-
-    var trans:String = "";
-    try {
-        trans = curWindow[curWindowEntry[0]][curWindowEntry[1]].transition;
-    }
-    catch(e:Dynamic) {
-        trans = "closingSharpCircle";
-    }
-
-    setTransition(trans);
-    curWindowChooseBehaviour();
-}
-
-//function floatSus() {}
 
 function onOpenSubState(event) {
     disableInput();
