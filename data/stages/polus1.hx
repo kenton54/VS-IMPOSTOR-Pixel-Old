@@ -37,16 +37,18 @@ function create() {
     stars.scrollFactor = FlxPoint.get(0.05, 0.05);
     insert(0, stars);
 
-    snowParticles = new FlxTypedEmitter(-1600, -800, 180);
-    snowParticles.makeParticles(5, 5, FlxColor.WHITE, 100);
-    snowParticles.launchAngle.set(120, 60);
-    snowParticles.speed.set(180, 320, 400, 800);
-    snowParticles.scale.set(1, 1, 3, 3);
-    snowParticles.lifespan.set(1800, 1800);
-    snowParticles.keepScaleRatio = true;
-    snowParticles.width = FlxG.width * 2.5;
-    snowParticles.camera = camGame;
-    add(snowParticles);
+    if (!Options.lowMemoryMode) {
+		snowParticles = new FlxTypedEmitter(-1600, -800, 180);
+		snowParticles.makeParticles(5, 5, FlxColor.WHITE, 100);
+		snowParticles.launchAngle.set(120, 60);
+		snowParticles.speed.set(180, 320, 400, 800);
+		snowParticles.scale.set(1, 1, 3, 3);
+		snowParticles.lifespan.set(1800, 1800);
+		snowParticles.keepScaleRatio = true;
+		snowParticles.width = FlxG.width * 2.5;
+		snowParticles.camera = camGame;
+		add(snowParticles);
+    }
 
 	if (!Options.naughtyness) {
         var x:Float = 2;

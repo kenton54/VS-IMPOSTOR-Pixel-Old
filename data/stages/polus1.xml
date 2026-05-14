@@ -4,14 +4,20 @@
 
     <!-- rocks -->
     <sprite name="rocks4" sprite="rocks4" x="180" y="80" antialiasing="false" scroll="0.2" scale="5"/>
-    <sprite name="rocks3" sprite="rocks3" x="100" y="100" antialiasing="false" scroll="0.3" scale="5"/>
+
+    <high-memory>
+        <sprite name="rocks3" sprite="rocks3" x="100" y="100" antialiasing="false" scroll="0.3" scale="5"/>
+    </high-memory>
+
     <sprite name="rocks2" sprite="rocks2" x="100" y="200" antialiasing="false" scroll="0.4" scale="6"/>
     <sprite name="rocks1" sprite="rocks1" x="-80" y="-200" antialiasing="false" scroll="0.5" scale="7"/>
 
-    <!-- moon bloom -->
-    <sprite name="moonBloom" sprite="moon-bloom" x="320" y="0" zoomfactor="0.2" antialiasing="false" scale="1.5" scroll="0.01" alpha="0.25">
-        <property name="blend" type="integer" value="0"/>
-    </sprite>
+    <high-memory>
+        <!-- moon bloom -->
+        <sprite name="moonBloom" sprite="moon-bloom" x="320" y="0" zoomfactor="0.2" antialiasing="false" scale="1.5" scroll="0.01" alpha="0.25">
+            <property name="blend" type="integer" value="0" />
+        </sprite>
+    </high-memory>
 
     <!-- medbay and the hallway to the specimen room -->
     <sprite name="medbay_normal" sprite="medbay" x="860" y="10" antialiasing="false" scale="10" scroll="0.75" >
