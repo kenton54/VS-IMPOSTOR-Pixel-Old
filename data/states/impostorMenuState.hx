@@ -22,7 +22,6 @@ import impostor.menus.mainmenu.ExitPrompt;
 import impostor.menus.mainmenu.TopButton;
 //import impostor.menus.mainmenu.WindowSubMenuHandler;
 //import impostor.menus.mainmenu.WindowSubMenu;
-//import impostor.menus.mainmenu.submenu.PlaySubMenu;
 import impostor.utils.FunkinMath;
 import impostor.BackButton;
 import impostor.StarsBackdrop;
