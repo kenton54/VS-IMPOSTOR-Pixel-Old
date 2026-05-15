@@ -1,4 +1,6 @@
 import flixel.addons.display.FlxBackdrop;
+import flixel.text.FlxText.FlxTextFormat;
+import flixel.util.FlxStringUtil;
 import funkin.backend.system.framerate.Framerate;
 import funkin.backend.MusicBeatGroup;
 import impostor.utils.FunkinMath;
@@ -13,10 +15,12 @@ var arrow:FunkinSprite;
 
 var categoriesGroup:FlxSpriteGroup;
 var impostorPixel:BackButton;
-var impostorm:BackButton;
+var motorfrog:BackButton;
 var innersloth:BackButton;
 var codename:BackButton;
 var fridayNightFunkin:BackButton;
+
+var sectionButton:FlxSprite;
 
 var positionOffset:Float = 12;
 
@@ -30,24 +34,103 @@ var creditsData:Array<Array<Dynamic>> = [
 		portrait: "pixel-big",
 		scale: 2.4,
 		about: "It's the mod you're playing right now!\nMade with love and passion by one single developer.",
+		github: "https://github.com/kenton54/VS-IMPOSTOR-Pixel-Old",
+		twitter: "https://x.com/vsimpostorpixel",
+		gamebanana: "https://gamebanana.com/mods/506768",
+		itchio: "https://kenton54.itch.io/vs-impostor-pixel",
         contributors: [
             {
                 name: "kenton",
                 portrait: "",
-                jobs: ["director", "programmer", "pixelartist", "artist", "charter", "translator", "advertiser"],
-                quote: "I've spent almost 2 years developing this mod from Beta 2.1 to Version 1, I've learn a lot in the process and met a lot of cool people too!\nYes I'm the only one that worked for this mod, and thank you for your patience! And sorry for not delivering something... bigger, specially with the amount of time this mod took to develop.",
+                jobs: ["director", "programmer", "pixelartist", "artist", "charter", "translator"],
+                quote: "I've spent almost 2 years developing this mod from Beta 2.1 to Version 1, I've learn a lot in the process and met a lot of cool people too!\nYes I'm the only one that worked for this mod (from the start of the mod all the way to version 1.4), and thank you for your patience! And sorry for not delivering something... bigger, specially with the amount of time this mod took to develop.",
 				youtube: "https://www.youtube.com/@kenton.54",
 				github: "https://github.com/kenton54",
 				kofi: "https://ko-fi.com/kenton54",
-				twitter: "https://x.com/kenton__54"
+				twitter: "https://x.com/kenton__54",
+				gamebanana: "https://gamebanana.com/members/2282714",
+				itchio: "https://kenton54.itch.io/"
             },
+			{
+				name: "GTM",
+				portrait: "",
+				jobs: ["artist", "pixelartist"],
+				twitter: "https://x.com/GTMDoesArt"
+			},
+			{
+				name: "Sparkly",
+				portrait: "",
+				jobs: ["musician"],
+				youtube: "https://www.youtube.com/@SparklyYea"
+			},
+			{
+				name: "Oxzy",
+				portrait: "",
+				jobs: ["musician"],
+				youtube: "https://www.youtube.com/@OxzyTheOxzying",
+				twitter: "https://x.com/Lux_St4rf",
+				kofi: "https://ko-fi.com/H2H01RGTG7/"
+			},
 			{
                 name: "Silte",
                 portrait: "",
                 jobs: ["musician"],
 				quote: "uh hi ehh, how did i get here",
 				youtube: "https://www.youtube.com/@SilteTheMusician"
-            }
+            },
+			{
+				name: "VoltR",
+				portrait: "",
+				jobs: ["musician"],
+				quote: "It's pretty much thanks to him that this mod exists LOL",
+				youtube: "https://www.youtube.com/@Voltdotmp3"
+			},
+			{
+				name: "AstroNomad",
+				portrait: "",
+				jobs: ["pixelartist", "programmer"],
+				twitter: "https://x.com/Astro_BOTLOL"
+			},
+			{
+				name: "Moxt",
+				portrait: "",
+				jobs: ["translator"],
+				youtube: "https://www.youtube.com/@moxtt",
+				twitter: "https://x.com/fr3ep4lst1ne_"
+			},
+			{
+				name: "Wovenx",
+				portrait: "",
+				jobs: ["translator"]
+			},
+			{
+				name: "JustAlexus",
+				portrait: "",
+				jobs: ["translator"],
+				youtube: "https://www.youtube.com/@JustAlexusVFG",
+				twitter: "https://x.com/JustAlexusVFG"
+			},
+			{
+				name: "FuniFred",
+				portrait: "",
+				jobs: ["translator"],
+				twitter: "https://x.com/FuniFred"
+			},
+			{
+				name: "Huy1234TH",
+				portrait: "",
+				jobs: ["translator"]
+			},
+			{
+				name: "Birstondog",
+				portrait: "",
+				jobs: ["playtester"],
+				quote: "Didn't do much, just kinda here ngl",
+				youtube: "https://www.youtube.com/@birstondog11",
+				twitter: "https://x.com/birstondog",
+				github: "https://github.com/Birstondog",
+				gamebanana: "https://gamebanana.com/members/3348456"
+			}
         ]
     },
     {
@@ -62,61 +145,70 @@ var creditsData:Array<Array<Dynamic>> = [
 		// If i got someone wrong, its clowfoe's fault :v
         contributors: [
             {name: "Clowfoe", youtube: "https://www.youtube.com/@Clowfoe", twitter: "https://twitter.com/Clowfoe", discord: "https://www.discord.gg/clowfoe"},
-			{name: "emi3_"},
+			{name: "emi3"},
+			{name: "Fllics"},
 			{name: "Rareblin", youtube: "https://www.youtube.com/@Rareblin", spotify: "https://open.spotify.com/artist/5b4tXJ3zWEjSZCSJDs20bC", soundcloud: "https://soundcloud.com/rareblin", appleMusic: "https://music.apple.com/us/artist/rareblin/1596839841"},
-			{name: "loggo", twitter: "https://twitter.com/loggoman512"},
+			{name: "Loggo", twitter: "https://twitter.com/loggoman512"},
 			{name: "EthanTheDoodler", youtube: "https://www.youtube.com/@EthanTheDoodler", twitter: "https://twitter.com/D00dlerEthan", spotify: "https://open.spotify.com/artist/0hDzmNmk3ruYMmIhcg7EKo", soundcloud: "https://soundcloud.com/ethanthedoodler"},
 			{name: "Gonk"},
-			{name: "fluffyhairs", youtube: "https://www.youtube.com/@fluffyhairsmusic", twitter: "https://twitter.com/fluffyhairslol", spotify: "https://open.spotify.com/artist/0WrQSlkBH3KOBL9jOctrMs", appleMusic: "https://music.apple.com/us/artist/fluffyhairs/1589613202"},
 			{name: "SquidBoy84", twitter: "https://twitter.com/SquidBoy84"},
 			{name: "Fabs", twitter: "https://twitter.com/fabsthefabs"},
+			{name: "fluffyhairs", youtube: "https://www.youtube.com/@fluffyhairsmusic", twitter: "https://twitter.com/fluffyhairslol", spotify: "https://open.spotify.com/artist/0WrQSlkBH3KOBL9jOctrMs", appleMusic: "https://music.apple.com/us/artist/fluffyhairs/1589613202"},
 			{name: "Dazzen"},
-			{name: "Malor"},
+			{name: "Kricedor", twitter: "https://x.com/KRICEDOR"},
+			{name: "Remi"},
 			{name: "Thales", twitter: "https://twitter.com/MoonlessShift"},
-			{name: "NeatoNG", newgrounds: "https://neatong.newgrounds.com/"},
+			{name: "Neato", newgrounds: "https://neatong.newgrounds.com/"},
 			{name: "MonotoneDoc", twitter: "https://twitter.com/MonotoneDoc"},
 			{name: "punkett", youtube: "https://www.youtube.com/@punkett", twitter: "https://twitter.com/_punkett", spotify: "https://open.spotify.com/artist/3SwTlwww12v4tI3dojcSIm", appleMusic: "https://music.apple.com/us/artist/punkett/1652607232"},
+			{name: "P0g0", youtube: "https://www.youtube.com/@P0goTheDuck", twitter: "https://x.com/P0g0TheDuck"},
+			{name: "IGJHSpritin"},
+			{name: "Doguy"},
 			{name: "OrbyyOrbinaut", twitter: "https://twitter.com/OrbyyNew"},
-			{name: "Crocidy"},
+			{name: "Graev"}, // crocidy
 			{name: "Aqua", twitter: "https://twitter.com/useraqua_"},
 			{name: "Offbi"},
 			{name: "Ellisbros"},
-			{name: "Mayokiddo"},
+			{name: "Mayomire"},
+			{name: "ghxstling"},
 			{name: "MSG", twitter: "https://twitter.com/MSGTheEpic"},
 			{name: "Axor the Axolotl"},
 			{name: "Vruzzen", youtube: "https://www.youtube.com/@SkarnaesRa", spotify: "https://open.spotify.com/artist/2aTNuFiuOJHrKOH5NanjtM"},
 			{name: "Nii-san", youtube: "https://www.youtube.com/@niisanmusic", twitter: "https://twitter.com/NiisanHP"},
 			{name: "Biddle3", youtube: "https://www.youtube.com/@therealb3", soundcloud: "https://soundcloud.com/biddle3", appleMusic: "https://music.apple.com/us/artist/biddle3/1561582913"},
-			{name: "Emihead", youtube: "https://www.youtube.com/@emihead", twitter: "https://twitter.com/emihead", spotify: "https://open.spotify.com/artist/23GN3NHNBkFtpTcwVeScw1"},
-			{name: "LEX3X"},
+			{name: "emihead", youtube: "https://www.youtube.com/@emihead", twitter: "https://twitter.com/emihead", spotify: "https://open.spotify.com/artist/23GN3NHNBkFtpTcwVeScw1"},
+			{name: "kiwiquest", twitter: "https://x.com/kiwiquestt"},
 			{name: "Spaggy"},
-			{name: "Julien", twitter: "https://twitter.com/itjulienn"},
+			{name: "pip"},
+			{name: "Reina", twitter: "https://twitter.com/itjulienn"},
 			{name: "amongusfan24", quote: "Cooper\nRest in Peace :(", twitter: "https://twitter.com/amongusfan24"},
 			{name: "Keoni"},
 			{name: "Keegan", youtube: "https://www.youtube.com/@KeeganKeegan", twitter: "https://twitter.com/__Keegan_", spotify: "https://open.spotify.com/artist/6i10vpPPPjzt5Vozj8nbpg", appleMusic: "https://music.apple.com/us/artist/keegan/1632834207"},
-			{name: "GallyCid"},
+			{name: "GallyCidPizza", twitter: "https://x.com/GallyCidPizza"},
 			{name: "Gibz", twitter: "https://twitter.com/9766Gibz"},
 			{name: "Farfoxx"},
 			{name: "KlutchDJ"},
 			{name: "ZiffyClumper", twitter: "https://twitter.com/ziffymusic"},
 			{name: "Saster", youtube: "https://www.youtube.com/@sasterofficial", twitter: "https://twitter.com/sub0ru", spotify: "https://open.spotify.com/artist/2wh9IsIFT6RYQWGS0yzo5S", soundcloud: "https://soundcloud.com/sasterdadudester", appleMusic: "https://music.apple.com/us/artist/saster/1575658159"},
-			{name: "Cval"},
+			{name: "Cval", youtube: "https://www.youtube.com/@cval_brown", twitter: "https://x.com/cval_brown"},
 			{name: "Rozebud", youtube: "https://www.youtube.com/@Rozebud", twitter: "https://twitter.com/helpme_thebigt", spotify: "https://open.spotify.com/artist/5UwDhbNL98PxS4KOm5rGSf", appleMusic: "https://music.apple.com/us/artist/rozebud/1561593812"},
 			{name: "JADS", youtube: "https://www.youtube.com/@JADSCastle", twitter: "https://twitter.com/Aw3somejds", spotify: "https://open.spotify.com/artist/5yiRxiTjuMxOfj5ewY14f8", appleMusic: "https://music.apple.com/us/artist/jads/1651744458"},
+			{name: "Rivermusic", website: "https://rivermusic.club/", youtube: "https://www.youtube.com/watch?v=-d2xAjPYqJk", twitter: "https://x.com/rivermusic_"},
 			{name: "MashProTato", twitter: "https://twitter.com/MashProTato"},
-			{name: "Kai"},
-			{name: "Renyar"},
-			{name: "Moonmistt"},
-			{name: "Philiplol"},
-			{name: "Doguy"},
-			{name: "Lunaxis"},
+			{name: "Raitalu"},
+			{name: "Layologyyy"},
+			{name: "Kimirittoz", youtube: "https://www.youtube.com/@kimirittoz", twitter: "https://x.com/kimirittoz"},
+			{name: "data5"},
+			{name: "DuskieWhy", twitter: "https://twitter.com/DuskieWhy"},
+			{name: "rodreal"},
+			{name: "JakeHomys"},
+			{name: "Steginite", twitter: "https://x.com/steginite"},
+			{name: "Terdlestuff"},
 			{name: "Top 10 Awesome"},
 			{name: "Salterino", twitter: "https://twitter.com/Salterin0"},
 			{name: "LayLasagna"},
 			{name: "Elikapika", twitter: "https://twitter.com/elikapika"},
 			{name: "SUSSteve", twitter: "https://twitter.com/Steve06421194"},
-			{name: "rai_talu"},
-			{name: "DuskieWhy", twitter: "https://twitter.com/DuskieWhy"},
 			{name: "KadeDev"}
         ]
     },
@@ -263,7 +355,7 @@ var creditsData:Array<Array<Dynamic>> = [
 				github: "https://github.com/Hundrec"
 			},
 			{
-				name: "Abnormal",
+				name: "AbnormalPoof",
 				jobs: ["organizer"],
 				github: "https://github.com/AbnormalPoof"
 			}
@@ -337,19 +429,25 @@ function create() {
 
 	add(topBorder);
 
+	sectionButton = new FlxSprite().loadGraphic(Paths.image('menus/general/topbutton'));
+	sectionButton.scrollFactor.set();
+	sectionButton.scale.set(baseScale, baseScale);
+	sectionButton.updateHitbox();
+	add(sectionButton);
+
 	categoriesGroup = new FlxSpriteGroup();
 	categoriesGroup.scrollFactor.set();
 	add(categoriesGroup);
 
 	add(backButton);
 
-	impostorPixel = new BackButton(0, 1, () -> setPosition(creditsGroup[0].members[0].y - FlxG.height / 2 - positionOffset), baseScale * 0.8, "menus/credits/pixel", false, true);
+	impostorPixel = new BackButton(0, -1, () -> setPosition(creditsGroup[0].members[0].y - FlxG.height / 2 - positionOffset), baseScale * 0.86, "menus/credits/pixel", false, true);
 	impostorPixel.multiPress = true;
 
-	impostorm = new BackButton(impostorPixel.x + impostorPixel.width + 40, -1, () -> setPosition(creditsGroup[1].members[0].y - FlxG.height / 2 - positionOffset), 0.63, "menus/credits/impostorm", false, true);
-	impostorm.multiPress = true;
+	motorfrog = new BackButton(impostorPixel.x + impostorPixel.width + 40, 2, () -> setPosition(creditsGroup[1].members[0].y - FlxG.height / 2 - positionOffset), 0.47, "menus/credits/motorfrog", false, true);
+	motorfrog.multiPress = true;
 
-	innersloth = new BackButton(impostorm.x + impostorm.width + 40, 6, () -> setPosition(creditsGroup[2].members[0].y - FlxG.height / 2 - positionOffset), 0.52, "menus/credits/innersloth", false, true);
+	innersloth = new BackButton(motorfrog.x + motorfrog.width + 40, 6, () -> setPosition(creditsGroup[2].members[0].y - FlxG.height / 2 - positionOffset), 0.52, "menus/credits/innersloth", false, true);
 	innersloth.multiPress = true;
 
 	codename = new BackButton(innersloth.x + innersloth.width + 40, 0, () -> setPosition(creditsGroup[3].members[0].y - FlxG.height / 2 - positionOffset), 0.6, "menus/credits/codename", false, true);
@@ -359,12 +457,27 @@ function create() {
 	fridayNightFunkin.multiPress = true;
 
 	categoriesGroup.add(impostorPixel);
-	categoriesGroup.add(impostorm);
+	categoriesGroup.add(motorfrog);
 	categoriesGroup.add(innersloth);
 	categoriesGroup.add(codename);
 	categoriesGroup.add(fridayNightFunkin);
 
 	categoriesGroup.screenCenter(FlxAxes.X);
+
+	final shadowOffset:Float = 4;
+	for (parentSprite in [impostorPixel, motorfrog, innersloth, codename, fridayNightFunkin]) {
+		var shadowSprite:FlxSprite = new FlxSprite().loadGraphicFromSprite(parentSprite);
+		shadowSprite.scale.copyFrom(parentSprite.scale);
+		shadowSprite.updateHitbox();
+		shadowSprite.scrollFactor.set();
+		shadowSprite.color = FlxColor.BLACK;
+		shadowSprite.alpha = 0.4;
+		insert(members.indexOf(categoriesGroup), shadowSprite);
+
+		shadowSprite.setPosition(parentSprite.x, parentSprite.y + shadowOffset);
+	}
+
+	FunkinMath.objectCenter(sectionButton, impostorPixel, FlxAxes.X);
 
 	FlxG.camera.minScrollY = firstObjectPos - positionOffset;
 	lerpScroll = firstObjectPos - positionOffset;
@@ -406,15 +519,16 @@ function update(elapsed:Float) {
 		setPosition(group.members[group.members.length - 1].y - FlxG.height / 2 - positionOffset);
 	}
 
-	var data:Array<Dynamic> = getContributorData(getSelected());
+	var curText:Null<FunkinText> = getSelected();
+	var data:Array<Dynamic> = getContributorData(curText);
 	creditsPanel.update(elapsed);
 	creditsPanel.updatePanel(data);
-	if (getSelected() != null) {
-		if (controls.ACCEPT || pointerOverlaps(getSelected()) && pointerJustPressed()) {
+	if (curText != null) {
+		if (controls.ACCEPT || pointerOverlaps(curText) && pointerJustPressed()) {
 			var catIndex:Int = 0;
 			var isCategory:Bool = false;
 			for (category in creditsGroup) {
-				if (getSelected() == category.members[0]) {
+				if (curText == category.members[0]) {
 					isCategory = true;
 					break;
 				}
@@ -426,6 +540,9 @@ function update(elapsed:Float) {
 					CoolUtil.openURL(creditsData[catIndex].link);
 			}
 		}
+
+		var posIndex:Int = getCategoryIndex(curText);
+		FunkinMath.objectCenter(sectionButton, categoriesGroup.members[posIndex], FlxAxes.X);
     }
 
 	if (controls.BACK)
@@ -435,8 +552,10 @@ function update(elapsed:Float) {
 function addPosition(pos:Float)
 	lerpScroll = CoolUtil.bound(lerpScroll + pos, FlxG.camera.minScrollY, FlxG.camera.maxScrollY - FlxG.height);
 
-function setPosition(pos:Float)
+function setPosition(pos:Float) {
 	lerpScroll = CoolUtil.bound(pos, FlxG.camera.minScrollY, FlxG.camera.maxScrollY - FlxG.height);
+	snapPosition();
+}
 
 function snapPosition()
 	FlxG.camera.scroll.y = lerpScroll;
@@ -473,7 +592,23 @@ function getContributorData(object:FunkinText):Array<Dynamic> {
 			}
 		}
 	}
-	return {};
+	return null;
+}
+
+function getCategoryIndex(object:FunkinText):Int {
+	if (object != null) {
+		for (i => credits in creditsData) {
+			if (credits.category == object.text)
+				return i;
+			if (credits.contributors != null) {
+				for (contributor in credits.contributors) {
+					if (contributor.name == object.text)
+						return i;
+				}
+			}
+		}
+	}
+	return -1;
 }
 
 function onResize(event) {
@@ -485,7 +620,7 @@ function destroy() {
     stars.destroy();
 	backButton.destroy();
 	impostorPixel.destroy();
-	impostorm.destroy();
+	motorfrog.destroy();
 	innersloth.destroy();
 
 	FlxG.camera.minScrollY = null;
@@ -495,6 +630,7 @@ function destroy() {
 class CreditsPanel extends MusicBeatGroup {
 	var title:FunkinText;
 	var portrait:FunkinSprite;
+	var jobsList:FunkinText;
 	var quote:FunkinText;
 	var socialsGroup1:FlxSpriteGroup;
 	var socialsGroup2:FlxSpriteGroup;
@@ -517,6 +653,13 @@ class CreditsPanel extends MusicBeatGroup {
 		portrait = new FunkinSprite(background.width / 2, title.y + title.height + 20 - this.y);
 		portrait.visible = false;
 		add(portrait);
+
+		jobsList = new FunkinText(0, 0, width, "", 18, false);
+		jobsList.font = Paths.font('pixeloidsans.ttf');
+		jobsList.alignment = "center";
+		jobsList.visible = false;
+		jobsList.color = 0xFFBFBFBF;
+		add(jobsList);
 
 		quote = new FunkinText(0, 0, width, "", 18, false);
 		quote.font = Paths.font("pixeloidsans.ttf");
@@ -546,6 +689,8 @@ class CreditsPanel extends MusicBeatGroup {
 		if (_lastData == data) return;
 
 		portrait.visible = false;
+		jobsList.visible = false;
+		jobsList.clearFormats();
 		quote.visible = false;
 		quote.scale.set(1, 1);
 		quote.updateHitbox();
@@ -558,8 +703,8 @@ class CreditsPanel extends MusicBeatGroup {
 			sprite.destroy();
 		socialsGroup2.clear();
 
-		if (data.name == null) {
-			if (data.category == null) {
+		if (data?.name == null) {
+			if (data?.category == null) {
 				title.y = this.y + 250;
 				title.text = "Hover over an organization/team or contributor to show their information.";
 				title.size = 26;
@@ -598,7 +743,7 @@ class CreditsPanel extends MusicBeatGroup {
 			title.text = data.name;
 			title.size = 40;
 
-			var nextPosition:Float = title.height + 40;
+			var nextPosition:Float = title.height + 20;
 
 			if (data.portrait != null && data.portrait != "") {
 				portrait.loadGraphic(Paths.image("menus/credits/images/" + data.portrait));
@@ -607,6 +752,17 @@ class CreditsPanel extends MusicBeatGroup {
 				portrait.y = this.y + nextPosition;
 				portrait.x = (background.width - portrait.width) / 2;
 				nextPosition += portrait.height + 20;
+			}
+			if (data.jobs != null && data.jobs.length > 0) {
+				jobsList.visible = true;
+				jobsList.text = '';
+
+				jobsList.y = this.y + nextPosition;
+
+				for (i => job in data.jobs)
+					jobsList.text += getJobName(job) + '\n';
+
+				nextPosition += jobsList.height + 10;
 			}
 			if (data.quote != null && data.quote != "") {
 				quote.text = data.quote;
@@ -619,6 +775,42 @@ class CreditsPanel extends MusicBeatGroup {
 		}
 
 		_lastData = data;
+	}
+
+	function getJobColor(job:String):FlxColor {
+		switch(job) {
+			case "director":
+				return 0xFFE02424;
+			case "pixelartist":
+				return 0xFFE68032;
+			case "artist":
+				return 0xFFF3C019;
+			case "musician":
+				return 0xFF54D2EE;
+			case "programmer":
+				return 0xFF398BF6;
+			case "charter":
+				return 0xFF55D655;
+			case "translator":
+				return 0xFF3A4FDB;
+			case "voiceactor":
+				return 0xFFFF83BD;
+			case "advertiser":
+				return 0xFFA74FD3;
+			case "playtester":
+				return 0xFF607D8B;
+		}
+	}
+
+	function getJobName(job:String):String {
+		switch (job) {
+			case "pixelartist":
+				return "Pixel-Artist";
+			case "voiceactor":
+				return "Voice Actor";
+			default:
+				return FlxStringUtil.toTitleCase(job);
+		}
 	}
 
 	function createSocials(data:Array<Dynamic>) {
