@@ -55,13 +55,17 @@ var creditsData:Array<Array<Dynamic>> = [
 				name: "GTM",
 				portrait: "",
 				jobs: ["artist", "pixelartist"],
-				twitter: "https://x.com/GTMDoesArt"
+				quote: "applejack is best pony",
+				twitter: "https://x.com/GTMDoesArt",
+				gamebanana: "https://gamebanana.com/members/3401406"
 			},
 			{
 				name: "Sparkly",
 				portrait: "",
 				jobs: ["musician"],
-				youtube: "https://www.youtube.com/@SparklyYea"
+				quote: "I LOVE impostor pixel so mucha nd you should play it. What do you mean you're playing it right now? You liar. You're in the credits screen. That's not playing, that's called FAKE GAMING, m'guy. Now GO and play some Sussus Moogus but Pixelated or something I don't know bro.\n\nHello John doe.",
+				youtube: "https://www.youtube.com/@SparklyYea",
+				twitter: "https://x.com/SparklyYea"
 			},
 			{
 				name: "Oxzy",
@@ -79,17 +83,32 @@ var creditsData:Array<Array<Dynamic>> = [
 				youtube: "https://www.youtube.com/@SilteTheMusician"
             },
 			{
-				name: "VoltR",
+				name: "Volt Arix",
 				portrait: "",
 				jobs: ["musician"],
-				quote: "It's pretty much thanks to him that this mod exists LOL",
-				youtube: "https://www.youtube.com/@Voltdotmp3"
+				quote: "uh hi bro i literally did jackshit uh enjoy the mod tho! <3\n\n\n\n\n\n\nkenton: It's pretty much thanks to him that this mod exists LOL",
+				youtube: "https://www.youtube.com/@Voltdotmp3",
+				instagram: "https://www.instagram.com/voltr_music/",
+				twitter: "https://x.com/voltrmusic",
+				gamebanana: "https://gamebanana.com/members/2326761",
+				tiktok: "https://www.tiktok.com/@voltrmusic"
 			},
 			{
 				name: "AstroNomad",
 				portrait: "",
 				jobs: ["pixelartist", "programmer"],
-				twitter: "https://x.com/Astro_BOTLOL"
+				quote: "Hi, i only did one thing for the mod and uhh yea hope you enjoy the mod, i had a lot of fun working on this mod :3",
+				youtube: "https://www.youtube.com/@sillyAstroBotLOL",
+				twitter: "https://x.com/Astro_BOTLOL",
+				gamebanana: "https://gamebanana.com/members/5041991"
+			},
+			{
+				name: "Slushie",
+				portrait: "",
+				jobs: ["charter"],
+				quote: "feed me charts i havent eaten in days kenton, please i need this man my family is kinda hungry",
+				youtube: "https://youtube.com/@slush1eee",
+				instagram: "https://www.instagram.com/slu.shieee",
 			},
 			{
 				name: "Moxt",
@@ -101,7 +120,12 @@ var creditsData:Array<Array<Dynamic>> = [
 			{
 				name: "Wovenx",
 				portrait: "",
-				jobs: ["translator"]
+				jobs: ["translator"],
+				quote: "dust, yeah dust, eae rapaziadaaaa eu traduzi o mod pra português brasil!!",
+				youtube: "https://www.youtube.com/@Wovenx",
+				twitter: "https://x.com/Lobo_Alfa023",
+				github: "https://github.com/Wovenx",
+				gamebanana: "https://gamebanana.com/members/1834835"
 			},
 			{
 				name: "JustAlexus",
@@ -114,12 +138,17 @@ var creditsData:Array<Array<Dynamic>> = [
 				name: "FuniFred",
 				portrait: "",
 				jobs: ["translator"],
+				quote: "Folly my beloved\nand uhhh, I didn't do much for the mod but I hope yall enjoy this piece of peak artwork there, ok?\nplease kill me",
+				youtube: "https://youtube.com/@funifredstupidbear",
 				twitter: "https://x.com/FuniFred"
 			},
 			{
 				name: "Huy1234TH",
 				portrait: "",
-				jobs: ["translator"]
+				jobs: ["translator"],
+				quote: "Ờm cái ngôn ngữ việt này tui dịch được ko thế?",
+				youtube: "https://youtube.com/@huy1234th",
+				gamebanana: "https://gamebanana.com/members/1965608"
 			},
 			{
 				name: "Birstondog",
@@ -130,6 +159,15 @@ var creditsData:Array<Array<Dynamic>> = [
 				twitter: "https://x.com/birstondog",
 				github: "https://github.com/Birstondog",
 				gamebanana: "https://gamebanana.com/members/3348456"
+			},
+			{
+				name: "Kdead",
+				portrait: "",
+				jobs: ["playtester"],
+				quote: "I like played the mod before you can! bleehhh",
+				youtube: "https://www.youtube.com/@Kdead1",
+				twitter: "https://x.com/FnafPla1",
+				gamebanana: "https://gamebanana.com/members/2618135"
 			}
         ]
     },
@@ -502,16 +540,6 @@ function update(elapsed:Float) {
 
 	FlxG.camera.scroll.y = CoolUtil.fpsLerp(FlxG.camera.scroll.y, lerpScroll, 0.3);
 
-	for (category in creditsGroup) {
-		for (text in category.members) {
-			if (isScreenCentered(text)) {
-				text.alpha = 1;
-            } else {
-				text.alpha = 0.5;
-            }
-        }
-    }
-
 	if (FlxG.keys.justPressed.HOME)
 		setPosition(creditsGroup[0].members[0].y - FlxG.height / 2 - positionOffset);
 	if (FlxG.keys.justPressed.END) {
@@ -572,8 +600,8 @@ function isScreenCentered(object:FunkinText):Bool {
 function getSelected():FunkinText {
 	for (category in creditsGroup) {
 		for (text in category.members) {
-			if (text.alpha == 1)
-                return text;
+			if (isScreenCentered(text))
+				return text;
 		}
     }
     return null;
@@ -611,20 +639,20 @@ function getCategoryIndex(object:FunkinText):Int {
 	return -1;
 }
 
+function postUpdate(elapsed:Float) {
+	for (category in creditsGroup) {
+		for (text in category.members) {
+			if (isScreenCentered(text))
+				text.alpha = 1;
+			else
+				text.alpha = 0.5;
+		}
+	}
+}
+
 function onResize(event) {
     // TODO: replace this with `gameScale.y` when display resolution change is properly added
 	Framerate.offset.y = topBorder.height * (event.height / 720);
-}
-
-function destroy() {
-    stars.destroy();
-	backButton.destroy();
-	impostorPixel.destroy();
-	motorfrog.destroy();
-	innersloth.destroy();
-
-	FlxG.camera.minScrollY = null;
-	FlxG.camera.maxScrollY = null;
 }
 
 class CreditsPanel extends MusicBeatGroup {
