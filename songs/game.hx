@@ -756,7 +756,7 @@ function onPlayerMiss(event) {
                 var remainingLengthSec:Float = remainingLength / 1000;
                 var healthChangeUncapped:Float = remainingLengthSec * holdHealthDrop;
                 var healthChangeMax:Float = holdHealthDropMax - (event.note.wasGoodHit ? missHealth : 0);
-                var healthChange:Float = clamp(healthChangeUncapped, healthChangeMax, 0);
+                var healthChange:Float = FunkinMath.clampFloat(healthChangeUncapped, healthChangeMax, 0);
                 scor = Std.int(holdHealthDrop * remainingLengthSec);
                 health -= healthChange;
                 trace(scor, healthChange);

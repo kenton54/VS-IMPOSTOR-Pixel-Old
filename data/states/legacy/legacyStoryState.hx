@@ -1,7 +1,7 @@
 import flixel.addons.display.FlxBackdrop;
 import flixel.FlxCamera.FlxCameraFollowStyle;
 import funkin.savedata.FunkinSave;
-import BackButton;
+import impostor.BackButton;
 
 var chromaAbbr:CustomShader;
 

@@ -6,8 +6,8 @@ import funkin.backend.utils.TranslationUtil;
 import funkin.options.Options;
 import funkin.savedata.FunkinSave;
 import openfl.filters.ShaderFilter;
+import impostor.BackButton;
 import sys.FileSystem;
-import BackButton;
 
 var optionsCam:FlxCamera;
 

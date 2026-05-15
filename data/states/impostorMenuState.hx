@@ -13,15 +13,11 @@ import funkin.menus.ModSwitchMenu;
 import funkin.options.Options;
 import funkin.options.OptionsMenu;
 import funkin.options.PlayerSettings;
-import impostor.menus.mainmenu.MainMenuButton;
-import impostor.menus.mainmenu.MainMenuButton.MainMenuButtonType;
-import impostor.menus.mainmenu.ExitPrompt;
-import impostor.menus.mainmenu.TopButton;
-//import impostor.menus.mainmenu.WindowSubMenuHandler;
-//import impostor.menus.mainmenu.WindowSubMenu;
 import impostor.utils.FunkinMath;
 import impostor.BackButton;
 import impostor.StarsBackdrop;
+import impostor.ResizableUIBox;
+import openfl.system.System;
 import FunkinGroup;
 
 var deadVersion:Bool = false; //isBelowStoryPoint("menuRevival");
@@ -29,6 +25,12 @@ var deadVersion:Bool = false; //isBelowStoryPoint("menuRevival");
 enum SelectionMode {
     MAIN;
     WINDOW;
+}
+
+enum MainMenuButtonType {
+	MAIN;
+	EXTRA;
+	OTHER;
 }
 
 enum MainMenuButtonTriggerType {
@@ -1007,6 +1009,380 @@ function checkBackAction() {
 function goBack2Title() {
     setTransition("fadeUp");
     FlxG.switchState(new ModState("impostorTitleState"));
+}
+
+class MainMenuButton extends MusicBeatGroup {
+	public var index(default, null):Int;
+
+	public var button(default, null):FlxSprite;
+	public var label(default, null):FunkinText;
+	public var icon(default, null):FlxSprite;
+
+	public var type(default, null):MainMenuButtonType;
+
+	public var available(default, set):Bool;
+
+	public var hovered(default, null):Bool = false;
+
+	var _idleColor:FlxColor;
+	var _hoverColor:FlxColor;
+
+	public function new(index:Int, ?x:Float, ?y:Float, data:Dynamic, ?camera:FlxCamera, ?scale:Float) {
+		scale ??= 5;
+		camera ??= FlxG.camera;
+
+		super(x, y, 3);
+
+		this.index = index;
+		this.camera = camera;
+
+		type = data.type;
+
+		var colors:Array<FlxColor> = getSelectionColorsFromType(type);
+		_idleColor = colors[0];
+		_hoverColor = colors[1];
+
+		var buttonDimentions:Array<Int> = getDimentionsFromType(type);
+		button = new FlxSprite().loadGraphic(getImageFromType(type), true, buttonDimentions[0], buttonDimentions[1]);
+		button.animation.add('idle', [0], 0);
+		button.animation.add('hover', [1], 0);
+		button.animation.add('locked', [2], 0);
+		button.scale.set(scale, scale);
+		button.updateHitbox();
+		button.camera = camera;
+		add(button);
+
+		var labelPosition:Float = 4 * scale;
+		label = new FunkinText(labelPosition, button.height / 2, button.width - labelPosition * 2, data.name, getTextSizeFromType(type), false);
+		label.font = Paths.font('pixeloidsans.ttf');
+		label.color = _idleColor;
+		label.alignment = "right";
+		label.y -= label.height / 2;
+		label.camera = camera;
+		add(label);
+
+		icon = new FlxSprite(8 * scale);
+
+		if (data.icon != null) {
+			icon.loadGraphic(data.icon);
+			icon.scale.set(scale, scale);
+			icon.updateHitbox();
+
+			if (data.iconOffsets != null) {
+				icon.x -= data.iconOffsets[0] * scale;
+				icon.y += data.iconOffsets[1] * scale;
+			}
+		}
+		else {
+			icon.alpha = 0; // for good measure
+			icon.visible = false;
+		}
+
+		icon.camera = camera;
+		add(icon);
+
+		available = data.available;
+	}
+
+	public function idle() {
+		if (!available) return;
+
+		button.animation.play('idle');
+		label.color = _idleColor;
+
+		hovered = false;
+	}
+
+	public function hover() {
+		if (!available) return;
+
+		button.animation.play('hover');
+		label.color = _hoverColor;
+
+		hovered = true;
+	}
+
+	function getSelectionColorsFromType(buttonType:MainMenuButtonType):Array<FlxColor> {
+		switch (buttonType) {
+			case MainMenuButtonType.MAIN: return [0xFF0A3C33, 0xFF105848];
+			case MainMenuButtonType.EXTRA: return [0xFFAAE2DC, 0xFFFFFFFF];
+			case MainMenuButtonType.OTHER: return [0xFFFFFFFF, 0xFFFFFFFF];
+		};
+	}
+
+	function getImageFromType(buttonType:MainMenuButtonType):String {
+		switch (buttonType) {
+			case MainMenuButtonType.MAIN: return Paths.image('menus/mainmenu/mainButton');
+			case MainMenuButtonType.EXTRA: return Paths.image('menus/mainmenu/extraButton');
+			case MainMenuButtonType.OTHER: return Paths.image('menus/mainmenu/otherButton');
+		};
+	}
+
+	function getDimentionsFromType(buttonType:MainMenuButtonType):Array<Int> {
+		switch (buttonType) {
+			case MainMenuButtonType.MAIN: return [90, 12];
+			case MainMenuButtonType.EXTRA: return [90, 9];
+			case MainMenuButtonType.OTHER: return [44, 6];
+		};
+	}
+
+	function getTextSizeFromType(buttonType:MainMenuButtonType):Int {
+		switch (buttonType) {
+			case MainMenuButtonType.MAIN: return 32;
+			case MainMenuButtonType.EXTRA: return 25;
+			case MainMenuButtonType.OTHER: return 18;
+		};
+	}
+
+	function set_available(value:Bool):Bool {
+		available = value;
+
+		if (!available) {
+			button.animation.play('locked');
+			label.color = FlxColor.BLACK;
+			icon.color = FlxColor.GRAY;
+
+			var grayscaleShader:CustomShader = new CustomShader('grayscale');
+			grayscaleShader._amount = 1;
+
+			icon.shader = grayscaleShader;
+		}
+		else {
+			button.animation.play('idle');
+			label.color = _idleColor;
+			icon.color = FlxColor.WHITE;
+
+			icon.shader = null;
+		}
+
+		return value;
+	}
+}
+
+class TopButton extends FunkinSprite {
+	public var onPress:Void->Void;
+
+	public var enabled:Bool = true;
+
+	public function new(button:String, ?x:Float, ?y:Float) {
+		x ??= 0;
+		y ??= 0;
+		super(x, y);
+
+		loadGraphic(Paths.image("menus/mainmenu/topButtons/" + button + "Button"), true, 14, 14);
+		animation.add("idle", [0], 0, false);
+		animation.add("press", [1], 0, false);
+	}
+
+	override public function update(elapsed:Float) {
+		super.update(elapsed);
+
+		if (!enabled) return;
+
+		var overlaps = pointerOverlaps(this, this.camera);
+
+		if (overlaps) {
+			if (pointerIsHolding())
+				playAnim("press");
+			else if (pointerJustReleased())
+				press();
+        }
+        else
+			playAnim("idle");
+	}
+
+	public function press() {
+		playAnim("idle");
+		if (onPress != null)
+			onPress();
+	}
+}
+
+enum SelectingPromtOption {
+	NONE;
+	YES;
+	NO;
+}
+
+class ExitPrompt {
+	public var isOpen(default, null):Bool = false;
+
+	public var onOpen:Void->Void;
+
+	public var onClose:Void->Void;
+
+	var prompt:FlxSpriteGroup;
+
+	var bg:FlxSprite;
+	var promptBackground:ResizableUIBox;
+	var promptText:FunkinText;
+	var no:FunkinText;
+	var yes:FunkinText;
+
+	var promptCam:FlxCamera;
+
+	public function new() {}
+
+	public function open() {
+		if (prompt != null || isOpen)
+			return;
+
+		playMenuSound("cancel");
+
+		promptCam = new FlxCamera();
+		promptCam.bgColor = 0x0;
+		FlxG.cameras.add(promptCam, false);
+
+		prompt = new FlxSpriteGroup();
+		prompt.camera = promptCam;
+		FlxG.state.add(prompt);
+
+		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		bg.alpha = 0.6;
+		prompt.add(bg);
+
+		promptBackground = new ResizableUIBox(0, 0, 640, 180);
+		promptBackground.screenCenter();
+		prompt.add(promptBackground.box);
+
+		var limits:Float = 4 * 4;
+		promptText = new FunkinText(promptBackground.x + limits, promptBackground.y + promptBackground.height / 8, promptBackground.width - limits * 2,
+			translate("mainMenu.exitPrompt"), 32, false);
+		promptText.font = Paths.font("pixeloidsans.ttf");
+		promptText.alignment = "center";
+		prompt.add(promptText);
+
+		no = new FunkinText(promptText.x + promptText.width / 6, promptText.y + promptBackground.height / 2, 100, translate("no"), 40, false);
+		no.font = Paths.font("pixeloidsans.ttf");
+		no.alignment = "center";
+		no.alpha = 0.5;
+		prompt.add(no);
+
+		yes = new FunkinText(promptText.x + promptText.width / 2 + promptText.width / 6, no.y, 100, translate("yes"), 40, false);
+		yes.font = Paths.font("pixeloidsans.ttf");
+		yes.alignment = "center";
+		yes.alpha = 0.5;
+		prompt.add(yes);
+
+		if (onOpen != null)
+			onOpen();
+
+		isOpen = true;
+	}
+
+	public function close() {
+		if (prompt == null || !isOpen)
+			return;
+
+		playMenuSound("cancel");
+
+		FlxG.cameras.remove(promptCam);
+
+		bg.destroy();
+		promptBackground.destroy();
+		promptText.destroy();
+		no.destroy();
+		yes.destroy();
+		prompt.destroy();
+		prompt = null;
+
+		curSelection = SelectingPromtOption.NONE;
+		_isHoveringSmth = false;
+
+		if (onClose != null)
+			onClose();
+
+		isOpen = false;
+	}
+
+	var curSelection:SelectingPromtOption = SelectingPromtOption.NONE;
+
+	public function pressedLeft() {
+		if (curSelection == SelectingPromtOption.NO)
+			return;
+
+		playMenuSound("scroll");
+		curSelection = SelectingPromtOption.NO;
+		updateSelection();
+	}
+
+	public function pressedRight() {
+		if (curSelection == SelectingPromtOption.YES)
+			return;
+
+		playMenuSound("scroll");
+		curSelection = SelectingPromtOption.YES;
+		updateSelection();
+	}
+
+	public function pressedConfirm()
+		checkSelection();
+
+	var _isHoveringSmth:Bool = false;
+
+	public function updatePointer() {
+		if (prompt == null && !isOpen)
+			return;
+
+		if (pointerOverlaps(no, promptCam)) {
+			if (!_isHoveringSmth) {
+				_isHoveringSmth = true;
+				playMenuSound("scroll");
+				curSelection = SelectingPromtOption.NO;
+				updateSelection();
+				setMouseCursor("button");
+			}
+		} else if (pointerOverlaps(yes, promptCam)) {
+			if (!_isHoveringSmth) {
+				_isHoveringSmth = true;
+				playMenuSound("scroll");
+				curSelection = SelectingPromtOption.YES;
+				updateSelection();
+				setMouseCursor("button");
+			}
+		} else {
+			_isHoveringSmth = false;
+			curSelection = SelectingPromtOption.NONE;
+			updateSelection();
+			setMouseCursor();
+		}
+
+		if (pointerJustReleased())
+			checkSelection();
+	}
+
+	function updateSelection() {
+		no.alpha = 0.5;
+		yes.alpha = 0.5;
+
+		if (curSelection == SelectingPromtOption.YES)
+			yes.alpha = 1;
+		if (curSelection == SelectingPromtOption.NO)
+			no.alpha = 1;
+	}
+
+	function checkSelection() {
+		switch (curSelection) {
+			case SelectingPromtOption.YES:
+				accept();
+			case SelectingPromtOption.NO:
+				decline();
+		}
+	}
+
+	function accept() {
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.fadeOut();
+
+		playMenuSound("confirm");
+
+		FlxG.cameras.list[FlxG.cameras.list.length - 1].fade();
+
+		new FlxTimer().start(1.05, _ -> System.exit(0));
+	}
+
+	function decline()
+		close();
 }
 
 class WindowSubMenuHandler extends FlxBasic {

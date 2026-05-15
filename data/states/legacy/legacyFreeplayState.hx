@@ -1,6 +1,6 @@
 import flixel.addons.display.FlxBackdrop;
 import funkin.backend.MusicBeatGroup;
-import BackButton;
+import impostor.BackButton;
 import RimlightShader;
 
 var backGlow:FlxSprite;

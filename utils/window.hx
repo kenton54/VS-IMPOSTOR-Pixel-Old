@@ -45,12 +45,12 @@ public static function updateResize(width:Int, height:Int) {
 }
 
 public static function resizeGame(width:Int, height:Int, ?updateWindow:Bool) {
-	FlxG.initialWidth = width;
-	FlxG.initialHeight = height;
-	FlxG.width = width;
-	FlxG.height = height;
+	//FlxG.initialWidth = width;
+	//FlxG.initialHeight = height;
+	//FlxG.width = width;
+	//FlxG.height = height;
 
-	FlxG.scaleMode.onMeasure(width, height);
+	//FlxG.scaleMode.onMeasure(width, height);
 
 	updateResize(width, height);
 

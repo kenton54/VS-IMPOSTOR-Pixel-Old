@@ -1,8 +1,27 @@
 import impostor.ImpostorCharacter;
 
+var fixThisShit:Bool = false;
+
 function onGameOver(event) {
-	//camExtra.kill();
-	//taskPanel.group.visible = false;
+	event.cancel();
+
+	if (fixThisShit) return;
+
+	inst.stop();
+	vocals.stop();
+	for (s in strumLines.members) if (s.vocals != null) s.vocals.stop();
+
+	camGame.visible = false;
+	camHUD.visible = false;
+	camExtra.visible = false;
+
+	persistentUpdate = false;
+	persistentDraw = false;
+	paused = true;
+
+	openSubState(new ModSubState('game/gameOverScreen'));
+
+	fixThisShit = true;
 }
 
 function onPostGameOver(event) {

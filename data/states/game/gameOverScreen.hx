@@ -1,43 +1,55 @@
-import flixel.FlxObject;
-import BackButton;
+import funkin.backend.MusicBeatState;
+import funkin.editors.charter.Charter;
+import impostor.BackButton;
 
-var opponent:Character;
+var camGameOver:FlxCamera;
 
 var blackBackground:FunkinSprite;
 
 var retryButton:BackButton;
 var exitButton:BackButton;
 
-function create(event) {
-    event.cancel();
+final baseScale:Float = 4;
 
-	blackBackground = new FunkinSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-	blackBackground.scrollFactor.set();
-	blackBackground.zoomFactor = 0;
-	blackBackground.alpha = 0;
-	add(blackBackground);
+function create() {
+	camGameOver = new FlxCamera();
+	camGameOver.bgColor = 0x0;
+	FlxG.cameras.add(camGameOver, false);
 
-	var playStateOpponent = PlayState.instance.dad;
-	opponent = new Character(playStateOpponent.x, playStateOpponent.y, playStateOpponent.curCharacter, false);
-	opponent.danceOnBeat = false;
-	opponent.playAnim('kill', false, "LOCK");
-	opponent.shader = playStateOpponent.shader;
-	add(opponent);
+	playSound("gameOverSFX");
 
-    var boyfriend = PlayState.instance.boyfriend;
-	character = new Character(boyfriend.x, boyfriend.y, boyfriend.curCharacter, true);
-	character.danceOnBeat = false;
-	character.playAnim('deathStart');
-	character.shader = boyfriend.shader;
-	add(character);
+	retryButton = new BackButton(FlxG.width, FlxG.height, () -> {
+		MusicBeatState.skipTransIn = true;
+		FlxG.resetState();
+	}, baseScale, "menus/retry", false, true);
+	retryButton.x -= retryButton.width + baseScale;
+	retryButton.y -= retryButton.height + baseScale;
+	retryButton.camera = camGameOver;
+	retryButton.visible = false;
+	add(retryButton);
 
-	var camPos:FlxPoint = FlxPoint.get(character.x + character.width / 2, character.y);
-	camFollow = new FlxObject(camPos.x, camPos.y, 1, 1);
-	add(camFollow);
+	exitButton = new BackButton(baseScale, FlxG.height, () -> {
+		if (PlayState.chartingMode) {
+			setTransition("closingSharpCircle");
+			MusicBeatState.skipTransIn = true;
+			FlxG.switchState(new Charter(PlayState.SONG.meta.name, PlayState.difficulty, PlayState.variation, false));
+		}
+		else
+			FlxG.switchState(new FreeplayState());
+	}, baseScale, "menus/quit", false, true);
+	exitButton.y -= exitButton.height + baseScale;
+	exitButton.camera = camGameOver;
+	exitButton.visible = false;
+	add(exitButton);
+}
 
-	FlxG.camera.target = camFollow;
-	FlxG.camera.followLerp = 0.02;
+var waitTimer:Float = 0;
 
-	FlxTween.tween(blackBackground, {alpha: 1}, 1);
-	FlxTween.tween(opponent, {alpha: 0}, 1, {startDelay: 1, onComplete: _ -> opponent.destroy()});
+function update(elapsed:Float) {
+	if (waitTimer < 1)
+		waitTimer += elapsed;
+	else {
+		retryButton.visible = true;
+		exitButton.visible = true;
+	}
 }

@@ -8,8 +8,8 @@ import funkin.backend.chart.Chart;
 import funkin.backend.utils.DiscordUtil;
 import funkin.backend.utils.FlxInterpolateColor;
 import funkin.savedata.FunkinSave;
+import impostor.StarsBackdrop;
 import PlayableData;
-import StarsBackdrop;
 
 var loadedPlayable:PlayableData;
 
