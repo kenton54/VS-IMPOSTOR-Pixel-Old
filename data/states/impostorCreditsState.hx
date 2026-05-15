@@ -174,7 +174,7 @@ var creditsData:Array<Array<Dynamic>> = [
     {
         category: "MOTORFROG",
 		portrait: "motorfrog-big",
-		scale: 0.8,
+		scale: 0.75,
 		offset: 8,
 		about: "The team that made VS IMPOSTOR.\nGo check them out!",
 		website: "https://vsimpostor.com",
