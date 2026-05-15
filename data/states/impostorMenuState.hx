@@ -742,58 +742,62 @@ function handleKeyboard(elapsed:Float) {
     if (FlxG.keys.justPressed.ANY)
 		useKeyboard();
 
+	if (exitPrompt.isOpen) {
+		if (controls.LEFT_P)
+			exitPrompt.pressedLeft();
+		if (controls.RIGHT_P)
+			exitPrompt.pressedRight();
+
+		if (controls.ACCEPT)
+			exitPrompt.pressedConfirm();
+
+		if (controls.BACK)
+			exitPrompt.close();
+
+		return;
+	}
+
 	if (curSelectionMode == SelectionMode.MAIN) {
-        if (exitPrompt.isOpen) {
-			if (controls.LEFT_P)
-				exitPrompt.pressedLeft();
-			if (controls.RIGHT_P)
-				exitPrompt.pressedRight();
+		if (controls.UP_P)
+			changeMainEntry(-1);
+		if (controls.DOWN_P)
+			changeMainEntry(1);
 
-			if (controls.ACCEPT)
-				exitPrompt.pressedConfirm();
-        }
-        else {
-			if (controls.UP_P)
-				changeMainEntry(-1);
-			if (controls.DOWN_P)
-				changeMainEntry(1);
-
-			if (controls.UP) {
-				if (holdTimer >= maxHeldTime) {
-					if (frameDelayer >= maxFrameDelay) {
-						changeMainEntry(-1);
-						frameDelayer = 0;
-					}
-                    else
-						frameDelayer++;
+		if (controls.UP) {
+			if (holdTimer >= maxHeldTime) {
+				if (frameDelayer >= maxFrameDelay) {
+					changeMainEntry(-1);
+					frameDelayer = 0;
 				}
-                else
-					holdTimer += elapsed;
-			}
-            else if (controls.DOWN) {
-				if (holdTimer >= maxHeldTime) {
-					if (frameDelayer >= maxFrameDelay) {
-						changeMainEntry(1);
-						frameDelayer = 0;
-					}
-                    else
-						frameDelayer++;
-                }
 				else
-					holdTimer += elapsed;
+					frameDelayer++;
 			}
-            else {
-				frameDelayer = 0;
-				holdTimer = 0;
+			else
+				holdTimer += elapsed;
+		}
+		else if (controls.DOWN) {
+			if (holdTimer >= maxHeldTime) {
+				if (frameDelayer >= maxFrameDelay) {
+					changeMainEntry(1);
+					frameDelayer = 0;
+				}
+				else
+					frameDelayer++;
 			}
+			else
+				holdTimer += elapsed;
+		}
+		else {
+			frameDelayer = 0;
+			holdTimer = 0;
+		}
 
-			if (controls.SWITCHMOD)
-				statsMenu();
+		if (controls.SWITCHMOD)
+			statsMenu();
 
-			if (controls.ACCEPT)
-				checkMainSelection(curMainEntry);
-        }
-    }
+		if (controls.ACCEPT)
+			checkMainSelection(curMainEntry);
+	}
 
     if (controls.BACK)
 		checkBackAction();
